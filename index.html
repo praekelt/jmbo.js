@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="zepto.min.js"></script>
+    <script type="text/javascript" src="underscore.min.js"></script>
+    <script type="text/javascript" src="backbone.min.js"></script>
+
+    <script type="text/javascript" src="jmbo/jmbo.js"></script>
+    <script type="text/javascript" src="jmbo/navigation.js"></script>
+
+    <style type="text/css">
+
+        * {
+            webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;  
+        }
+
+        #container {
+            height:480px;
+            width:320px;
+            border:1px solid #333;
+            overflow:hidden;
+        }
+
+        .jmbo-navigation-controller {
+            position: relative;
+            height:100%;
+            width:100%;
+        }
+
+        .jmbo-title-view {
+            text-align:center;
+            background:#ccc;
+            height:44px;
+        }
+        .jmbo-title-view h1 {
+            margin:0;
+            padding:0;
+            line-height:44px;
+        }
+        .jmbo-view-controller-view {
+            width:100%;
+            height:100%;
+            background:#999;
+            top:0;
+            position:absolute;
+        }
+
+
+        /* animations */
+
+        @-webkit-keyframes slide-right-in {
+            0% { -webkit-transform: translateX(100%); }
+            100% { -webkit-transform: translateX(0%); }
+        }
+        .slide-right-in { -webkit-animation: slide-right-in 0.3s 0 1 ease-out forwards; }
+
+        @-webkit-keyframes slide-right-out {
+            from { -webkit-transform: translateX(0%); }
+            to { -webkit-transform: translateX(100%); }
+        }
+        .slide-right-out { 
+            -webkit-animation: slide-right-out 0.3s 0 1 ease-out forwards; 
+        }
+
+
+
+        @-webkit-keyframes slide-left-out {
+            from { -webkit-transform: translateX(0); }
+            to { -webkit-transform: translateX(-100%); }
+        }
+        .slide-left-out { -webkit-animation: slide-left-out 0.3s 0 1 ease-out forwards; }
+
+        @-webkit-keyframes slide-left-in {
+            from { -webkit-transform: translateX(-100%); }
+            to { -webkit-transform: translateX(0%); }
+        }
+        .slide-left-in { -webkit-animation: slide-left-in 0.3s 0 1 ease-out forwards; }
+
+
+
+
+
+    </style>
+
+    <script type="text/javascript">
+
+    $(function() {
+
+        var navController = new jmbo.navigation.Controller;
+        // you can set a new title bar controller here.
+        $('#container').html(navController.render());
+
+
+        var MenuView = Backbone.View.extend({
+
+
+            events: {
+                'click li': 'new_view',
+                'click p': 'go_back',
+            },
+
+            initialize: function() {
+
+                _.bindAll(this, 'render', 'new_view')
+                this.template = _.template($('#tmpl-menu').html());
+
+            },
+
+            render: function() {
+                
+                this.$el.html(this.template());
+                return this.el;
+            },
+
+            new_view: function() {
+                navController.pushViewController(
+                    new jmbo.view.Controller({childView: new MenuView, title: 'NEW!'})
+                );    
+            },
+
+            go_back: function() {
+                navController.popViewController()
+            }
+        });
+
+        // make a way to set an initial view
+
+        navController.pushViewController(
+            new jmbo.view.Controller({childView: new MenuView, title: 'JMBO!'})
+        );
+        
+        
+
+
+    });
+
+
+    
+
+
+        
+    // now you could push a view;
+
+
+        
+
+
+    </script>    
+
+</head>
+<body>
+
+
+    <div id="container">
+        
+       
+    </div>
+
+
+    <script type="text/html" id="tmpl-menu">
+        <ul>
+            <li>menu item 1</li>
+            <li>menu item 2</li>
+            <li>menu item 3</li>
+            <li>menu item 4</li>
+
+
+            <p>go back</p>
+        </ul>
+    </script>
+
+
+
+
+</body>
+</html>
