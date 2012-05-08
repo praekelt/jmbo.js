@@ -68,8 +68,6 @@ class NavigationControllerView extends Backbone.View
     @$el.html ''
     return @el
 
-
-
   popViewController: (animation) =>
     currentVC = @collection.pop()
     return null if not currentVC?
@@ -133,3 +131,4 @@ namespace 'jmbo.view', (exports) ->
 
 namespace 'jmbo.navigation', (exports) ->
   exports.ControllerView  = NavigationControllerView
+  exports.TabBarControllerView  = NavigationControllerView

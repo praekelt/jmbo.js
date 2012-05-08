@@ -17,7 +17,7 @@
         }
 
         body {
-            width:400px;
+            width:450px;
         }
 
         #container {
@@ -85,12 +85,6 @@
     
 
 
-        
-    // now you could push a view;
-
-
-        
-
 
     </script>    
 
@@ -99,32 +93,72 @@
 
     <h1>Jmbo apps</h1>
 
+
+    <h2>Introduction</h2>
+
     <p>Jmbo apps doesn't want to be a framework. However I don't know how one
         goes about providing a collection of "things" that formalizes a method
         of building HTML5 apps without becoming a framework.</p>
 
-    <p>So whilst one of our goals is not to be a framework I think it's inevitable.
-        That been said: We should try and be clear and simple in our 
-        implementations and minimal in "style" declarations.
+    <p>So whilst one of my goals is not to be a framework I think it's inevitable.
+        That said: We should try and be clear and simple in our 
+        implementations and minimal in css declarations.
     </p>
 
     <p>But not too simple and not too minimal. It's meant to increase productivity
         afterall. :P</p>
 
-    <p>Requirements:</p>
+    <h2>Requirements</h2>
+
+    <p>I hope we don't ever require more than this</p>
 
     <ol>
         <li>Underscore</li>
         <li>Backbone</li>
         <li>Zepto or jQuery</li>
-
     </ol>
 
 
-    <div id="container">
-        
-       
-    </div>
+    <h2>Getting started...</h2>
+
+    <p>Apps don't generally refresh when a new page is load, rather new pages 
+        (or views) are loaded when required and transitioned into the viewport.
+    </p>
+
+    <p>Jmbo provides two mechanisms in which pages can transition (not loadable yet), 
+        the first provides a drill down hierarchy: `jmbo.navigation.ControllerView` and 
+        the second allows you to switch the views context 
+        `jbmo.navigation.TabBarControllerView.`
+    </p>
+
+<pre>
+    var navController = new jmbo.navigation.ControllerView;
+    $('#container').html(navController.render());
+
+    // define your own view.
+    var menuView = Backbone.view.extend({
+        render: function() {
+            $el.html('pew pew pew');
+            return this.el;
+        }
+    });
+
+    // place you view in a viewController
+    var menuViewController = jmbo.view.Controller({
+        childView: menuView,
+        title: 'Jmbo Apps!'
+        /*
+        animation: 'slide',
+        titleView: new jmbo.view.TitleView,
+        */
+    });
+
+    // push your view onto the navigationControllerView.
+    navController.pushViewController(menuViewController);
+
+});
+</pre>
+
 
 
     <script type="text/html" id="tmpl-menu">
@@ -138,6 +172,11 @@
             <p>go back</p>
         </ul>
     </script>
+
+
+    <h3>Tests</h3>
+
+    <p>Jasmine tests are available.</p>
 
 
 
