@@ -49,7 +49,8 @@ class NavigationController extends Backbone.View
   className: 'jmbo-navigation-controller'
 
   initialize: ->
-    @viewControllers = new ViewControllers
+    # maybe we should check if one was passed?
+    @collection = new ViewControllers
 
   render: =>  
     @$el.html ''
@@ -57,15 +58,15 @@ class NavigationController extends Backbone.View
 
   popViewController: =>
     # remove page off the collection, 
-    activeVC = @viewControllers.pop()
+    activeVC = @collection.pop()
     activeVC_View = activeVC.get 'container'
     activeVC_View.animate 'slide-right-out', ->
       activeVC_View.$el.html('').remove()
       delete activeVC
 
     # slide the new one in.
-    if (@viewControllers.length > 0)
-      viewController = @viewControllers.last()
+    if (@collection.length > 0)
+      viewController = @collection.last()
       viewControllerView = new ViewControllerView(model: viewController)
       viewController.set container: viewControllerView
       @$el.prepend viewControllerView.render()
@@ -73,14 +74,14 @@ class NavigationController extends Backbone.View
 
   pushViewController: (viewController) =>
     # do we have a current vc, animate it away, and delete the "render."
-    if (@viewControllers.length > 0)
-      activeVC = @viewControllers.last()
+    if (@collection.length > 0)
+      activeVC = @collection.last()
       activeVC_View = activeVC.get 'container'
       activeVC_View.animate 'slide-left-out', ->
         activeVC_View.$el.remove()
         activeVC.unset 'container' # kill the pageView.
 
-    @viewControllers.add viewController
+    @collection.add viewController
     # create a new vc view.
     vcView = new ViewControllerView(model: viewController) 
     # store reference to view in model.
