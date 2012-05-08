@@ -2,9 +2,15 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <script type="text/javascript" src="zepto.min.js"></script>
-    <script type="text/javascript" src="underscore.min.js"></script>
-    <script type="text/javascript" src="backbone.min.js"></script>
+
+    <!-- syntax highlight -->
+    <script type="text/javascript" src="lib/highlight.pack.js"></script>
+    <link rel="stylesheet" type="text/css" href="lib/solarized_dark.css">
+
+
+    <script type="text/javascript" src="lib/zepto.min.js"></script>
+    <script type="text/javascript" src="lib/underscore.min.js"></script>
+    <script type="text/javascript" src="lib/backbone.min.js"></script>
 
     <script type="text/javascript" src="../jmbo/jmbo.js"></script>
     <script type="text/javascript" src="../jmbo/navigation+views.js"></script>
@@ -17,8 +23,12 @@
         }
 
         body {
-            width:450px;
+            font-family:'Helvetica Neue', 'Helvetica', arial, sans-serif;
+            color:#333;
         }
+
+        p { width:600px;  class="javascript"}
+        code { width:600px;  class="javascript"}
 
         #container {
             height:240px;
@@ -31,6 +41,9 @@
     <script type="text/javascript">
 
     $(function() {
+
+        hljs.initHighlightingOnLoad();
+
 
         var navController = new jmbo.navigation.ControllerView;
 
@@ -110,7 +123,7 @@
 
     <h2>Requirements</h2>
 
-    <p>I hope we don't ever require more than this</p>
+    <p>I hope we don't ever require more than this:</p>
 
     <ol>
         <li>Underscore</li>
@@ -131,7 +144,10 @@
         `jbmo.navigation.TabBarControllerView.`
     </p>
 
-<pre>
+<pre><code>
+    /* create a navigation controller view, which will render into an 
+       element#container.
+    */
     var navController = new jmbo.navigation.ControllerView;
     $('#container').html(navController.render());
 
@@ -157,7 +173,7 @@
     navController.pushViewController(menuViewController);
 
 });
-</pre>
+</code></pre>
 
 
 
