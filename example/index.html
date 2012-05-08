@@ -12,8 +12,10 @@
     <script type="text/javascript" src="lib/underscore.min.js"></script>
     <script type="text/javascript" src="lib/backbone.min.js"></script>
 
+
     <script type="text/javascript" src="../jmbo/jmbo.js"></script>
     <script type="text/javascript" src="../jmbo/navigation+views.js"></script>
+    <link rel="stylesheet" type="text/css" href="../jmbo/jmbo.css">
 
     <style type="text/css">
         * {
@@ -25,174 +27,160 @@
         body {
             font-family:'Helvetica Neue', 'Helvetica', arial, sans-serif;
             color:#333;
+            font-size:14px;
+            line-height:1.4em;
+            margin:0;
+            padding:0;
         }
 
-        p { width:600px;  class="javascript"}
-        code { width:600px;  class="javascript"}
+        pre, code {
+            width:100%;
+        }
 
-        #container {
-            height:240px;
-            width:160px;
-            border:1px solid #333;
+
+        #documentation, #scratchpad {
+            width:60%;
+            padding:10px;
+        }
+
+        #scratchpad {
+            position:fixed;
+            right:0;
+            top:0;
+            background:#eee;
+            width:40%;
+            height:100%;
+        }
+
+        #runtime {
             overflow:hidden;
+            height:480px;
+            width:320px;
+            border:5px #000 solid;
+            margin:10px auto;
+            border-radius:10px;
+        }
+        #runtime .startup {
+            margin:50% auto;
+            width: 223px;
+            height: 94px;
+            background-repeat: no-repeat;
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN8AAABeCAYAAACjFcFRAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MDRBQkQ3REI5MTQ0MTFFMTgyNzJEMjBCOUI5RTFGQzAiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MDRBQkQ3REM5MTQ0MTFFMTgyNzJEMjBCOUI5RTFGQzAiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDowNEFCRDdEOTkxNDQxMUUxODI3MkQyMEI5QjlFMUZDMCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDowNEFCRDdEQTkxNDQxMUUxODI3MkQyMEI5QjlFMUZDMCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PmYvywEAACj4SURBVHja7F0HnBVF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);
+        }
+
+        pre {
+            border-left:10px #586E75 solid;
         }
     </style>
 
     <script type="text/javascript">
-
-    $(function() {
-
         hljs.initHighlightingOnLoad();
 
-
-        var navController = new jmbo.navigation.ControllerView;
-
-        // you can set a new title bar controller here.
-        $('#container').html(navController.render());
-
-
-        var MenuView = Backbone.View.extend({
-
-
-            events: {
-                'click li': 'new_view',
-                'click p': 'go_back',
-            },
-
-            initialize: function() {
-
-                _.bindAll(this, 'render', 'new_view')
-                this.template = _.template($('#tmpl-menu').html());
-
-            },
-
-            render: function() {
-                
-                this.$el.html(this.template());
-                return this.el;
-            },
-
-            new_view: function() {
-                navController.pushViewController(
-                    new jmbo.view.Controller({childView: new MenuView, title: 'NEW!'})
-                );    
-            },
-
-            go_back: function() {
-                navController.popViewController()
-            }
+        $(function() {
+            $('button').on('click', function() {
+                var run = $(this).attr('data-run');
+                console.log('Running #' + run);
+                eval($('#' + run).text());
+            });
         });
-
-        // make a way to set an initial view
-
-        navController.pushViewController(
-            new jmbo.view.Controller({childView: new MenuView, title: 'JMBO!'})
-        );
-        
-        
-
-
-    });
-
-
-    
-
-
-
     </script>    
 
 </head>
 <body>
 
-    <h1>Jmbo apps</h1>
+<div id="container">
+    <div id="documentation">
+
+        <h1>Jmbo apps</h1>
+
+        <h2>Introduction</h2>
+
+        <p>Jmbo apps doesn't want to be a framework. However I don't know how one
+            goes about providing a collection of "things" that formalizes a method
+            of building HTML5 apps without becoming a framework.</p>
+
+        <p>So whilst one of my goals is not to be a framework I think it's inevitable.
+            That said: We should try and be clear and simple in our 
+            implementations and minimal in css declarations.
+        </p>
+
+        <p>But not too simple and not too minimal. It's meant to increase productivity
+            afterall. :P</p>
+
+        <h2>Requirements</h2>
+
+        <p>I hope we don't ever require more than this:</p>
+
+        <ol>
+            <li>Underscore</li>
+            <li>Backbone</li>
+            <li>Zepto or jQuery</li>
+        </ol>
 
 
-    <h2>Introduction</h2>
+        <h2>Getting started...</h2>
 
-    <p>Jmbo apps doesn't want to be a framework. However I don't know how one
-        goes about providing a collection of "things" that formalizes a method
-        of building HTML5 apps without becoming a framework.</p>
+        <p>Apps don't generally refresh when a new page is load, rather new pages 
+            (or views) are loaded when required and transitioned into the viewport.
+        </p>
 
-    <p>So whilst one of my goals is not to be a framework I think it's inevitable.
-        That said: We should try and be clear and simple in our 
-        implementations and minimal in css declarations.
-    </p>
+        <p>Jmbo provides two mechanisms in which pages can transition (no loadable pages yet), 
+            the first provides a drill down hierarchy: `jmbo.navigation.ControllerView` and 
+            the second allows you to switch the views context 
+            `jbmo.navigation.TabBarControllerView.`
+        </p>
 
-    <p>But not too simple and not too minimal. It's meant to increase productivity
-        afterall. :P</p>
+<pre><code id="example_1">
+/* create a navigation controller view, which will render into an 
+   element#container.
+*/
+var navController = new jmbo.navigation.ControllerView;
+$('#runtime').html(navController.render());
 
-    <h2>Requirements</h2>
-
-    <p>I hope we don't ever require more than this:</p>
-
-    <ol>
-        <li>Underscore</li>
-        <li>Backbone</li>
-        <li>Zepto or jQuery</li>
-    </ol>
-
-
-    <h2>Getting started...</h2>
-
-    <p>Apps don't generally refresh when a new page is load, rather new pages 
-        (or views) are loaded when required and transitioned into the viewport.
-    </p>
-
-    <p>Jmbo provides two mechanisms in which pages can transition (not loadable yet), 
-        the first provides a drill down hierarchy: `jmbo.navigation.ControllerView` and 
-        the second allows you to switch the views context 
-        `jbmo.navigation.TabBarControllerView.`
-    </p>
-
-<pre><code>
-    /* create a navigation controller view, which will render into an 
-       element#container.
-    */
-    var navController = new jmbo.navigation.ControllerView;
-    $('#container').html(navController.render());
-
-    // define your own view.
-    var menuView = Backbone.view.extend({
-        render: function() {
-            $el.html('pew pew pew');
-            return this.el;
-        }
-    });
-
-    // place you view in a viewController
-    var menuViewController = jmbo.view.Controller({
-        childView: menuView,
-        title: 'Jmbo Apps!'
-        /*
-        animation: 'slide',
-        titleView: new jmbo.view.TitleView,
-        */
-    });
-
-    // push your view onto the navigationControllerView.
-    navController.pushViewController(menuViewController);
-
+// define your own view.
+var MenuView = Backbone.View.extend({
+    render: function() {
+        this.$el.html('pew pew pew');
+        return this.el;
+    }
 });
+
+// place you view in a viewController
+var menuViewController = new jmbo.view.Controller({
+    childView: new MenuView,
+    title: 'Jmbo Apps!'
+    /*
+    animation: 'slide',
+    titleView: new jmbo.view.TitleView,
+    */
+});
+
+// push your view onto the navigationControllerView.
+navController.pushViewController(menuViewController);
 </code></pre>
+<button data-run="example_1">Run...</button>
 
 
 
-    <script type="text/html" id="tmpl-menu">
-        <ul>
-            <li>menu item 1</li>
-            <li>menu item 2</li>
-            <li>menu item 3</li>
-            <li>menu item 4</li>
+
+        <h3>Tests</h3>
+
+        <p>Jasmine tests are available.</p>
+    </div>
+
+    <div id="scratchpad">
+        <div id="runtime">
+
+            <div class="startup">
+            </div>
+
+        </div>
+    </div>
+</div>
 
 
-            <p>go back</p>
-        </ul>
-    </script>
 
 
-    <h3>Tests</h3>
-
-    <p>Jasmine tests are available.</p>
 
 
 
