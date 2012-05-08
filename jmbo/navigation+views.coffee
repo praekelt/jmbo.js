@@ -20,7 +20,6 @@ class ViewController extends Backbone.Model
     title: ''
     animation: 'slide'
 
-    cacheViewDOM: false
     _view: null
     
 
@@ -50,10 +49,16 @@ class ViewControllerView extends Backbone.View
 
     return @el   
 
-  animate: (name, callback) =>
-    jmbo.view.animate @$el, name, callback
-    # TODO: Allow user to specify a direction, also store the animation
-    #   in the model, so that you can just "animate away."
+  animate: (name, direction, callback) =>
+
+    $el = @$el
+    className = name + '-' + direction
+    $el.addClass className
+    $el.on 'webkitAnimationEnd', ->
+      $el.removeClass(className).off 'webkitAnimationEnd'
+      if callback then callback()
+
+    
 
 
 
@@ -62,23 +67,24 @@ class NavigationControllerView extends Backbone.View
   className: 'jmbo-navigation-controller-view'
 
   initialize: ->
+
+    @collection = null
     @collection = new ViewControllers
+    
 
   render: =>  
     @$el.html ''
     return @el
 
-  popViewController: (animation) =>
+  pop: =>
     currentVC = @collection.pop()
     return null if not currentVC?
     currentVC_view = currentVC.get '_view'
     # animate the view out of the viewport;
     currentVC_view.animate currentVC.get('animation'), 'left-out', ->
-      # remove the DOM content, this should stop video and audio playback
-      # and free up some memory.
-      if not currentVC.get 'cacheViewDOM'
-        currentVC_view.$el.html('').remove() 
-
+      currentVC_view.$el.html('').remove()
+      currentVC.unset '_view'
+      # Todo; ability to cache DOM element.
 
     #slide the previous view controller in;
     # last_VC.
@@ -92,15 +98,16 @@ class NavigationControllerView extends Backbone.View
     return currentVC
 
 
-  pushViewController: (nextVC, animation='slide') =>
+  push: (nextVC) =>
     # do we have a current vc, animate it away, and delete the "view.""
     if (@collection.length > 0)
       currentVC = @collection.last()
       currentVC_view = currentVC.get '_view'
       currentVC_view.animate currentVC.get('animation'), 'right-out', ->
-        if not currentVC.get 'cacheViewDOM'
           currentVC_view.$el.html('').remove()
           currentVC.unset '_view'
+          # Todo; cache the dom stuff, also figure out wtf is going on here.
+
 
     @collection.add nextVC
     nextVC_view = new ViewControllerView(model: nextVC) 
@@ -118,16 +125,7 @@ namespace 'jmbo.view', (exports) ->
   exports.Controller = ViewController
   exports._ControllerView = ViewControllerView
 
-  exports.TitleView = TitleView  
-
-  exports.animate = ($el, name, direction, callback) -> 
-    className = name + '-' + direction
-    l className
-    $el.addClass className
-    $el.on 'webkitAnimationEnd', ->
-      $el.removeClass(className).off 'webkitAnimationEnd'
-      if callback then callback()
-
+  exports.TitleView = TitleView
 
 namespace 'jmbo.navigation', (exports) ->
   exports.ControllerView  = NavigationControllerView

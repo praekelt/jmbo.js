@@ -54,7 +54,6 @@
       childView: null,
       title: '',
       animation: 'slide',
-      cacheViewDOM: false,
       _view: null
     };
 
@@ -109,8 +108,17 @@
       return this.el;
     };
 
-    ViewControllerView.prototype.animate = function(name, callback) {
-      return jmbo.view.animate(this.$el, name, callback);
+    ViewControllerView.prototype.animate = function(name, direction, callback) {
+      var $el, className;
+      $el = this.$el;
+      className = name + '-' + direction;
+      $el.addClass(className);
+      return $el.on('webkitAnimationEnd', function() {
+        $el.removeClass(className).off('webkitAnimationEnd');
+        if (callback) {
+          return callback();
+        }
+      });
     };
 
     return ViewControllerView;
@@ -124,9 +132,9 @@
     NavigationControllerView.name = 'NavigationControllerView';
 
     function NavigationControllerView() {
-      this.pushViewController = __bind(this.pushViewController, this);
+      this.push = __bind(this.push, this);
 
-      this.popViewController = __bind(this.popViewController, this);
+      this.pop = __bind(this.pop, this);
 
       this.render = __bind(this.render, this);
       return NavigationControllerView.__super__.constructor.apply(this, arguments);
@@ -135,6 +143,7 @@
     NavigationControllerView.prototype.className = 'jmbo-navigation-controller-view';
 
     NavigationControllerView.prototype.initialize = function() {
+      this.collection = null;
       return this.collection = new ViewControllers;
     };
 
@@ -143,7 +152,7 @@
       return this.el;
     };
 
-    NavigationControllerView.prototype.popViewController = function(animation) {
+    NavigationControllerView.prototype.pop = function() {
       var currentVC, currentVC_view, prevVC, prevVC_view;
       currentVC = this.collection.pop();
       if (!(currentVC != null)) {
@@ -151,9 +160,8 @@
       }
       currentVC_view = currentVC.get('_view');
       currentVC_view.animate(currentVC.get('animation'), 'left-out', function() {
-        if (!currentVC.get('cacheViewDOM')) {
-          return currentVC_view.$el.html('').remove();
-        }
+        currentVC_view.$el.html('').remove();
+        return currentVC.unset('_view');
       });
       if (this.collection.length > 0) {
         prevVC = this.collection.last();
@@ -169,19 +177,14 @@
       return currentVC;
     };
 
-    NavigationControllerView.prototype.pushViewController = function(nextVC, animation) {
+    NavigationControllerView.prototype.push = function(nextVC) {
       var currentVC, currentVC_view, nextVC_view;
-      if (animation == null) {
-        animation = 'slide';
-      }
       if (this.collection.length > 0) {
         currentVC = this.collection.last();
         currentVC_view = currentVC.get('_view');
         currentVC_view.animate(currentVC.get('animation'), 'right-out', function() {
-          if (!currentVC.get('cacheViewDOM')) {
-            currentVC_view.$el.html('').remove();
-            return currentVC.unset('_view');
-          }
+          currentVC_view.$el.html('').remove();
+          return currentVC.unset('_view');
         });
       }
       this.collection.add(nextVC);
@@ -203,23 +206,12 @@
   namespace('jmbo.view', function(exports) {
     exports.Controller = ViewController;
     exports._ControllerView = ViewControllerView;
-    exports.TitleView = TitleView;
-    return exports.animate = function($el, name, direction, callback) {
-      var className;
-      className = name + '-' + direction;
-      l(className);
-      $el.addClass(className);
-      return $el.on('webkitAnimationEnd', function() {
-        $el.removeClass(className).off('webkitAnimationEnd');
-        if (callback) {
-          return callback();
-        }
-      });
-    };
+    return exports.TitleView = TitleView;
   });
 
   namespace('jmbo.navigation', function(exports) {
-    return exports.ControllerView = NavigationControllerView;
+    exports.ControllerView = NavigationControllerView;
+    return exports.TabBarControllerView = NavigationControllerView;
   });
 
 }).call(this);

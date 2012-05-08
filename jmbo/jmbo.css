@@ -13,6 +13,7 @@ Try and remove as much of the properties as possible.
     text-align:center;
     background:#ccc;
     height:44px;
+    margin:0 0 1em 0;
 }
 .jmbo-title-view h1 {
     margin:0;
