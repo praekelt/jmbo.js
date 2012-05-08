@@ -20,3 +20,10 @@ We currently have the following parts:
 - A navigation controller.
     A navigation controller contains a list of view controllers and has a stack.
     You can push and pop views off the stack. The views are animated.
+
+
+Todo:
+
+Navigation Controller animation should be argument on `pop` or `push.` To make
+the transitions flow together.
+

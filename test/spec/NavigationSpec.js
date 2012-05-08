@@ -40,6 +40,18 @@ describe("Navigation", function() {
 
     it ("should begin with an empty collection of ViewControllers", function() {
       expect(navigationControllerView.collection.length).toEqual(0);
+
+      // add a view controller
+      var cv = new ChildView;
+      var vc = new jmbo.view.Controller({childView: cv});
+      navigationControllerView.push(vc);
+
+      // re initialize the navigation controller;
+      navigationControllerView = new jmbo.navigation.ControllerView
+
+      // should be empty.
+      expect(navigationControllerView.collection.length).toEqual(0);
+
     });
 
     it ("should be able to add a view controller.", function() {
