@@ -53,7 +53,6 @@
       titleView: TitleView,
       childView: null,
       title: '',
-      animation: 'slide',
       _view: null
     };
 
@@ -109,16 +108,7 @@
     };
 
     ViewControllerView.prototype.animate = function(name, direction, callback) {
-      var $el, className;
-      $el = this.$el;
-      className = name + '-' + direction;
-      $el.addClass(className);
-      return $el.on('webkitAnimationEnd', function() {
-        $el.removeClass(className).off('webkitAnimationEnd');
-        if (callback) {
-          return callback();
-        }
-      });
+      return jmbo.view.animate(this.$el, name, direction, callback);
     };
 
     return ViewControllerView;
@@ -152,14 +142,17 @@
       return this.el;
     };
 
-    NavigationControllerView.prototype.pop = function() {
+    NavigationControllerView.prototype.pop = function(animation) {
       var currentVC, currentVC_view, prevVC, prevVC_view;
+      if (animation == null) {
+        animation = 'slide';
+      }
       currentVC = this.collection.pop();
       if (!(currentVC != null)) {
         return null;
       }
       currentVC_view = currentVC.get('_view');
-      currentVC_view.animate(currentVC.get('animation'), 'left-out', function() {
+      currentVC_view.animate(animation, 'left-out', function() {
         currentVC_view.$el.html('').remove();
         return currentVC.unset('_view');
       });
@@ -172,17 +165,20 @@
           _view: prevVC_view
         });
         this.$el.prepend(prevVC_view.render());
-        prevVC_view.animate(prevVC.get('animation'), 'left-in');
+        prevVC_view.animate(animation, 'left-in');
       }
       return currentVC;
     };
 
-    NavigationControllerView.prototype.push = function(nextVC) {
+    NavigationControllerView.prototype.push = function(nextVC, animation) {
       var currentVC, currentVC_view, nextVC_view;
+      if (animation == null) {
+        animation = 'slide';
+      }
       if (this.collection.length > 0) {
         currentVC = this.collection.last();
         currentVC_view = currentVC.get('_view');
-        currentVC_view.animate(currentVC.get('animation'), 'right-out', function() {
+        currentVC_view.animate(animation, 'right-out', function() {
           currentVC_view.$el.html('').remove();
           return currentVC.unset('_view');
         });
@@ -195,7 +191,7 @@
         _view: nextVC_view
       });
       this.$el.append(nextVC_view.render());
-      nextVC_view.animate(nextVC.get('animation'), 'right-in');
+      nextVC_view.animate(animation, 'right-in');
       return nextVC;
     };
 
@@ -206,7 +202,18 @@
   namespace('jmbo.view', function(exports) {
     exports.Controller = ViewController;
     exports._ControllerView = ViewControllerView;
-    return exports.TitleView = TitleView;
+    exports.TitleView = TitleView;
+    return exports.animate = function($el, name, direction, callback) {
+      var className;
+      className = name + '-' + direction;
+      $el.addClass(className);
+      return $el.on('webkitAnimationEnd', function() {
+        $el.removeClass(className).off('webkitAnimationEnd');
+        if (callback) {
+          return callback();
+        }
+      });
+    };
   });
 
   namespace('jmbo.navigation', function(exports) {
