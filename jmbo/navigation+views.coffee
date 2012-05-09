@@ -52,11 +52,11 @@ class ViewControllerView extends Backbone.View
 
 
 
-class NavigationControllerView extends Backbone.View
-  className: 'jmbo-navigation-controller-view'
+
+class StackControllerView extends Backbone.View
+  className: 'jmbo-navigation-stack-controller-view'
 
   initialize: ->
-
     @collection = null
     @collection = new ViewControllers
     
@@ -122,5 +122,5 @@ namespace 'jmbo.view', (exports) ->
       if callback then callback()
 
 namespace 'jmbo.navigation', (exports) ->
-  exports.ControllerView  = NavigationControllerView
-  exports.TabBarControllerView  = NavigationControllerView
+  exports.StackControllerView  = StackControllerView
+  exports.TabControllerView  = StackControllerView

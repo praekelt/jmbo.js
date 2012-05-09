@@ -94,8 +94,8 @@
         hljs.initHighlightingOnLoad();
 
         $(function() {
-            var navController = new jmbo.navigation.ControllerView;
-            $('#viewport').html(navController.render());
+            var stackController = new jmbo.navigation.StackControllerView;
+            $('#viewport').html(stackController.render());
 
             $('.code-snippet').each(function() {
                 $(this)
@@ -148,17 +148,17 @@
             (or views) are loaded when required and transitioned into the viewport.
         </p>
 
-        <h3>Navigation Controller View</h3>
+        <h3>Stack Controller View</h3>
 
-        <p>`jmbo.navigation.ControllerView` provides a drill down hierarchal stack.</p>
+        <p>`jmbo.navigation.StackController` provides a drill down hierarchal interface.</p>
 
         <div class="code-snippet">
             <script type="text/snippet">
                 /* create a navigation controller view, which will render into an 
                    element #viewport.
                 */
-                navController = new jmbo.navigation.ControllerView;
-                $('#viewport').html(navController.render());
+                stackController = new jmbo.navigation.StackControllerView;
+                $('#viewport').html(stackController.render());
 
                 // define your own view.
                 var MenuView = Backbone.View.extend({
@@ -175,27 +175,28 @@
                 });
 
                 // push your view onto the navigationControllerView.
-                navController.push(menuViewController, 'none');
+                stackController.push(menuViewController, 'none');
             </script>
         </div>
 
-        <p>You can keep push views onto the navigation controller's stack. (Click "Run..." multiple times!)</p>
+        <p>You can keep pushing views onto the controller's stack. (Click "Run..." multiple times!)</p>
 
         <div class="code-snippet">
             <script type="text/snippet">
+                var len = stackController.collection.length;
+                
                 var AnotherView = Backbone.View.extend({
                     render: function() {
-                        var len = navController.collection.length;
-                        this.$el.html('Another view #' + len);
+                        this.$el.html('Lorem ipsum dolor sit amet... #' + len);
                         return this.el;
                     }
                 });
 
                 var anotherViewController = new jmbo.view.Controller({
                     childView: new AnotherView,
-                    title: 'Another View!'
+                    title: 'New View #' + len
                 });
-                navController.push(anotherViewController);
+                stackController.push(anotherViewController);
 
             </script>
         </div>
@@ -203,17 +204,17 @@
 
         <p>Or you can remove them.</p>
 
-
         <div class="code-snippet">
             <script type="text/snippet">
-                var poppedViewController = navController.pop();
+                var poppedViewController = stackController.pop();
             </script>
         </div>
 
 
         <h3>Navigation Tab Controller View</h3>
 
-        <p></p>
+        <p>`jmbo.navigation.tabControllerView` allows the app to switch contexts. 
+            Usually to navigation controller, or a single page.</p>
 
 
         <h2>Tests</h2>
@@ -223,7 +224,6 @@
 
     <div id="runtime">
         <div id="viewport">
-            ssadasp[dsapodlsa]
         </div>
     </div>
 </div>
