@@ -104,6 +104,10 @@
                         eval($(this).parent().find('pre').text());
                     }));
             });
+
+            
+            eval($('#runme').find('pre').text());
+            
         });
 
         
@@ -150,7 +154,7 @@
 
         <h3>Stack Controller View</h3>
 
-        <p>`jmbo.navigation.StackController` provides a drill down hierarchal interface.</p>
+        <p>Is a drill down hierarchal stack.</p>
 
         <div class="code-snippet">
             <script type="text/snippet">
@@ -175,7 +179,7 @@
                 });
 
                 // push your view onto the navigationControllerView.
-                navController.push(menuViewController, 'none');
+                navController.push(menuViewController, {animation: 'none'});
             </script>
         </div>
 
@@ -211,10 +215,22 @@
         </div>
 
 
-        <h3>Navigation Tab Controller View</h3>
+        <h3>Tab Bar Controller View</h3>
 
-        <p>`jmbo.navigation.tabControllerView` allows the app to switch contexts. 
-            Usually to navigation controller, or a single page.</p>
+        <p>Allows the app to switch contexts. Usually to navigation controller, or a single page.</p>
+
+
+        <div class="code-snippet" id="runme">
+            <script type="text/snippet">
+                // create a tab bar controller view. which will render into the viewport
+
+                tabController = new jmbo.view.TabBarControllerView;
+                $('#viewport').html(tabController.render());
+
+            </script>
+        </div>
+
+
 
 
         <h2>Tests</h2>

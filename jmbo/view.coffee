@@ -18,9 +18,8 @@ class ViewController extends Backbone.Model
     titleView: TitleView
     childView: null
     title: ''
+    icon: null
     _view: null
-    
-
     
 
 
@@ -38,7 +37,7 @@ class ViewControllerView extends Backbone.View
     # render the titleView.
     titleView = new (@model.get 'titleView')
     titleView.setTitle @model.get 'title'
-    @$el.append titleView.render()
+    @$el.html titleView.render()
 
     # render the childView and append it to $el.
     childView = @model.get 'childView'
@@ -65,14 +64,14 @@ class NavigationControllerView extends Backbone.View
     @$el.html ''
     return @el
 
-  pop: (animation='slide') =>
+  pop: (options={animation: 'slide-left'}) =>
 
     # remove the current view from the collection, animate it out of the viewport
     # and remove it's dom components.
     currentVC = @collection.pop()
     return null if not currentVC?
     currentVC_view = currentVC.get '_view'
-    currentVC_view.animate animation, 'left-out', ->
+    currentVC_view.animate options.animation, 'out', ->
       currentVC_view.$el.html('').remove()
       currentVC.unset '_view'
       # Todo; ability to cache DOM element.
@@ -84,16 +83,16 @@ class NavigationControllerView extends Backbone.View
       prevVC_view = new ViewControllerView(model: prevVC)
       prevVC.set _view: prevVC_view
       @$el.prepend prevVC_view.render()
-      prevVC_view.animate animation, 'left-in'
+      prevVC_view.animate options.animation, 'in'
 
     return currentVC
 
 
-  push: (nextVC, animation='slide') =>
+  push: (nextVC, options={animation: 'slide-right'}) =>
     if (@collection.length > 0)
       currentVC = @collection.last()
       currentVC_view = currentVC.get '_view'
-      currentVC_view.animate animation, 'right-out', ->
+      currentVC_view.animate options.animation, 'out', ->
           currentVC_view.$el.html('').remove()
           currentVC.unset '_view'
 
@@ -102,8 +101,70 @@ class NavigationControllerView extends Backbone.View
     nextVC_view = new ViewControllerView(model: nextVC) 
     nextVC.set _view: nextVC_view
     @$el.append nextVC_view.render()
-    nextVC_view.animate animation, 'right-in'
+    nextVC_view.animate options.animation, 'in'
     return nextVC
+
+
+
+
+
+
+
+class TabBarControllerView extends Backbone.View
+  className: 'jmbo-view-tab-bar-controller-view'
+
+  initialize: ->
+    @collection = null
+    @collection = new ViewControllers
+
+    @selectedIndex = 0
+
+    
+
+
+  selectedIndex: (index=0) =>
+    # pew
+  
+
+
+  render: =>
+
+
+    l 'I come here.'
+    # first render the "selected view" controller
+
+
+    $ol = $('<ol></ol>')
+
+    @$el.append($ol)
+
+    # we should draw the tab bar at the bottom?
+    # it'll have a space in which the child view can render.
+
+
+    # ok, whenever a new tab bar is added or removed.
+    # we need to re-render the tab bar part of the app
+    # but not really the whole app.
+    @$el.html ''
+    return @el
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -115,7 +176,7 @@ namespace 'jmbo.view', (exports) ->
   exports.TitleView = TitleView
 
   exports.NavigationControllerView  = NavigationControllerView
-  #exports.TabBarControllerView  = StackControllerView
+  exports.TabBarControllerView  = TabBarControllerView
 
   exports.animate = ($el, name, direction, callback) ->
     className = name + '-' + direction

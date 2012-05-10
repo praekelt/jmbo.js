@@ -9,7 +9,7 @@ var ChildView = Backbone.View.extend({
 describe("View", function() {
 
   describe("Controller View", function() {
-    it(" should return false on render() if a model and model.childView are not set.", function() {
+    it("Return false on render() if a model or model.childView are not set.", function() {
       // test failure.
       var vcView = new jmbo.view._ControllerView();
       expect(vcView.render()).toEqual(false);
@@ -31,7 +31,7 @@ describe("View", function() {
       navController = new jmbo.view.NavigationControllerView
     });
 
-    it ("should begin with an empty collection of ViewControllers", function() {
+    it ("Begin with an empty collection of ViewControllers", function() {
       expect(navController.collection.length).toEqual(0);
 
       // add a view controller
@@ -47,7 +47,7 @@ describe("View", function() {
 
     });
 
-    it ("should be able to add a view controller.", function() {
+    it ("Add a view controller.", function() {
       var cv1 = new ChildView;
       var vc1 = new jmbo.view.Controller({childView: cv1});
       navController.push(vc1);
@@ -59,7 +59,7 @@ describe("View", function() {
       expect(navController.collection.length).toEqual(2);
     });
 
-    it ("should be able to remove a view controller.", function() {
+    it ("Remove a view controller.", function() {
 
       var cv = new ChildView;
       var vc = new jmbo.view.Controller({childView: cv});
@@ -73,7 +73,7 @@ describe("View", function() {
 
     });
 
-    it ("shouldn't return null if trying to pop from empty collection.", function() {
+    it ("Return null if trying to pop from empty collection.", function() {
       var cv = new ChildView;
       var vc = new jmbo.view.Controller({childView: cv});
       navController.push(vc);
