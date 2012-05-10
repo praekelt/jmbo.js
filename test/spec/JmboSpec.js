@@ -23,59 +23,52 @@ describe("View", function() {
       expect($(vcView.render()).hasClass(vcView.className)).toEqual(true);
     });
   });
-});
 
-
-
-
-describe("Navigation", function() {
-  
-
-  describe("Stack Controller View", function() {
-    var stackControllerView;
+  describe("Navigation Controller View", function() {
+    var navController;
 
     beforeEach(function() {
-      stackControllerView = new jmbo.navigation.StackControllerView
+      navController = new jmbo.view.NavigationControllerView
     });
 
     it ("should begin with an empty collection of ViewControllers", function() {
-      expect(stackControllerView.collection.length).toEqual(0);
+      expect(navController.collection.length).toEqual(0);
 
       // add a view controller
       var cv = new ChildView;
       var vc = new jmbo.view.Controller({childView: cv});
-      stackControllerView.push(vc);
+      navController.push(vc);
 
       // re initialize the navigation controller;
-      stackControllerView = new jmbo.navigation.StackControllerView
+      navController = new jmbo.view.NavigationControllerView
 
       // should be empty.
-      expect(stackControllerView.collection.length).toEqual(0);
+      expect(navController.collection.length).toEqual(0);
 
     });
 
     it ("should be able to add a view controller.", function() {
       var cv1 = new ChildView;
       var vc1 = new jmbo.view.Controller({childView: cv1});
-      stackControllerView.push(vc1);
-      expect(stackControllerView.collection.length).toEqual(1);
+      navController.push(vc1);
+      expect(navController.collection.length).toEqual(1);
 
       var cv2 = new ChildView;
       var vc2 = new jmbo.view.Controller({childView: cv2});
-      stackControllerView.push(vc2);
-      expect(stackControllerView.collection.length).toEqual(2);
+      navController.push(vc2);
+      expect(navController.collection.length).toEqual(2);
     });
 
     it ("should be able to remove a view controller.", function() {
 
       var cv = new ChildView;
       var vc = new jmbo.view.Controller({childView: cv});
-      stackControllerView.push(vc);
-      expect(stackControllerView.collection.length).toEqual(1);
+      navController.push(vc);
+      expect(navController.collection.length).toEqual(1);
 
-      vc_popped = stackControllerView.pop();
+      vc_popped = navController.pop();
       expect(vc_popped).toBe(vc);
-      expect(stackControllerView.collection.length).toEqual(0);
+      expect(navController.collection.length).toEqual(0);
 
 
     });
@@ -83,16 +76,22 @@ describe("Navigation", function() {
     it ("shouldn't return null if trying to pop from empty collection.", function() {
       var cv = new ChildView;
       var vc = new jmbo.view.Controller({childView: cv});
-      stackControllerView.push(vc);
-      expect(stackControllerView.collection.length).toEqual(1);
+      navController.push(vc);
+      expect(navController.collection.length).toEqual(1);
 
-      vc_popped = stackControllerView.pop();
+      vc_popped = navController.pop();
       expect(vc_popped).toBe(vc);
-      expect(stackControllerView.collection.length).toEqual(0);
+      expect(navController.collection.length).toEqual(0);
 
-      vc_popped = stackControllerView.pop();
+      vc_popped = navController.pop();
       expect(vc_popped).toEqual(null);
     });
 
   });
+
+
 });
+
+
+
+

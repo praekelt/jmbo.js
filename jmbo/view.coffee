@@ -53,8 +53,8 @@ class ViewControllerView extends Backbone.View
 
 
 
-class StackControllerView extends Backbone.View
-  className: 'jmbo-navigation-stack-controller-view'
+class NavigationControllerView extends Backbone.View
+  className: 'jmbo-view-navigation-controller-view'
 
   initialize: ->
     @collection = null
@@ -114,13 +114,12 @@ namespace 'jmbo.view', (exports) ->
 
   exports.TitleView = TitleView
 
+  exports.NavigationControllerView  = NavigationControllerView
+  #exports.TabBarControllerView  = StackControllerView
+
   exports.animate = ($el, name, direction, callback) ->
     className = name + '-' + direction
     $el.addClass className
     $el.on 'webkitAnimationEnd', ->
       $el.removeClass(className).off 'webkitAnimationEnd'
       if callback then callback()
-
-namespace 'jmbo.navigation', (exports) ->
-  exports.StackControllerView  = StackControllerView
-  exports.TabControllerView  = StackControllerView
