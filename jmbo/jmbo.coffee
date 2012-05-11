@@ -6,6 +6,7 @@ window.namespace = (target, name, block) ->
   target = target[item] or= {} for item in name.split '.'
   block target, top
 
+# quick log
 window.l = (x...) ->
   if (x.length == 1)
     x = x[0]

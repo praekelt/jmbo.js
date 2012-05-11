@@ -222,10 +222,38 @@
 
         <div class="code-snippet" id="runme">
             <script type="text/snippet">
-                // create a tab bar controller view. which will render into the viewport
-
+                
+                // create a tab bar controller view. which will render into 
+                // the viewport
                 tabController = new jmbo.view.TabBarControllerView;
                 $('#viewport').html(tabController.render());
+
+                
+                var PhotoView = Backbone.View.extend({
+                    render: function() {
+                        this.$el.html('This is a photo view')
+                        return this.el;
+                    }
+                });
+
+                var photoViewController_1 = new jmbo.view.Controller({
+                    childView: new PhotoView,
+                    title: 'Photos'
+                });
+
+                var photoViewController_2 = new jmbo.view.Controller({
+                    childView: new PhotoView,
+                    title: 'Photos'
+                });
+
+                tabController.add(photoViewController_1);
+                tabController.add(photoViewController_2);
+
+
+                
+
+
+
 
             </script>
         </div>

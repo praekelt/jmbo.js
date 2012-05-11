@@ -31,8 +31,8 @@ describe("View", function() {
       navController = new jmbo.view.NavigationControllerView
     });
 
-    it ("Begin with an empty collection of ViewControllers", function() {
-      expect(navController.collection.length).toEqual(0);
+    it ("ViewControllers should be empty.", function() {
+      expect(navController.viewControllers.length).toEqual(0);
 
       // add a view controller
       var cv = new ChildView;
@@ -43,7 +43,7 @@ describe("View", function() {
       navController = new jmbo.view.NavigationControllerView
 
       // should be empty.
-      expect(navController.collection.length).toEqual(0);
+      expect(navController.viewControllers.length).toEqual(0);
 
     });
 
@@ -51,12 +51,12 @@ describe("View", function() {
       var cv1 = new ChildView;
       var vc1 = new jmbo.view.Controller({childView: cv1});
       navController.push(vc1);
-      expect(navController.collection.length).toEqual(1);
+      expect(navController.viewControllers.length).toEqual(1);
 
       var cv2 = new ChildView;
       var vc2 = new jmbo.view.Controller({childView: cv2});
       navController.push(vc2);
-      expect(navController.collection.length).toEqual(2);
+      expect(navController.viewControllers.length).toEqual(2);
     });
 
     it ("Remove a view controller.", function() {
@@ -64,24 +64,24 @@ describe("View", function() {
       var cv = new ChildView;
       var vc = new jmbo.view.Controller({childView: cv});
       navController.push(vc);
-      expect(navController.collection.length).toEqual(1);
+      expect(navController.viewControllers.length).toEqual(1);
 
       vc_popped = navController.pop();
       expect(vc_popped).toBe(vc);
-      expect(navController.collection.length).toEqual(0);
+      expect(navController.viewControllers.length).toEqual(0);
 
 
     });
 
-    it ("Return null if trying to pop from empty collection.", function() {
+    it ("Return null if trying to pop when empty.", function() {
       var cv = new ChildView;
       var vc = new jmbo.view.Controller({childView: cv});
       navController.push(vc);
-      expect(navController.collection.length).toEqual(1);
+      expect(navController.viewControllers.length).toEqual(1);
 
       vc_popped = navController.pop();
       expect(vc_popped).toBe(vc);
-      expect(navController.collection.length).toEqual(0);
+      expect(navController.viewControllers.length).toEqual(0);
 
       vc_popped = navController.pop();
       expect(vc_popped).toEqual(null);

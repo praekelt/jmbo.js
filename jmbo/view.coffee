@@ -58,14 +58,19 @@ class NavigationControllerView extends Backbone.View
   initialize: ->
     @collection = null
     @collection = new ViewControllers
+    # this used to be collection, why did we change this?
+    # if we want this to be private, then perhaps just make it _collection;
+    # it is afterall a collection.
     
 
   render: =>  
     @$el.html ''
+    # if we have an object in the collection; render it.
+
+
     return @el
 
   pop: (options={animation: 'slide-left'}) =>
-
     # remove the current view from the collection, animate it out of the viewport
     # and remove it's dom components.
     currentVC = @collection.pop()
@@ -109,6 +114,24 @@ class NavigationControllerView extends Backbone.View
 
 
 
+class TabBarView extends Backbone.View
+  className: 'jmbo-view-tab-bar-view'
+
+  initialize: ->
+    @template = _.template """
+      <% collection.each(function(vc) { console.log(vc) %>
+        <div>1<%= vc.title %></div>
+      <% }) %>
+    """
+    @collection.on 'render add', @render
+
+  render: =>
+    l 'pew'
+    @$el.html @template(collection: @collection)
+    return @el
+
+
+
 
 class TabBarControllerView extends Backbone.View
   className: 'jmbo-view-tab-bar-controller-view'
@@ -117,26 +140,9 @@ class TabBarControllerView extends Backbone.View
     @collection = null
     @collection = new ViewControllers
 
-    @selectedIndex = 0
-
-    
-
-
-  selectedIndex: (index=0) =>
-    # pew
-  
-
-
   render: =>
-
-
-    l 'I come here.'
-    # first render the "selected view" controller
-
-
-    $ol = $('<ol></ol>')
-
-    @$el.append($ol)
+    tabBar = new jmbo.view.TabBarView collection: @collection
+    @$el.html tabBar.render()
 
     # we should draw the tab bar at the bottom?
     # it'll have a space in which the child view can render.
@@ -145,8 +151,12 @@ class TabBarControllerView extends Backbone.View
     # ok, whenever a new tab bar is added or removed.
     # we need to re-render the tab bar part of the app
     # but not really the whole app.
-    @$el.html ''
+
     return @el
+
+  add: (viewController) =>
+    @collection.add viewController
+
 
   
 
@@ -176,6 +186,8 @@ namespace 'jmbo.view', (exports) ->
   exports.TitleView = TitleView
 
   exports.NavigationControllerView  = NavigationControllerView
+
+  exports.TabBarView = TabBarView
   exports.TabBarControllerView  = TabBarControllerView
 
   exports.animate = ($el, name, direction, callback) ->

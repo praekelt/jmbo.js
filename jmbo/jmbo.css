@@ -30,6 +30,37 @@ Try and remove as much of the properties as possible.
 }
 
 
+/* tab bar controller */
+
+.jmbo-view-tab-bar-controller-view {
+    position:relative;
+    height:100%;
+    background:#fff;
+}
+
+.jmbo-view-tab-bar-view {
+    position:absolute;
+    bottom:0;
+    width:100%;
+    background:#333;
+    height:44px;
+    color:#fff;
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+
+.jmbo-view-tab-bar-view div {
+    display:inline-block;
+    background:#666;
+    height:44px;
+    width:44px;
+    line-height:44px;
+    margin:0 10px;
+}
+
+
+
 /* animations */
 
 @-webkit-keyframes slide-right-in {
