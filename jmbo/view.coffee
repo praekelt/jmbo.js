@@ -120,6 +120,9 @@ class NavigationControllerView extends Backbone.View
 class TabBarView extends Backbone.View
   className: 'jmbo-view-tab-bar-view'
 
+  events:
+    'click li': setSelected
+
   initialize: ->
     @template = _.template """
     <ul>
@@ -141,6 +144,9 @@ class TabBarView extends Backbone.View
   render: =>
     @$el.html @template(collection: @collection)
     return @el
+
+  setSelected: =>
+    l 'pew'
 
 
 
