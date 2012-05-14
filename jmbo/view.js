@@ -3,7 +3,8 @@
   var NavigationControllerView, TabBarControllerView, TabBarView, TitleView, ViewController, ViewControllerView, ViewControllers,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
+    __slice = [].slice;
 
   TitleView = (function(_super) {
 
@@ -54,7 +55,8 @@
       childView: null,
       title: '',
       icon: null,
-      _view: null
+      _view: null,
+      _selected: false
     };
 
     return ViewController;
@@ -218,12 +220,12 @@
     TabBarView.prototype.className = 'jmbo-view-tab-bar-view';
 
     TabBarView.prototype.initialize = function() {
-      this.template = _.template("<% collection.each(function(vc) { console.log(vc) %>\n  <div>1<%= vc.title %></div>\n<% }) %>");
-      return this.collection.on('render add', this.render);
+      this.template = _.template("<ul>\n  <% \n    collection.each(function(vc) {\n      var vc = vc.toJSON();\n      l(vc)\n  %>\n    <li<% if (vc._selected) { %> class=\"selected\"<% } %>>\n      <%= vc.title %>\n    </li>\n  <% }); %>\n</ul>");
+      this.collection.on('change:_selected', this.render);
+      return this.collection.on('reset add', this.render);
     };
 
     TabBarView.prototype.render = function() {
-      l('pew');
       this.$el.html(this.template({
         collection: this.collection
       }));
@@ -241,6 +243,10 @@
     TabBarControllerView.name = 'TabBarControllerView';
 
     function TabBarControllerView() {
+      this.selectedIndex = __bind(this.selectedIndex, this);
+
+      this.set = __bind(this.set, this);
+
       this.add = __bind(this.add, this);
 
       this.render = __bind(this.render, this);
@@ -265,6 +271,19 @@
 
     TabBarControllerView.prototype.add = function(viewController) {
       return this.collection.add(viewController);
+    };
+
+    TabBarControllerView.prototype.set = function() {
+      var viewControllers;
+      viewControllers = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+      this.collection.reset(viewControllers);
+      return this.selectedIndex(0);
+    };
+
+    TabBarControllerView.prototype.selectedIndex = function(i) {
+      return this.collection.at(i).set({
+        '_selected': true
+      });
     };
 
     return TabBarControllerView;

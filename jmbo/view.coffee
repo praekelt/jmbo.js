@@ -19,7 +19,9 @@ class ViewController extends Backbone.Model
     childView: null
     title: ''
     icon: null
+    
     _view: null
+    _selected: false
     
 
 
@@ -112,24 +114,33 @@ class NavigationControllerView extends Backbone.View
 
 
 
-
+# there's another way to go about doing this, but I don't want to create too many
+# levels of abstractions.
 
 class TabBarView extends Backbone.View
   className: 'jmbo-view-tab-bar-view'
 
   initialize: ->
     @template = _.template """
-      <% collection.each(function(vc) { console.log(vc) %>
-        <div>1<%= vc.title %></div>
-      <% }) %>
+    <ul>
+      <% 
+        collection.each(function(vc) {
+          var vc = vc.toJSON();
+          l(vc)
+      %>
+        <li<% if (vc._selected) { %> class="selected"<% } %>>
+          <%= vc.title %>
+        </li>
+      <% }); %>
+    </ul>
     """
-    @collection.on 'render add', @render
+    @collection.on 'change:_selected', @render
+    @collection.on 'reset add', @render
+
 
   render: =>
-    l 'pew'
     @$el.html @template(collection: @collection)
     return @el
-
 
 
 
@@ -139,6 +150,7 @@ class TabBarControllerView extends Backbone.View
   initialize: ->
     @collection = null
     @collection = new ViewControllers
+
 
   render: =>
     tabBar = new jmbo.view.TabBarView collection: @collection
@@ -156,6 +168,17 @@ class TabBarControllerView extends Backbone.View
 
   add: (viewController) =>
     @collection.add viewController
+
+  set: (viewControllers...) =>
+    @collection.reset viewControllers
+    # set the first element as selected.
+    @selectedIndex 0 
+
+  selectedIndex: (i) =>
+    # first, deselect all previous selected.
+    # then select.
+    @collection.at(i).set '_selected': true
+
 
 
   
@@ -186,6 +209,7 @@ namespace 'jmbo.view', (exports) ->
   exports.TitleView = TitleView
 
   exports.NavigationControllerView  = NavigationControllerView
+
 
   exports.TabBarView = TabBarView
   exports.TabBarControllerView  = TabBarControllerView

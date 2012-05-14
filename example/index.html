@@ -119,7 +119,7 @@
 <div id="container">
     <div id="documentation">
 
-        <h1>Jmbo apps</h1>
+        <h1>Jmbo.js</h1>
         <br>
         <h2>Introduction</h2>
 
@@ -217,42 +217,41 @@
 
         <h3>Tab Bar Controller View</h3>
 
-        <p>Allows the app to switch contexts. Usually to navigation controller, or a single page.</p>
+        <p>Allows the app to switch contexts. Usually to a navigation controller, or a single page.</p>
 
 
         <div class="code-snippet" id="runme">
             <script type="text/snippet">
-                
-                // create a tab bar controller view. which will render into 
-                // the viewport
+                // Create a tab bar controller view. Which will render into
+                // the viewport.
                 tabController = new jmbo.view.TabBarControllerView;
                 $('#viewport').html(tabController.render());
 
-                
-                var PhotoView = Backbone.View.extend({
+                // Create 2x view controllers.
+                var AlbumView = Backbone.View.extend({
                     render: function() {
-                        this.$el.html('This is a photo view')
+                        this.$el.html('This is my album view.');
                         return this.el;
                     }
                 });
-
-                var photoViewController_1 = new jmbo.view.Controller({
-                    childView: new PhotoView,
-                    title: 'Photos'
+                var albumViewController = new jmbo.view.Controller({
+                    childView: new AlbumView,
+                    title: 'Album'
                 });
 
-                var photoViewController_2 = new jmbo.view.Controller({
-                    childView: new PhotoView,
-                    title: 'Photos'
+                var SettingsView = Backbone.View.extend({
+                    render: function() {
+                        this.$el.html('Settings!');
+                        return this.el;
+                    }
+                });
+                var settingsViewController = new jmbo.view.Controller({
+                    childView: new SettingsView,
+                    title: 'Settings'
                 });
 
-                tabController.add(photoViewController_1);
-                tabController.add(photoViewController_2);
-
-
-                
-
-
+                // Set the view controllers, triggering a render.
+                tabController.set(albumViewController, settingsViewController);
 
 
             </script>
