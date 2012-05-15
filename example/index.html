@@ -15,7 +15,9 @@
 
     <!-- JMBO.js itself. -->
     <script type="text/javascript" src="../jmbo/jmbo.js"></script>
-    <script type="text/javascript" src="../jmbo/view.js"></script>
+    <script type="text/javascript" src="../jmbo/ui.js"></script>
+    <script type="text/javascript" src="../jmbo/ui_tabbar.js"></script>
+    
     <link rel="stylesheet" type="text/css" href="../jmbo/jmbo.css">
 
     <style type="text/css">
@@ -94,7 +96,7 @@
         hljs.initHighlightingOnLoad();
 
         $(function() {
-            var navController = new jmbo.view.NavigationControllerView;
+            var navController = new jmbo.ui.NavigationControllerView;
             $('#viewport').html(navController.render());
 
             $('.code-snippet').each(function() {
@@ -161,7 +163,7 @@
                 /* create a navigation controller view, which will render into an 
                    element #viewport.
                 */
-                navController = new jmbo.view.NavigationControllerView;
+                navController = new jmbo.ui.NavigationControllerView;
                 $('#viewport').html(navController.render());
 
                 // define your own view.
@@ -173,7 +175,7 @@
                 });
 
                 // place you view in a viewController
-                var menuViewController = new jmbo.view.Controller({
+                var menuViewController = new jmbo.ui.ViewController({
                     childView: new MenuView,
                     title: 'Jmbo Apps!'
                 });
@@ -196,7 +198,7 @@
                     }
                 });
 
-                var anotherViewController = new jmbo.view.Controller({
+                var anotherViewController = new jmbo.ui.ViewController({
                     childView: new AnotherView,
                     title: 'New View #' + len
                 });
@@ -224,7 +226,7 @@
             <script type="text/snippet">
                 // Create a tab bar controller view. Which will render into
                 // the viewport.
-                tabController = new jmbo.view.TabBarControllerView;
+                tabController = new jmbo.ui.TabBarControllerView;
                 $('#viewport').html(tabController.render());
 
                 // Create 2x view controllers.
@@ -234,7 +236,7 @@
                         return this.el;
                     }
                 });
-                var albumViewController = new jmbo.view.Controller({
+                var albumViewController = new jmbo.ui.ViewController({
                     childView: new AlbumView,
                     title: 'Album'
                 });
@@ -245,7 +247,7 @@
                         return this.el;
                     }
                 });
-                var settingsViewController = new jmbo.view.Controller({
+                var settingsViewController = new jmbo.ui.ViewController({
                     childView: new SettingsView,
                     title: 'Settings'
                 });
