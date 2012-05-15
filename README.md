@@ -24,6 +24,13 @@ We currently have the following parts:
 
 Todo:
 
-Navigation Controller animation should be argument on `pop` or `push.` To make
-the transitions flow together.
+1. When you change a `selected` item in a tab bar controller @render is called
+on several levels.
+
+1.1. The bar item is re-rendered when deselected or selected.
+1.2. The Tab Bar Controller View re-renders its entire view. (Include the tab bar view)
+
+Let's try and figure out a way to minimize the amount of redrawing. Surely some of the 
+stuff is just a css tweaks or swopping out values.
+
 

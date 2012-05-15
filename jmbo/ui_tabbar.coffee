@@ -6,16 +6,18 @@ class TabBarItemView extends Backbone.View
     'click': 'select'
 
   initialize: ->
-    @model.on 'change:_selected', @render
+    @model.on 'change:_selected', @renderSelected
 
   render: =>
     vc = @model.toJSON()
     @$el.html vc.title 
-    @$el.removeClass 'selected'
-    if vc._selected
-      @$el.addClass 'selected'
-
     return @el
+
+  renderSelected: =>
+    if @model.get '_selected'
+      @$el.addClass 'selected'
+    else
+      @$el.removeClass 'selected'
 
   select: =>
     _.each @model.collection.where(_selected: true), (selectedModel) ->
@@ -37,7 +39,6 @@ class TabBarView extends Backbone.View
       tabBarItemView = new TabBarItemView(model: model)
       $el.append tabBarItemView.render()
 
-    
     return @el
 
 
@@ -47,30 +48,30 @@ class TabBarControllerView extends Backbone.View
   initialize: ->
     @collection = null
     @collection = new jmbo.ui.ViewControllers
-
+    @collection.on 'change:_selected', @renderSelected
 
   render: =>
+    @$el.append '<div id="jmbo-ui-view-controller-view"></div>'
+
     tabBar = new TabBarView collection: @collection
-    @$el.html tabBar.render()
-
-    # we should draw the tab bar at the bottom?
-    # it'll have a space in which the child view can render.
-    # ok, whenever a new tab bar is added or removed.
-    # we need to re-render the tab bar part of the app
-    # but not really the whole app.
-
+    @$el.append tabBar.render()
     return @el
+
+  renderSelected: =>
+    # grab the selected view.
+    viewController = @collection.where(_selected: true)[0]
+    return false if not viewController?
+
+    viewController_view = viewController.get 'childView'
+    @$el.find('#jmbo-ui-view-controller-view').html viewController_view.render()
 
   set: (viewControllers...) =>
     @collection.reset viewControllers
-    # set the first element as selected.
     @selectedIndex 0 
 
   selectedIndex: (i) =>
-    # first, deselect all previous selected then select.
     _.each @collection.where(_selected: true), (selectedModel) ->
       selectedModel.set _selected: false
-
     @collection.at(i).set '_selected': true
 
 
