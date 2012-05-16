@@ -16,7 +16,9 @@
     <!-- JMBO.js itself. -->
     <script type="text/javascript" src="../jmbo/jmbo.js"></script>
     <script type="text/javascript" src="../jmbo/ui.js"></script>
-    <script type="text/javascript" src="../jmbo/ui_tabbar.js"></script>
+    <script type="text/javascript" src="../jmbo/ui.view.js"></script>
+    <script type="text/javascript" src="../jmbo/ui.navigation.js"></script>
+    <script type="text/javascript" src="../jmbo/ui.tabbar.js"></script>
     
     <link rel="stylesheet" type="text/css" href="../jmbo/jmbo.css">
 
@@ -96,9 +98,6 @@
         hljs.initHighlightingOnLoad();
 
         $(function() {
-            var navController = new jmbo.ui.NavigationControllerView;
-            $('#viewport').html(navController.render());
-
             $('.code-snippet').each(function() {
                 $(this)
                     .append('<pre><code>' + $(this).find('script').html() + '</code></pre>')
@@ -108,8 +107,8 @@
             });
 
             
-            eval($('#runme').find('pre').text());
             
+            eval($('#runme').find('pre').text());
         });
 
         
@@ -154,75 +153,75 @@
             (or views) are loaded when required and transitioned into the viewport.
         </p>
 
-        <h3>Stack Controller View</h3>
+        <h3>Navigation Controller View</h3>
 
-        <p>Is a drill down hierarchal stack.</p>
+        <p>Is a drill-down hierachical stack. Views can pushed and popped off the
+            stack and transitions can be animated.</p>
 
-        <div class="code-snippet">
+        <p>The dom elements are removed at the end of the animation transition 
+            to conserve memory usage.</p>
+
+        <div class="code-snippet" id="runme">
             <script type="text/snippet">
-                /* create a navigation controller view, which will render into an 
-                   element #viewport.
-                */
-                navController = new jmbo.ui.NavigationControllerView;
-                $('#viewport').html(navController.render());
-
-                // define your own view.
+                // Define your own view with Backbone.js.
                 var MenuView = Backbone.View.extend({
                     render: function() {
-                        this.$el.html('Pew, this is my apps menu.');
+                        this.$el.html('This is my MenuView.');
                         return this.el;
                     }
                 });
-
-                // place you view in a viewController
-                var menuViewController = new jmbo.ui.ViewController({
+                // Create a `ControllerView` and pass in an instance of MenuView.
+                var menuControllerView = new jmbo.ui.view.ControllerView({
                     childView: new MenuView,
-                    title: 'Jmbo Apps!'
+                    title: 'Menu'
                 });
-
-                // push your view onto the navigationControllerView.
-                navController.push(menuViewController, {animation: 'none'});
+                
+                // Create a `NavigationControllerView,` pass it a DOM element 
+                // in which to render...
+                navController = new jmbo.ui.navigation.ControllerView;
+                $('#viewport').html(navController.render());
+                // Then push your `ControllerView` onto the stack.
+                navController.push(menuControllerView, {animation: 'none'});
             </script>
         </div>
 
-        <p>You can keep pushing views onto the controller's stack. (Click "Run..." multiple times!)</p>
+        <p>You can keep pushing views onto the Navigation Controller's stack. (Click "Run..." multiple times!)</p>
 
         <div class="code-snippet">
             <script type="text/snippet">
-                var len = navController.collection.length;
-                
-                var AnotherView = Backbone.View.extend({
+                // Create your own view and place it in a `ControllerView.`
+                var ArticleView = Backbone.View.extend({
                     render: function() {
-                        this.$el.html('Lorem ipsum dolor sit amet... #' + len);
+                        this.$el.html('Lorem ipsum dolor sit amet... #');
                         return this.el;
                     }
+                })
+                var articleControllerView = new jmbo.ui.view.ControllerView({
+                    childView: new ArticleView,
+                    title: 'Article View #' + navController.collection.length
                 });
-
-                var anotherViewController = new jmbo.ui.ViewController({
-                    childView: new AnotherView,
-                    title: 'New View #' + len
-                });
-                navController.push(anotherViewController);
-
+                // Then push your `ControllerView` onto the stack.
+                navController.push(articleControllerView);
             </script>
         </div>
 
 
-        <p>Or you can remove them.</p>
+        <p>Or you can Remove them.</p>
 
         <div class="code-snippet">
             <script type="text/snippet">
-                var poppedViewController = navController.pop();
+                var poppedControllerView = navController.pop();
             </script>
         </div>
 
 
         <h3>Tab Bar Controller View</h3>
 
+        <p>Usually used to switch an apps contexts. You set a view c
         <p>Allows the app to switch contexts. Usually to a navigation controller, or a single page.</p>
 
 
-        <div class="code-snippet" id="runme">
+        <div class="code-snippet">
             <script type="text/snippet">
                 // Create a tab bar controller view. Which will render into
                 // the viewport.
@@ -258,6 +257,66 @@
 
             </script>
         </div>
+
+        <p>How about pushing a navigationController on to a tab Controller?</p>
+
+
+         <div class="code-snippet">
+            <script type="text/snippet">
+                // Create a tab bar controller view. Which will render into
+                // the viewport.
+                tabController = new jmbo.ui.TabBarControllerView;
+                $('#viewport').html(tabController.render());
+
+
+                // Create a navigation controller.
+                var navController = new jmbo.ui.NavigationControllerView;
+
+                // push a view onto the navController's stack.
+                 // define your own view.
+                var MenuView = Backbone.View.extend({
+                    render: function() {
+                        this.$el.html('Pew, this is my apps menu.');
+                        return this.el;
+                    }
+                });
+                // place you view in a viewController
+                var menuViewController = new jmbo.ui.ViewController({
+                    childView: new MenuView,
+                    title: 'Jmbo Apps!'
+                });
+                // push your view onto the navigationControllerView.
+
+                var navViewController = new jmbo.ui.ViewController({
+                    childView: navController,
+                    title: 'Navigation is fun!',
+                    _titleView: false
+                });
+
+
+               
+                var SettingsView = Backbone.View.extend({
+                    render: function() {
+                        this.$el.html('Settings!');
+                        return this.el;
+                    }
+                });
+                var settingsViewController = new jmbo.ui.ViewController({
+                    childView: new SettingsView,
+                    title: 'Settings'
+                });
+
+                //Set the view controllers, triggering a render.
+                tabController.set(navViewController, settingsViewController);
+
+                navController.push(menuViewController, {animation: 'none'});
+
+
+
+            </script>
+        </div>
+
+
 
 
 

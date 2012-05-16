@@ -48,9 +48,11 @@ class TabBarControllerView extends Backbone.View
   initialize: ->
     @collection = null
     @collection = new jmbo.ui.ViewControllers
+    @collection.on 'reset', @render
     @collection.on 'change:_selected', @renderSelected
 
   render: =>
+    @$el.html ''
     @$el.append '<div id="jmbo-ui-view-controller-view"></div>'
 
     tabBar = new TabBarView collection: @collection
@@ -59,11 +61,15 @@ class TabBarControllerView extends Backbone.View
 
   renderSelected: =>
     # grab the selected view.
-    viewController = @collection.where(_selected: true)[0]
-    return false if not viewController?
+    VC = @collection.where(_selected: true)[0]
+    return false if not VC?
 
-    viewController_view = viewController.get 'childView'
-    @$el.find('#jmbo-ui-view-controller-view').html viewController_view.render()
+
+    VC_view = new jmbo.ui.ViewControllerView(model: VC)
+    VC.set _view: VC_view
+    @$el.find('#jmbo-ui-view-controller-view').html VC_view.render()
+    
+    
 
   set: (viewControllers...) =>
     @collection.reset viewControllers

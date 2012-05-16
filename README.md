@@ -24,13 +24,17 @@ We currently have the following parts:
 
 Todo:
 
-1. When you change a `selected` item in a tab bar controller @render is called
-on several levels.
+So. I ran into a bit of a problem.
 
-1.1. The bar item is re-rendered when deselected or selected.
-1.2. The Tab Bar Controller View re-renders its entire view. (Include the tab bar view)
+I need to create;
 
-Let's try and figure out a way to minimize the amount of redrawing. Surely some of the 
-stuff is just a css tweaks or swopping out values.
+ControllerView.
 
+so - you would push controller view instead of viewcontroller.
+
+
+NavController doesn't render, it empties. We need to make sure that when @render is called that the state
+of the navController is restored.
+
+We need to be able to toggle the titleView of the ViewController.
 

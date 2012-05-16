@@ -1,0 +1,51 @@
+class ControllerView extends jmbo.ui.view.ControllerView
+  className: 'jmbo-ui-navigation-controller-view'
+
+  initialize: ->
+    # usually a collection is passed to a view.
+    @collection = null
+    @collection = new jmbo.ui.view.Controllers
+
+  render: =>
+    l 'ui.view.NavigationControllerView::render'
+    @$el.html ''
+    if view = @collection.last()?
+      @$el.html view.render()
+    return @el
+
+  push: (newView, options={animation: 'slide-right'}) =>
+    # grab current view from stack, animate out, delete dom.
+    controller = @collection.last()
+    if controller?
+      oldView = controller.get 'view'
+      oldView.animate options.animation, 'out', ->
+        oldView.$el.html('').remove()
+
+    # Create a `Controller` model in which to store this view, we have to 
+    # create the container-type-model because you can't store a `View` in a 
+    # collection.
+    @collection.add 'view': newView
+    @$el.append newView.render()
+    newView.animate options.animation, 'in'
+    return newView
+
+  pop: (options={animation: 'slide-left'}) =>
+    # pop off stack, animate out, delete dom.
+    oldController = @collection.pop()
+    if oldController?
+      oldView = oldController.get 'view'
+      oldView.animate options.animation, 'out', ->
+        oldView.$el.html('').remove()
+
+    # grab current view off stack, render to dom, animate in.
+    newController = @collection.last()
+    if newController?
+      newView = newController.get 'view'
+      @$el.append newView.render()
+      newView.animate options.animation, 'in'
+
+    return oldView
+
+
+namespace 'jmbo.ui.navigation', (exports) ->
+  exports.ControllerView = ControllerView
