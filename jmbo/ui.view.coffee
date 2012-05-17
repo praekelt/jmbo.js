@@ -1,16 +1,9 @@
-
-
-
 class Controller extends Backbone.Model
     defaults:
         view: null
     
 class Controllers extends Backbone.Collection
   model: Controller
-
-
-
-
 
 class ControllerViewConfig extends Backbone.Model
   defaults:
@@ -19,8 +12,7 @@ class ControllerViewConfig extends Backbone.Model
     title: 'Untitled'
     icon: null
 
-    _view: null
-    _selected: false # used for tabbar.
+    _selected: false # used for tabBar.
 
 
 class ControllerView extends Backbone.View
@@ -45,7 +37,6 @@ class ControllerView extends Backbone.View
     return @el   
 
   animate: (name, direction, callback) =>
-    l 'how many time do I get called?'
     jmbo.ui.animate @$el, name, direction, callback
 
 
