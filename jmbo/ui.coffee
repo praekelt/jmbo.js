@@ -20,25 +20,40 @@ namespace 'jmbo.ui', (exports) ->
 
 
   exports.animate = ($el, name, direction, callback) ->
+    ###
+    This function had a race condition problem:
 
-    # there's a race condition here. IN and OUT animations are running at the same 
-    # time, so... you start the IN animation, and remove the "animationEnd" event
-    # so the OUT animation never gets callled; htf we going to solve this?
+    If you added many views to a navigation controller it's possible to add two
+    animations to an element at the same time.
 
+    The `in` animation would complete and remove the `animationEnd` callback, 
+    which would inturn remove the callback for the `out` animation.
+
+    So the `out` animation's callback would never fire. I've implemented custom
+    events specific to the type of animation. `animationEnd` always fires, and
+    triggers a custom event. The custom event can be removed without fear of
+    removing any other callbacks.
+    ###
     className = name + '-' + direction
+    customAnimationEvent = 'anim-event-' + className
     $el.addClass className
-    $el.on 'webkitAnimationEnd animationEnd', ->
 
-      l 'this', @
-
-      # remove the animation event, otherwise it'll fire for all animations
-      # perhaps we should check that the elements match. TODO.
-      $el.off 'webkitAnimationEnd animationEnd'
+    # custom events to prevent race condition of having multiple `animationEnd`
+    # callbacks on the same object.
+    $el.on customAnimationEvent, (e) ->
+      $el.off customAnimationEvent
       $el.removeClass className
       if callback then callback()
-      
 
-    # the callback doesn't fire if no animation occured, this might be a 
-    # bit hacky...
+    # use standard events to fire events specific to the exact type of animation
+    # occuring. This is here to prevent a race condition if an in and out
+    # event are fired at the same time.
+    $el.on 'webkitAnimationEnd animationEnd', (e) ->
+      $el.trigger customAnimationEvent
+      
+      
+    # callbacks don't fire if no animation is called. This is a bit hacky.
+    # I don't really know how to determine if a class exists.
+    # TODO: Determine if a class exists.
     if name == 'none'
-      $el.trigger('webkitAnimationEnd animationEnd')
+      $el.trigger customAnimationEvent
