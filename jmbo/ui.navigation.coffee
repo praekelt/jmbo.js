@@ -2,19 +2,22 @@ class ControllerView extends jmbo.ui.view.ControllerView
   className: 'jmbo-ui-navigation-controller-view'
 
   initialize: ->
-    # usually a collection is passed to a view.
+    ControllerView.__super__.initialize.apply this, arguments
+    l 'ui.view.navigation.ControllerView -> init'
     @collection = null
     @collection = new jmbo.ui.view.Controllers
 
   render: =>
-    l 'ui.view.NavigationControllerView::render'
+    l 'ui.view.navigation.ControllerView -> render'
     @$el.html ''
-    if view = @collection.last()?
+    controller = @collection.last()
+    if controller?
+      view = controller.get 'view'
       @$el.html view.render()
     return @el
 
   push: (newView, options={animation: 'slide-right'}) =>
-    # grab current view from stack, animate out, delete dom.
+    # grab current view from stack, animate out, and delete from dom.
     controller = @collection.last()
     if controller?
       oldView = controller.get 'view'
@@ -30,14 +33,14 @@ class ControllerView extends jmbo.ui.view.ControllerView
     return newView
 
   pop: (options={animation: 'slide-left'}) =>
-    # pop off stack, animate out, delete dom.
+    # pop off stack, animate out, delete from dom.
     oldController = @collection.pop()
     if oldController?
       oldView = oldController.get 'view'
       oldView.animate options.animation, 'out', ->
         oldView.$el.html('').remove()
 
-    # grab current view off stack, render to dom, animate in.
+    # grab current view off stack, render to the dom, and animate in.
     newController = @collection.last()
     if newController?
       newView = newController.get 'view'

@@ -11,13 +11,8 @@ class TitleView extends Backbone.View
   setTitle: (title) =>
     @title = title
 
-
-
-
 namespace 'jmbo.ui', (exports) ->
-  #jmbo.ui.Title
   exports.TitleView = TitleView
-
 
   exports.animate = ($el, name, direction, callback) ->
     ###
@@ -34,26 +29,23 @@ namespace 'jmbo.ui', (exports) ->
     triggers a custom event. The custom event can be removed without fear of
     removing any other callbacks.
     ###
+
     className = name + '-' + direction
     customAnimationEvent = 'anim-event-' + className
     $el.addClass className
 
-    # custom events to prevent race condition of having multiple `animationEnd`
-    # callbacks on the same object.
-    $el.on customAnimationEvent, (e) ->
+    # custom event handlers.
+    $el.on customAnimationEvent, ->
       $el.off customAnimationEvent
       $el.removeClass className
       if callback then callback()
 
-    # use standard events to fire events specific to the exact type of animation
-    # occuring. This is here to prevent a race condition if an in and out
-    # event are fired at the same time.
+    # use standard events to fire custom events. This prevents a race condition 
+    # if an `in` and `out` event are fired in the same time.
     $el.on 'webkitAnimationEnd animationEnd', (e) ->
       $el.trigger customAnimationEvent
       
-      
-    # callbacks don't fire if no animation is called. This is a bit hacky.
-    # I don't really know how to determine if a class exists.
-    # TODO: Determine if a class exists.
+    # `animationEnd` callbacks doesn't fire if no animation exists. This is a 
+    # bit hacky. Perhaps it would be best to determine if a class exists.
     if name == 'none'
       $el.trigger customAnimationEvent

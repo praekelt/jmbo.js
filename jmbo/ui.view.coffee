@@ -12,17 +12,15 @@ class ControllerViewConfig extends Backbone.Model
     title: 'Untitled'
     icon: null
 
-    _selected: false # used for tabBar.
-
-
 class ControllerView extends Backbone.View
   className: 'jmbo-ui-view-controller-view'
 
   initialize: ->
+    l 'jmbo.ui.view.ControllerView -> init'
     @model = new ControllerViewConfig @options
 
   render: =>
-    l 'ui.view.ControllerView::render'
+    l 'ui.view.ControllerView -> render'
 
     TitleView = @model.get 'TitleView'
     if TitleView?

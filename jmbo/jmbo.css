@@ -33,7 +33,7 @@ Try and remove as much of the properties as possible.
 
 /* tab bar controller */
 
-.jmbo-ui-tab-bar-controller-view {
+.jmbo-ui-tab-controller-view {
     position:relative;
     height:100%;
     background:#fff;
