@@ -10,11 +10,12 @@ Try and remove as much of the properties as possible.
 }
 
 .jmbo-ui-view-controller-view {
+    position:absolute;
+    top:0;
     width:100%;
     height:100%;
     background:#999;
-    top:0;
-    position:absolute;
+    
 }
 
 .jmbo-ui-title-view {
@@ -36,7 +37,11 @@ Try and remove as much of the properties as possible.
 .jmbo-ui-tab-controller-view {
     position:relative;
     height:100%;
-    background:#fff;
+    width:100%;
+}
+/* TODO: this context is kinda a hidden view; must try and make it more visible. */
+.jmbo-ui-tab-controller-view #jmbo-ui-tab-controller-view-context {
+    height:100%;
 }
 
 .jmbo-ui-tab-bar-view {
@@ -57,15 +62,12 @@ Try and remove as much of the properties as possible.
 
 .jmbo-ui-tab-bar-view li {
     display:table-cell;
-
     text-align:center;
     vertical-align:bottom;
     font-size:.8em;
 
 }
-.jmbo-ui-tab-bar-view li.selected {
-    background-color:#999;
-}
+.jmbo-ui-tab-bar-view li.selected { background-color:#999; }
 
 
 

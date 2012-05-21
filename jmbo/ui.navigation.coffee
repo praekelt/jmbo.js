@@ -2,13 +2,11 @@ class ControllerView extends jmbo.ui.view.ControllerView
   className: 'jmbo-ui-navigation-controller-view'
 
   initialize: ->
+    # calls jmbo.ui.view.ControllerView.initialize.
     ControllerView.__super__.initialize.apply this, arguments
-    l 'ui.view.navigation.ControllerView -> init'
-    @collection = null
     @collection = new jmbo.ui.view.Controllers
 
   render: =>
-    l 'ui.view.navigation.ControllerView -> render'
     @$el.html ''
     controller = @collection.last()
     if controller?

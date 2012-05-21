@@ -5,7 +5,7 @@ class Controller extends Backbone.Model
 class Controllers extends Backbone.Collection
   model: Controller
 
-class ControllerViewConfig extends Backbone.Model
+class Config extends Backbone.Model
   defaults:
     TitleView: jmbo.ui.TitleView
     childView: null
@@ -16,19 +16,16 @@ class ControllerView extends Backbone.View
   className: 'jmbo-ui-view-controller-view'
 
   initialize: ->
-    l 'jmbo.ui.view.ControllerView -> init'
-    @model = new ControllerViewConfig @options
+    @config = new Config @options
 
   render: =>
-    l 'ui.view.ControllerView -> render'
-
-    TitleView = @model.get 'TitleView'
+    TitleView = @config.get 'TitleView'
     if TitleView?
         titleView = new TitleView
-        titleView.setTitle @model.get 'title'
+        titleView.setTitle @config.get 'title'
         @$el.html titleView.render()
     
-    childView = @model.get 'childView'
+    childView = @config.get 'childView'
     if childView?
         @$el.append childView.render()
 
