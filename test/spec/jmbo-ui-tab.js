@@ -86,5 +86,4 @@ describe("ui.tab", function() {
     });
 
   });
-
 });
