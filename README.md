@@ -23,18 +23,3 @@ We currently have the following parts:
 
 
 Todo:
-
-So. I ran into a bit of a problem.
-
-I need to create;
-
-ControllerView.
-
-so - you would push controller view instead of viewcontroller.
-
-
-NavController doesn't render, it empties. We need to make sure that when @render is called that the state
-of the navController is restored.
-
-We need to be able to toggle the titleView of the ViewController.
-
