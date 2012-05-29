@@ -22,4 +22,13 @@ We currently have the following parts:
     You can push and pop views off the stack. The views are animated.
 
 
+
+Documentation.
+
+How do you show off and explaint the components of the framework
+without coming off as boring?
+
+I honestly don't know.
+
+
 Todo:

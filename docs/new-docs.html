@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Jmbo.js</title>
+
+    <!-- JMBO.js requirements -->
+    <script type="text/javascript" src="lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="lib/underscore.min.js"></script>
+    <script type="text/javascript" src="lib/backbone.min.js"></script>
+
+    <!-- JMBO.js itself. -->
+    <script type="text/javascript" src="../jmbo.js/jmbo.js"></script>
+    <script type="text/javascript" src="../jmbo.js/ui.js"></script>
+    <script type="text/javascript" src="../jmbo.js/ui.view.js"></script>
+    <script type="text/javascript" src="../jmbo.js/ui.navigation.js"></script>
+    <link rel="stylesheet" type="text/css" href="../jmbo.js/jmbo.css">
+    
+    
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="bootstrap/prettify.css">
+    <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="bootstrap/prettify.js"></script>
+
+    
+
+    <style type="text/css">
+
+        .container {
+            margin-top:18px;
+        }
+
+        #header h1 {
+            background:#eee;
+            margin:0 0 18px 0;
+            font-size:36px;
+            line-height:36px;
+        }
+
+        
+        #viewport {
+            margin:0 auto;
+            width:320px;
+            height:480px;
+            border:5px #000 solid;
+            border-radius:10px;
+        }
+
+        .span1, .span2, .span3, .span4, 
+        .span5, .span6, .span7, .span8, 
+        .span9, .span10, .span11, .span12 {
+            background:#eee;
+        }
+
+
+    </style>
+
+    <script type="text/javascript">
+
+        $(function() {
+            // $('.code-snippet').each(function() {
+            //     $(this)
+            //         .append('<pre><code>' + $(this).find('script').html() + '</code></pre>')
+            //         .append($('<button>Run...</button>').click(function() {
+            //             eval($(this).parent().find('pre').text());
+            //         }));
+            // });
+
+            
+            // $('.runme').each(function() {
+            //     eval($(this).find('pre').text());
+            // });
+
+            prettyPrint();
+        });
+
+        
+    </script>    
+
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span2">
+            <ul class="nav nav-list">
+                <li class="nav-header">JMBO.JS</li>
+                <li><a href="#jmbo.ui.view">Introduction</a></li>
+                <li><a href="#jmbo.ui.view">Backbone.js</a></li>
+
+                <li class="nav-header">NAVIGATION</li>
+                <li><a href="#jmbo.ui.stack">Stacks</a></li>
+                <li><a href="#jmbo.ui.tabs">Tabs</a></li>
+                
+            </ul>
+        </div>
+    
+        <div class="span6">
+
+            <div id="header">
+                <h1>Jmbo.js <small>Docs</small></h1>
+            </div>
+
+            <h3 id="jmbo.ui.stack">Stacks <small>jmbo.ui.stack</small></h3>
+
+            <p>A stack allows you to create hierchical and historical 
+                navigation by pushing or popping view controllers on or off the 
+                stack.</p>
+
+
+
+        </div>
+
+        <div class="span4">
+            <div id="viewport">
+                s
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
