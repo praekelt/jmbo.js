@@ -122,36 +122,76 @@
 
 
 
-            <h3 id="jmbo.ui.stack">Stacks <small>jmbo.ui.stack</small></h3>
+            <h2 id="jmbo.ui.stack">Stacks <small>jmbo.ui.stack.ControllerView </small></h2>
+
+            <p><small>Inherits from: <a href="">jmbo.ui.view.ControllerView</a></small></p>
 
             <p>A stack manages hierchical and historical 
                 navigation by allow you to <code>push</code> or <code>pop</code> 
                 view controllers on and off the stack.</p>
 
 
-            <h4>Initialization</h4>
-            <p></p>
+            <h3>Initialization</h3>
 
+            <p>We've stored our template in a <code>&lt;script type="text/template"&gt;</code> tag.
+                Script tags that aren't <code>text/javascript</code> are ignored by the browser.
+                Making them perfect vessels for template storage.
+            </p>
 
-<script type="text/html" id="template-menu">
-    <p>I am from #template-menu.</p>
-</script>
+            <p>So, we're going to use our above template, the <code>StackControllerView</code> and a <code>ControllerView</code>
+                to start our hierachical navigation.</p>
+            
+
+            <script type="text/template" id="template-menu">
+                <br>
+                <h3>I am from <br>script#template-menu</h3>
+                <br>
+
+                <p><button class="btn btn-inverse btn-large">Menu Item</button></p>
+                <p><button class="btn btn-warning btn-large">Menu Item</button></p>
+                <p><button class="btn btn-danger btn-large">Menu Item</button></p>
+            </script>
 
 <pre class="prettyprint linenums runme"><code>
 // Create an instance of the stack and render it into an element.
-var stackController = new jmbo.ui.stack.ControllerView;
+stackController = new jmbo.ui.stack.ControllerView;
 $('#viewport').html(stackController.render());
 
 // Create a new `ControllerView`
-var newView = new jmbo.ui.view.ControllerView({
+var newController = new jmbo.ui.view.ControllerView({
     view: '#template-menu',
     title: 'Menu'
 });
 
 // Push an initial element on to the stack.
-stackController.push(newView, {animation: false});
+stackController.push(newController, {animation: false});
 </code></pre>
             
+        <h3>Push</h3>
+
+        <p>Pushing and popping views onto the stack controller are usually 
+            initiated by user interaction, so pretend that this code below is attached to a click event...</p>
+
+
+<pre class="prettyprint linenums runme"><code>
+// Create a new view.
+var View = Backbone.View.extend({
+    render: function() {
+        this.$el.html('I am a view # ' + stackController.collection.length);
+        return this.el
+    }
+});
+// Notice that we pushed a Backbone.View instead of an element.
+var newController = new jmbo.ui.view.ControllerView({
+    view: new View, // where object becomes instance.
+    title: 'New View'
+})
+
+// default animation is slide-left/right
+stackController.push(newController)
+
+</code></pre>
+
 
 
         </div>
