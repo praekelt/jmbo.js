@@ -8,7 +8,7 @@ class Controllers extends Backbone.Collection
 class Config extends Backbone.Model
   defaults:
     TitleView: jmbo.ui.TitleView
-    childView: null
+    view: null
     title: 'Untitled'
     icon: null
 
@@ -24,10 +24,14 @@ class ControllerView extends Backbone.View
         titleView = new TitleView
         titleView.setTitle @config.get 'title'
         @$el.html titleView.render()
-    
-    childView = @config.get 'childView'
-    if childView?
-        @$el.append childView.render()
+
+    view = @config.get 'view'
+    if view?
+      if view.render?
+        viewEl = view.render()
+      else
+        viewEl = $(view).html()
+      @$el.append viewEl
 
     return @el   
 

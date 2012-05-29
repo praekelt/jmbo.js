@@ -5,46 +5,51 @@ var ChildView = Backbone.View.extend({
   }
 });
 
-describe("ui.navigation", function() {
+describe("ui.stack", function() {
   
-  var navController;
+  var stackController;
   beforeEach(function() {
-    navController = new jmbo.ui.navigation.ControllerView;
+    stackController = new jmbo.ui.stack.ControllerView;
   });
 
   describe("ControllerView", function() {
 
     it("Collection should initially be empty.", function() {
-      expect(navController.collection.length).toEqual(0);
+      expect(stackController.collection.length).toEqual(0);
       var vc = new jmbo.ui.view.ControllerView({childView: new ChildView});
-      navController.push(vc, {animation: 'none'});
-      expect(navController.collection.length).toEqual(1);
+      stackController.push(vc, {animation: 'none'});
+      expect(stackController.collection.length).toEqual(1);
 
-      var newNavController = new jmbo.ui.navigation.ControllerView;
-      expect(newNavController.collection.length).toEqual(0);
+      var newstackController = new jmbo.ui.stack.ControllerView;
+      expect(newstackController.collection.length).toEqual(0);
     });
 
     it("Add and remove views.", function() {
-      expect(navController.collection.length).toEqual(0);
+      expect(stackController.collection.length).toEqual(0);
       var vc1 = new jmbo.ui.view.ControllerView({childView: new ChildView});
       var vc2 = new jmbo.ui.view.ControllerView({childView: new ChildView});
-      navController.push(vc1, {animation: 'none'});
-      navController.push(vc2, {animation: 'none'});
-      expect(navController.collection.length).toEqual(2);
+      stackController.push(vc1, {animation: 'none'});
+      stackController.push(vc2, {animation: 'none'});
+      expect(stackController.collection.length).toEqual(2);
 
-      popped_vc2 = navController.pop({animation: 'none'});
-      expect(navController.collection.length).toEqual(1);
+      popped_vc2 = stackController.pop({animation: 'none'});
+      expect(stackController.collection.length).toEqual(1);
       expect(popped_vc2).toBe(vc2);
     });
 
     it ("Only a `ControllerView` is an acceptable argument for `push`.", function() {
       // this will fail because the `animate` method can't be found.
-        expect(function() {navController.push(new ChildView, {animation: 'none'})})
+        expect(function() {stackController.push(new ChildView, {animation: false})})
           .toThrow("Object [object Object] has no method 'animate'");
     });
 
     it ("Remove views (and return undefined) when empty.", function() {
-      expect(navController.pop()).toBe(undefined);
+      expect(stackController.pop()).toBe(undefined);
     });
+
+    it("transition animation ended should always fire. ", function() {
+      expect(true).toBe(false)
+    });
+
   });
 });

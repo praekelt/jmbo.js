@@ -51,7 +51,7 @@
 
     Config.prototype.defaults = {
       TitleView: jmbo.ui.TitleView,
-      childView: null,
+      view: null,
       title: 'Untitled',
       icon: null
     };
@@ -80,16 +80,21 @@
     };
 
     ControllerView.prototype.render = function() {
-      var TitleView, childView, titleView;
+      var TitleView, titleView, view, viewEl;
       TitleView = this.config.get('TitleView');
       if (TitleView != null) {
         titleView = new TitleView;
         titleView.setTitle(this.config.get('title'));
         this.$el.html(titleView.render());
       }
-      childView = this.config.get('childView');
-      if (childView != null) {
-        this.$el.append(childView.render());
+      view = this.config.get('view');
+      if (view != null) {
+        if (view.render != null) {
+          viewEl = view.render();
+        } else {
+          viewEl = $(view).html();
+        }
+        this.$el.append(viewEl);
       }
       return this.el;
     };

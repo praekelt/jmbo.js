@@ -47,5 +47,5 @@ namespace 'jmbo.ui', (exports) ->
       
     # `animationEnd` callbacks doesn't fire if no animation exists. This is a 
     # bit hacky. Perhaps it would be best to determine if a class exists.
-    if name == 'none'
+    if name == false
       $el.trigger customAnimationEvent

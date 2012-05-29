@@ -71,7 +71,7 @@
       $el.on('webkitAnimationEnd animationEnd', function(e) {
         return $el.trigger(customAnimationEvent);
       });
-      if (name === 'none') {
+      if (name === false) {
         return $el.trigger(customAnimationEvent);
       }
     };
