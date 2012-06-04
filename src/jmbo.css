@@ -1,0 +1,109 @@
+/* 
+It scares me that I have styles. 
+Try and remove as much of the properties as possible.
+*/
+
+.jmbo-ui-navigation-controller-view {
+    position: relative;
+    height:100%;
+    width:100%;
+}
+
+.jmbo-ui-view-controller-view {
+    position:absolute;
+    top:0;
+    width:100%;
+    height:100%;
+    background:#999;
+    
+}
+
+.jmbo-ui-title-view {
+    text-align:center;
+    background:#ccc;
+    height:44px;
+    margin:0 0 1em 0;
+}
+.jmbo-ui-title-view h1 {
+    margin:0;
+    padding:0;
+    line-height:44px;
+}
+
+
+
+/* tab bar controller */
+
+.jmbo-ui-tab-controller-view {
+    position:relative;
+    height:100%;
+    width:100%;
+}
+/* TODO: this context is kinda a hidden view; must try and make it more visible. */
+.jmbo-ui-tab-controller-view #jmbo-ui-tab-controller-view-context {
+    height:100%;
+}
+
+.jmbo-ui-tab-bar-view {
+    display:table;
+    table-layout:fixed;
+    
+    position:absolute;
+    bottom:0;
+    width:100%;
+    background:#333;
+    height:44px;
+    color:#fff;
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+
+
+.jmbo-ui-tab-bar-view li {
+    display:table-cell;
+    text-align:center;
+    vertical-align:bottom;
+    font-size:.8em;
+
+}
+.jmbo-ui-tab-bar-view li.selected { background-color:#999; }
+
+
+
+
+ 
+
+
+/* animations */
+
+@-webkit-keyframes slide-right-in {
+    from { -webkit-transform: translateX(100%); }
+    to { -webkit-transform: translateX(0%); }
+}
+.slide-right-in { -webkit-animation: slide-right-in 0.3s 0 1 ease-out forwards; }
+
+@-webkit-keyframes slide-right-out {
+    from { -webkit-transform: translateX(0%); }
+    to { -webkit-transform: translateX(-100%); }
+}
+.slide-right-out { 
+    -webkit-animation: slide-right-out 0.3s 0 1 ease-out forwards; 
+}
+
+
+
+      
+
+@-webkit-keyframes slide-left-in {
+    from { -webkit-transform: translateX(-100%); }
+    to { -webkit-transform: translateX(0%); }
+}
+.slide-left-in { -webkit-animation: slide-left-in 0.3s 0 1 ease-out forwards; }
+
+
+@-webkit-keyframes slide-left-out {
+    from { -webkit-transform: translateX(0); }
+    to { -webkit-transform: translateX(100%); }
+}
+.slide-left-out { -webkit-animation: slide-left-out 0.3s 0 1 ease-out forwards; }
