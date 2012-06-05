@@ -4,45 +4,46 @@ fs = require 'fs'
 
 
 build = (callback) ->
-    console.log "Building src/ to /lib"
+    console.log 'Compiling'
     exec "coffee --compile --output lib/ src/", (err, stdout, stderr) ->
         throw err if err
-        console.log 'Building done.'
+        console.log 'Compiling: Done.'
         callback() if callback
         return true
 
 
+minify = ->
+    console.log 'Minify'
+    exec 'java -jar "compiler.jar" --js lib/jmbo.js --js_output_file lib/jmbo.min.js', (err, stdout, stderr) ->
+        throw err if err
+        console.log 'Minify: Done.'
 
-task 'build', 'Build projects from src/*.coffee to lib/*.js', ->
+
+
+task 'build-and-seperate', 'Build *.coffee from src/*.coffee to lib/*.js', ->
     build()
 
+task 'build', 'Joins *.coffee files and then builds them', ->
+    files = [
+        'src/main'
+        'src/ui'
+        'src/ui.view'
+        'src/ui.stack'
+        'src/ui.tab'
+    ]
 
-task 'concat+build', 'Contacts *.coffee and then builds them', ->
-    #
+    console.log 'Joining'
     concat = new Array
-    index = 0
-    # list files in src/*.coffee
-    files = fs.readdirSync 'src/'
-    for file in files then do (file) ->
-        fileparts = file.split '.'
-        if fileparts[fileparts.length - 1] == 'coffee'
-            console.log "Adding: #{file}"
-            concat[index] = fs.readFileSync "src/#{file}"
-            index += 1
-
+    for file, index in files then do (file, index) ->
+        console.log "Joining: #{file}.coffee"
+        concat[index] = fs.readFileSync "#{file}.coffee"
+        index += 1
 
     fs.writeFile 'src/jmbo.coffee', concat.join('\n\n'), 'utf8', (err) ->
         throw err if err
         build ->
-            console.log 'Built in lib/jmbo.js'
+            console.log 'Compiling: ./lib/jmbo.js'
             fs.unlink 'src/jmbo.coffee'
 
-    #fs.unlinkSync 'lib/concat.coffee'
-    #     throw err in err
- #            exec 'coffee --compile lib/concat.coffee', (err, stdout, stderr) ->
- #                throw err if err
- #                console.log stdout + stderr
- #                fs.unlink 'lib/concat.coffee', (err) ->
- #                    throw err if err
- #                    console.log 'Done.'
- # 
+task 'minify', 'Minify the application after build', ->
+    minify()
