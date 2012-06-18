@@ -1,6 +1,6 @@
 class Controller extends Backbone.Model
     defaults:
-        view: null
+        view: undefined
     
 class Controllers extends Backbone.Collection
   model: Controller
@@ -8,11 +8,9 @@ class Controllers extends Backbone.Collection
 class Config extends Backbone.Model
   defaults:
     TitleView: jmbo.ui.TitleView
-    view: null
+    view: undefined
     title: 'Untitled'
-    icon: null
-    cache: false
-    _cachedView: null
+    icon: undefined
 
 class ControllerView extends Backbone.View
   className: 'jmbo-ui-view-controller-view'
@@ -21,13 +19,6 @@ class ControllerView extends Backbone.View
     @config = new Config @options
 
   render: =>
-
-    cachedView = @config.get '_cachedView'
-
-    if @config.get 'cache'
-      if cachedView?
-        return cachedView
-
     TitleView = @config.get 'TitleView'
     if TitleView?
         titleView = new TitleView
@@ -40,11 +31,7 @@ class ControllerView extends Backbone.View
         viewEl = view.render()
       else
         viewEl = $(view).html()
-
       @$el.append viewEl
-
-    if @config.get 'cache'
-      @config.set '_cachedView', @el
 
     return @el   
 
