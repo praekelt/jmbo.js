@@ -9,8 +9,10 @@ class Config extends Backbone.Model
   defaults:
     TitleView: jmbo.ui.TitleView
     view: null
+    _viewCache: null
     title: 'Untitled'
     icon: null
+    cache: false
 
 class ControllerView extends Backbone.View
   className: 'jmbo-ui-view-controller-view'
@@ -27,7 +29,7 @@ class ControllerView extends Backbone.View
 
     view = @config.get 'view'
     if view?
-      if view.render?
+      if view.render? # checking to see if this a controller view or an el?
         viewEl = view.render()
       else
         viewEl = $(view).html()

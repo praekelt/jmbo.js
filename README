@@ -1,2 +1,8 @@
 Jmbo.js
 
+Jmbo.js is a framework built on top of Backbone.js. The intention is to augment
+HTML5 app development, specificically mobile app development, by providing
+straightforward modules which are most commonly used in Android and iPhone apps.
+
+
+

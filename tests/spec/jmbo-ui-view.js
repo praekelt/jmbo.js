@@ -1,15 +1,16 @@
-// TODO
-// describe("ui.view", function() {
+TODO
+describe("ui.view", function() {
 
-//   describe("ControllerView", function() {
+  describe("ControllerView", function() {
 
-//     it("Render via element", function() {
-//       expect(false).toBe(true);
-//     });
+    it("Should be cacheable", function() {
 
-//     it("Render via controllerView", function() {
-//       expect(false).toBe(true);
-//     });
+        
 
-//   });
-// });
+
+      
+    });
+
+
+  });
+});
