@@ -14,24 +14,23 @@ class ControllerView extends jmbo.ui.view.ControllerView
       @$el.html view.render()
     return @el
 
-  push: (newView, options) =>
-    # Default options.
-    defaultOptions = animation: 'slide-right'
-    options = _.extend defaultOptions, options
+  push: (newView, opts) =>
+    defaultOpts = animation: 'slide-right', removeEl: true
+    opts = _.extend defaultOpts, opts
 
-
-    # grab current view from stack, animate out, and delete from dom.
+    # animate out current controller view.
     controller = @collection.last()
     if controller?
       currentView = controller.get 'view'
-      currentView.animate options.animation, 'out', ->
-          currentView.$el.html('').remove()
+      currentView.animate opts.animation, 'out', ->
+        console.log 'out animation1'
+        if opts.removeEl then currentView.$el.html('').remove()
 
     # We have to create the container-type-model because you can't store a 
     # `View` in a collection.
     @collection.add 'view': newView
     @$el.append newView.render()
-    newView.animate options.animation, 'in'
+    newView.animate opts.animation, 'in'
     return newView
 
   pop: (options) =>

@@ -9,7 +9,6 @@ class Config extends Backbone.Model
   defaults:
     TitleView: jmbo.ui.TitleView
     view: undefined
-    cacheView: false
     title: 'Untitled'
     icon: undefined
 

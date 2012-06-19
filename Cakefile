@@ -18,9 +18,7 @@ minify = ->
 
 
 task 'watch', 'Watch this project for changes and compile to a single source', ->
-    console.log 'Watching...'
-    exec """watchr -e 'watch(".*\.coffee") { |f| system("cake build") }'""", (err, stdout, stderr) ->
-        console.log err, stderr, stdout
+    console.log  """Run: watchr -e 'watch(".*\.coffee") { |f| system("cake build") }'"""
 
 task 'build-seperate', 'Compiles coffee from src/*.coffee to lib/*.js', ->
     build()
