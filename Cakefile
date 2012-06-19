@@ -2,7 +2,6 @@ fs = require 'fs'
 {exec} = require 'child_process'
 
 
-
 build = (callback) ->
     console.log 'Compiling'
     exec "coffee --compile --output lib/ src/", (err, stdout, stderr) ->
@@ -11,19 +10,22 @@ build = (callback) ->
         callback() if callback
         return true
 
-
 minify = ->
     console.log 'Minify'
-    exec 'java -jar "compiler.jar" --js lib/jmbo.js --js_output_file lib/jmbo.min.js', (err, stdout, stderr) ->
+    exec 'java -jar "compiler.jar" --js lib/jmbo.js --js_output_file lib/jmbo-min.js', (err, stdout, stderr) ->
         throw err if err
         console.log 'Minify: Done.'
 
 
+task 'watch', 'Watch this project for changes and compile to a single source', ->
+    console.log 'Watching...'
+    exec """watchr -e 'watch(".*\.coffee") { |f| system("cake build") }'""", (err, stdout, stderr) ->
+        console.log err, stderr, stdout
 
-task 'build-and-seperate', 'Build *.coffee from src/*.coffee to lib/*.js', ->
+task 'build-seperate', 'Compiles coffee from src/*.coffee to lib/*.js', ->
     build()
 
-task 'build', 'Joins *.coffee files and then builds them', ->
+task 'build', 'Joins coffee files and compiles to a single source', ->
     files = [
         'src/main'
         'src/ui'
@@ -45,5 +47,6 @@ task 'build', 'Joins *.coffee files and then builds them', ->
             console.log 'Compiling: ./lib/jmbo.js'
             fs.unlink 'src/jmbo.coffee'
 
-task 'minify', 'Minify the application after build', ->
+
+task 'minify', 'Minifies jmbo.js to jmbo-min.js after build', ->
     minify()
