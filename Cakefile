@@ -27,7 +27,9 @@ minify = ->
 
 
 task 'watch', 'Watch this project for changes and compile to a single source', ->
-    # coffee -w -c -j lib/jmbo.js src/*.coffee
+    console.log 'Watching...'
+    f = files.join '.coffee '
+    exec "coffee -w -c -j lib/jmbo.js #{f}", (err, stderr, stdout) ->
 
 task 'build-seperate', 'Compiles coffee from src/*.coffee to lib/*.js', ->
     build()
