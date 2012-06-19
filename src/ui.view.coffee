@@ -19,6 +19,7 @@ class ControllerView extends Backbone.View
     @config = new Config @options
 
   render: =>
+    l 'render called'
     TitleView = @config.get 'TitleView'
     if TitleView?
         titleView = new TitleView

@@ -2,6 +2,15 @@ fs = require 'fs'
 {exec} = require 'child_process'
 
 
+files = [
+        'src/main'
+        'src/ui'
+        'src/ui.view'
+        'src/ui.stack'
+        'src/ui.tab'
+    ]
+
+
 build = (callback) ->
     console.log 'Compiling'
     exec "coffee --compile --output lib/ src/", (err, stdout, stderr) ->
@@ -18,20 +27,12 @@ minify = ->
 
 
 task 'watch', 'Watch this project for changes and compile to a single source', ->
-    console.log  """Run: watchr -e 'watch(".*\.coffee") { |f| system("cake build") }'"""
+    # coffee -w -c -j lib/jmbo.js src/*.coffee
 
 task 'build-seperate', 'Compiles coffee from src/*.coffee to lib/*.js', ->
     build()
 
 task 'build', 'Joins coffee files and compiles to a single source', ->
-    files = [
-        'src/main'
-        'src/ui'
-        'src/ui.view'
-        'src/ui.stack'
-        'src/ui.tab'
-    ]
-
     console.log 'Joining'
     concat = new Array
     for file, index in files then do (file, index) ->

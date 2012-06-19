@@ -29,7 +29,6 @@ namespace 'jmbo.ui', (exports) ->
     triggers a custom event. The custom event can be removed without fear of
     removing any other callbacks.
     ###
-
     className = name + '-' + direction
     customAnimationEvent = 'anim-event-' + className
     $el.addClass className
@@ -39,13 +38,12 @@ namespace 'jmbo.ui', (exports) ->
       $el.off customAnimationEvent
       $el.removeClass className
       if callback then callback()
-
     # use standard events to fire custom events. This prevents a race condition 
     # if an `in` and `out` event are fired in the same time.
     $el.on 'webkitAnimationEnd animationEnd', (e) ->
       $el.trigger customAnimationEvent
-      
-    # `animationEnd` callbacks doesn't fire if no animation exists. This is a 
-    # bit hacky. Perhaps it would be best to determine if a class exists.
-    if name == false
+    
+    # If the animation is false then the webkitAnimationEnd callback would not fire.
+    # Trigger then customAnimationEvent manually.      
+    if name is false
       $el.trigger customAnimationEvent

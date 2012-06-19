@@ -15,7 +15,7 @@ class ControllerView extends jmbo.ui.view.ControllerView
     return @el
 
   push: (newView, opts) =>
-    defaultOpts = animation: 'slide-right', removeEl: true
+    defaultOpts = animation: 'slide-right', cache: false
     opts = _.extend defaultOpts, opts
 
     # animate out current controller view.
@@ -23,8 +23,9 @@ class ControllerView extends jmbo.ui.view.ControllerView
     if controller?
       currentView = controller.get 'view'
       currentView.animate opts.animation, 'out', ->
-        console.log 'out animation1'
-        if opts.removeEl then currentView.$el.html('').remove()
+        controller.set '_cache', opts.cache
+        if not opts.cache
+          currentView.$el.html('').remove()
 
     # We have to create the container-type-model because you can't store a 
     # `View` in a collection.
@@ -34,20 +35,22 @@ class ControllerView extends jmbo.ui.view.ControllerView
     return newView
 
   pop: (options) =>
-    defaultOptions = animation: 'slide-right'
+    defaultOptions = animation: 'slide-left'
     options = _.extend defaultOptions, options
     # pop off stack, animate out, delete from dom.
     controller = @collection.pop()
     if controller?
       currentView = controller.get 'view'
       currentView.animate options.animation, 'out', ->
+        # always remove; because it's now dead to us.
         currentView.$el.html('').remove()
 
     # grab current view off stack, render to the dom, and animate in.
-    newController = @collection.last()
-    if newController?
-      newView = newController.get 'view'
-      @$el.append newView.render()
+    controller = @collection.last()
+    if controller?
+      newView = controller.get 'view'
+      if not controller.get '_cache'
+        @$el.append newView.render()
       newView.animate options.animation, 'in'
 
     return currentView #
