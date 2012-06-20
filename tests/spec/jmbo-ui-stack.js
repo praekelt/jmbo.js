@@ -46,12 +46,11 @@ describe("ui.stack", function() {
           .toThrow("Object [object Object] has no method 'animate'");
     });
 
-    it ("Remove views (and return undefined) when empty.", function() {
+    it("Remove views (and return undefined) when empty.", function() {
       expect(stackController.pop()).toBe(undefined);
     });
 
-    it ("DOM element not removed when cache is set to true on push", function() {
-
+    it("DOM element not removed when cache is set to true on push", function() {
       expect(stackController.collection.length).toEqual(0);
       var vc1 = new jmbo.ui.view.ControllerView({view: new ChildView});
       stackController.push(vc1, {animation: false});
@@ -69,6 +68,23 @@ describe("ui.stack", function() {
       expect(stackController.collection.length).toEqual(1);
       stackController.push(vc2, {animation:false});
       expect(vc1.$el.find('p').length).toEqual(0);
+    });
+
+
+    it("Should call the callback when animation is done.", function() {
+
+      expect(stackController.collection.length).toEqual(0);
+      var vc1 = new jmbo.ui.view.ControllerView({view: new ChildView});
+      var callback_push = jasmine.createSpy('stack push');
+      stackController.push(vc1, {animation: false, callback: callback_push});
+      expect(callback_push).wasCalled();
+
+      var callback_pop = jasmine.createSpy('stack pop');
+      stackController.pop({animation: false, callback: callback_pop});
+      expect(callback_pop).wasCalled();
+
+      
+
     });
 
   });
