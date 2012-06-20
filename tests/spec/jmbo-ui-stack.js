@@ -50,5 +50,7 @@ describe("ui.stack", function() {
       expect(stackController.pop()).toBe(undefined);
     });
 
+    it ("DOM element not removed when cache is set to true on push")
+
   });
 });

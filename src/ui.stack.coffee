@@ -18,6 +18,8 @@ class ControllerView extends jmbo.ui.view.ControllerView
     defaultOpts = animation: 'slide-right', cache: false
     opts = _.extend defaultOpts, opts
 
+    l opts.callback
+
     # animate out current controller view.
     controller = @collection.last()
     if controller?
@@ -26,6 +28,9 @@ class ControllerView extends jmbo.ui.view.ControllerView
         controller.set '_cache', opts.cache
         if not opts.cache
           currentView.$el.html('').remove()
+        # Custom user callback.
+        if opts.callback then opts.callback()
+
 
     # We have to create the container-type-model because you can't store a 
     # `View` in a collection.
@@ -34,15 +39,16 @@ class ControllerView extends jmbo.ui.view.ControllerView
     newView.animate opts.animation, 'in'
     return newView
 
-  pop: (options) =>
+  pop: (opts) =>
     defaultOptions = animation: 'slide-left'
-    options = _.extend defaultOptions, options
+    opts = _.extend defaultOptions, opts
+
     # pop off stack, animate out, delete from dom.
     controller = @collection.pop()
     if controller?
       currentView = controller.get 'view'
-      currentView.animate options.animation, 'out', ->
-        # always remove; because it's now dead to us.
+      currentView.animate opts.animation, 'out', ->
+        # always remove; because you're now dead to us.
         currentView.$el.html('').remove()
 
     # grab current view off stack, render to the dom, and animate in.
@@ -51,9 +57,10 @@ class ControllerView extends jmbo.ui.view.ControllerView
       newView = controller.get 'view'
       if not controller.get '_cache'
         @$el.append newView.render()
-      newView.animate options.animation, 'in'
+      newView.animate opts.animation, 'in'
+      if opts.callback then callback
 
-    return currentView #
+    return currentView
 
 
 namespace 'jmbo.ui.stack', (exports) ->
