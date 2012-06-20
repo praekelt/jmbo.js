@@ -50,7 +50,26 @@ describe("ui.stack", function() {
       expect(stackController.pop()).toBe(undefined);
     });
 
-    it ("DOM element not removed when cache is set to true on push")
+    it ("DOM element not removed when cache is set to true on push", function() {
+
+      expect(stackController.collection.length).toEqual(0);
+      var vc1 = new jmbo.ui.view.ControllerView({view: new ChildView});
+      stackController.push(vc1, {animation: false});
+      expect(stackController.collection.length).toEqual(1);
+
+      // the $el should still have a p element.
+      expect(vc1.$el.find('p').length).toEqual(1);
+
+      var vc2 = new jmbo.ui.view.ControllerView({view: new ChildView});
+      stackController.push(vc2, {cache: true, animation:false});
+      expect(stackController.collection.length).toEqual(2);
+      expect(vc1.$el.find('p').length).toEqual(1);
+
+      stackController.pop();
+      expect(stackController.collection.length).toEqual(1);
+      stackController.push(vc2, {animation:false});
+      expect(vc1.$el.find('p').length).toEqual(0);
+    });
 
   });
 });

@@ -18,8 +18,6 @@ class ControllerView extends jmbo.ui.view.ControllerView
     defaultOpts = animation: 'slide-right', cache: false
     opts = _.extend defaultOpts, opts
 
-    l opts.callback
-
     # animate out current controller view.
     controller = @collection.last()
     if controller?
