@@ -57,10 +57,13 @@ class ControllerView extends jmbo.ui.view.ControllerView
     return @el
 
   renderSelected: =>
+
     controller = @collection.where(selected: true)
     if controller.length
       controllerView =  controller[0].get 'view'
       @$el.find('#jmbo-ui-tab-controller-view-context').html controllerView.render()
+      controllerView.firePostRenderEvent()
+      
 
   set: (controllerViews...) =>
     @collection.reset [], silent: true

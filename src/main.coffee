@@ -7,7 +7,7 @@ window.namespace = (target, name, block) ->
   block target, top
 
 # quick log
-window.l = (x...) ->
+window.log = (x...) ->
   if (x.length == 1)
     x = x[0]
   console.log x

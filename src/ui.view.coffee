@@ -21,9 +21,9 @@ class ControllerView extends Backbone.View
   render: =>
     TitleView = @config.get 'TitleView'
     if TitleView?
-        titleView = new TitleView
-        titleView.setTitle @config.get 'title'
-        @$el.html titleView.render()
+        @titleView = new TitleView
+        @$el.html @titleView.render()
+        @titleView.setTitle @config.get 'title'
 
     view = @config.get 'view'
     if view?
@@ -33,7 +33,17 @@ class ControllerView extends Backbone.View
         viewEl = $(view).html()
       @$el.append viewEl
 
-    return @el   
+    return @el 
+
+  firePostRenderEvent: =>
+    # this view exists because sometimes you need to do something after an
+    # element is already added to the dom, before might be too early.
+    # so a stack controller fires this event after calling "render..."
+
+    # hopefully it's soon enough.
+    view = @config.get 'view'
+    view.trigger 'render:post'
+
 
   animate: (name, direction, callback) =>
     jmbo.ui.animate @$el, name, direction, callback

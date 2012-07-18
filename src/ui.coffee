@@ -1,8 +1,8 @@
 class TitleView extends Backbone.View
   className: 'jmbo-ui-title-view'
+  template: _.template '<h1><%= title %></h1>'
 
   initialize: ->
-    @template = _.template '<h1><%= title %></h1>'
     @title = 'Untitled'
 
   render: =>
