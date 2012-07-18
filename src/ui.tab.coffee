@@ -9,7 +9,6 @@ class BarItemView extends Backbone.View
     @model.on 'change:selected', @renderSelected
 
   select: =>
-    that = @
     for controller in @model.collection.where(selected: true)
       do ->
           controller.set selected: false
@@ -18,7 +17,12 @@ class BarItemView extends Backbone.View
   render: =>
     controllerViewConfig  = @model.get('view').config
     @$el.html controllerViewConfig.get 'title'
-    #@$el.icon controllerViewConfig.get 'icon' #TODO pseudo code
+
+    # icon
+    icon = controllerViewConfig.get 'icon'
+    if icon?
+      @$el.append  """<div class="icon-#{icon}"></div>"""
+
     return @el
 
   renderSelected: =>
@@ -57,10 +61,10 @@ class ControllerView extends jmbo.ui.view.ControllerView
     return @el
 
   renderSelected: =>
-
     controller = @collection.where(selected: true)
     if controller.length
-      controllerView =  controller[0].get 'view'
+      controllerView = controller[0].get 'view'
+      @$el.find('#jmbo-ui-tab-controller-view-context').html ''
       @$el.find('#jmbo-ui-tab-controller-view-context').html controllerView.render()
       controllerView.firePostRenderEvent()
       

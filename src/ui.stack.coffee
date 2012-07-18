@@ -12,6 +12,8 @@ class ControllerView extends jmbo.ui.view.ControllerView
     if controller?
       view = controller.get 'view'
       @$el.html view.render()
+
+    log 'stackcontroller.render'
     return @el
 
   firePostRenderEvent: =>
