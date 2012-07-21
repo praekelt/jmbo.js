@@ -9,6 +9,7 @@ class BarItemView extends Backbone.View
     @model.on 'change:selected', @renderSelected
 
   select: =>
+    if @model.get('selected') is true then return
     for controller in @model.collection.where(selected: true)
       do ->
           controller.set selected: false
@@ -56,6 +57,9 @@ class ControllerView extends jmbo.ui.view.ControllerView
   render: =>
     @$el.html '<div id="jmbo-ui-tab-controller-view-context"></div>'
     bar = new BarView collection: @collection
+    # TODO: allow this to be set.
+
+
     @$el.append bar.render()
 
     return @el

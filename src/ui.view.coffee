@@ -1,3 +1,11 @@
+# TODO; this config model is a bit messy;
+# what would be nice is if the titleview persists after it's rendered.
+# but where do we place it, the view sometimes needs access to this context.
+# do we pipe that up the chain? #what do we call it, @config?
+
+
+# pew pew pew
+
 class Controller extends Backbone.Model
     defaults:
         view: undefined
@@ -19,11 +27,14 @@ class ControllerView extends Backbone.View
     @config = new Config @options
 
   render: =>
+    @$el.html ''
     TitleView = @config.get 'TitleView'
     if TitleView?
+      if not @titleView?
         @titleView = new TitleView
-        @$el.html @titleView.render()
-        @titleView.setTitle @config.get 'title'
+
+      @$el.html @titleView.render()
+      @titleView.setTitle @config.get 'title'
 
     view = @config.get 'view'
     if view?

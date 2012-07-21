@@ -7,41 +7,34 @@ class ControllerView extends jmbo.ui.view.ControllerView
     @collection = new jmbo.ui.view.Controllers
 
   render: =>
-    @$el.html ''
-    controller = @collection.last()
-    if controller?
-      view = controller.get 'view'
-      @$el.html view.render()
+    controllers = @collection.where _cache: true 
+    controllers.push @collection.last()
 
-    log 'stackcontroller.render'
+    @$el.html ''
+    for controller in controllers
+      view = controller.get 'view'
+      @$el.append view.render()
+
     return @el
 
   firePostRenderEvent: =>
-    # the stack controller is a controller view that contains a collection of
-    # controller views.
-
-    # this method is more than likely fired by the tab bar controller.
-
-    # so when a tab bar render this element, you generally don't want to do any
-    # post view things here, but only further up the stack, #therefore
-
-    controller = @collection.last()
-    if controller?
-      controllerView = controller.get 'view'
-      controllerView.firePostRenderEvent()
+    controllers = @collection.where _cache: true 
+    controllers.push @collection.last()
+    for controller in controllers
+      view = controller.get 'view'
+      view.firePostRenderEvent()
 
 
   push: (newView, opts) =>
-    defaultOpts = animation: 'slide-right', cache: false
+    defaultOpts = animation: 'slide-right', removeFromDom: true
     opts = _.extend defaultOpts, opts
 
-    # animate out current controller view.
     controller = @collection.last()
     if controller?
       currentView = controller.get 'view'
       currentView.animate opts.animation, 'out', ->
-        controller.set '_cache', opts.cache
-        if not opts.cache
+        controller.set '_cache', !opts.removeFromDom
+        if opts.removeFromDom
           currentView.$el.html('').remove()
 
     # We have to create the container model because you can't store a 
