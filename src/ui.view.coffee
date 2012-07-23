@@ -16,15 +16,23 @@ class Controllers extends Backbone.Collection
 class Config extends Backbone.Model
   defaults:
     TitleView: jmbo.ui.TitleView
+
     view: undefined
     title: 'Untitled'
     icon: undefined
+
 
 class ControllerView extends Backbone.View
   className: 'jmbo-ui-view-controller-view'
 
   initialize: ->
     @config = new Config @options
+
+    # pass a reference of config to the view; we do this because sometimes
+    # the view might want to access the titleView.
+    view = @config.get 'view'
+    if view?
+      view.controller = this # TODO, woah. Maybe I should rather pass config.
 
   render: =>
     @$el.html ''
