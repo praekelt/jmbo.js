@@ -48,6 +48,7 @@ class ControllerView extends Backbone.View
     if view?
       if view.render? # checking to see if this a controller view or an el?
         viewEl = view.render()
+        $(viewEl).addClass 'jmbo-ui-view-controller-view-view'
       else
         viewEl = $(view).html()
       @$el.append viewEl
@@ -58,9 +59,10 @@ class ControllerView extends Backbone.View
     # this view exists because sometimes you need to do something after an
     # element is already added to the dom, before might be too early.
     # so a stack controller fires this event after calling "render..."
-
     # hopefully it's soon enough.
+
     view = @config.get 'view'
+    view.delegateEvents()
     view.trigger 'render:post'
 
 
