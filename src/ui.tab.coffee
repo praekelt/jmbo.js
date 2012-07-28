@@ -57,8 +57,6 @@ class ControllerView extends jmbo.ui.view.ControllerView
   render: =>
     @$el.html '<div id="jmbo-ui-tab-controller-view-context"></div>'
     bar = new BarView collection: @collection
-    # TODO: allow this to be set.
-
 
     @$el.append bar.render()
 
@@ -74,8 +72,7 @@ class ControllerView extends jmbo.ui.view.ControllerView
 
   set: (controllerViews...) =>
     @collection.reset [], silent: true
-    # if controllersViews is empty then set the collection as empty and trigger
-    # the reset event which causes the `TabBarView` to redraw.
+
     if controllerViews.length == 0
       @collection.trigger 'reset'
       return  
@@ -88,8 +85,6 @@ class ControllerView extends jmbo.ui.view.ControllerView
     @selectedIndex 0
 
   selectedIndex: (i) =>
-    # try to do a bit of a getter/ setter thing here. If you don't pass an
-    # index then simply return the currently selected Index.
     if not i?
       return i = @_selectedIndex
 
