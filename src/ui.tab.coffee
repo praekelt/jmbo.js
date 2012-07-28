@@ -51,23 +51,25 @@ class ControllerView extends jmbo.ui.view.ControllerView
     ControllerView.__super__.initialize.apply this, arguments
     @collection = new jmbo.ui.view.Controllers
     @collection.on 'change:selected', @renderSelected
-    
+
     @_selectedIndex = 0
 
   render: =>
     @$el.html '<div id="jmbo-ui-tab-controller-view-context"></div>'
     bar = new BarView collection: @collection
-
     @$el.append bar.render()
-
     return @el
 
   renderSelected: =>
-    controller = @collection.where(selected: true)
-    if controller.length
-      controllerView = controller[0].get 'view'
-      @$el.find('#jmbo-ui-tab-controller-view-context').html controllerView.render()
-      controllerView.firePostRenderEvent()
+    controllers = @collection.where(selected: true)
+    if controllers.length
+      controllerView = controllers[0].get 'view'
+      if controllerView?
+        @$el.find('#jmbo-ui-tab-controller-view-context').html controllerView.render()
+        controllerView.firePostRenderEvent()
+
+      
+
       
 
   set: (controllerViews...) =>
