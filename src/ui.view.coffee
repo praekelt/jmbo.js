@@ -39,7 +39,7 @@ class ControllerView extends Backbone.View
     TitleView = @config.get 'TitleView'
     if TitleView?
       if not @titleView?
-        @titleView = new TitleView
+        @titleView = new TitleView()
 
       @$el.html @titleView.render()
       @titleView.setTitle @config.get 'title'
@@ -48,9 +48,10 @@ class ControllerView extends Backbone.View
     if view?
       if view.render? # checking to see if this a controller view or an el?
         viewEl = view.render()
-        $(viewEl).addClass 'jmbo-ui-view-controller-view-view'
       else
         viewEl = $(view).html()
+
+      $(viewEl).addClass 'jmbo-ui-view-controller-view-view'
       @$el.append viewEl
 
     return @el 
