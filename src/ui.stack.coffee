@@ -8,23 +8,24 @@ class ControllerView extends jmbo.ui.view.ControllerView
 
   render: =>
     controllers = @collection.where _cache: true 
-    controllers.push @collection.last()
-
+    if @collection.last()?
+      controllers.push @collection.last()
     @$el.html ''
-    if controllers.length
-      for controller in controllers
-        view = controller.get 'view'
-        @$el.append view.render()
+    
+    for controller in controllers
+      view = controller.get 'view'
+      @$el.append view.render()
 
     return @el
 
   firePostRenderEvent: =>
     controllers = @collection.where _cache: true 
-    controllers.push @collection.last()
-    if controllers.length
-      for controller in controllers
-        view = controller.get 'view'
-        view.firePostRenderEvent()
+    if @collection.last()?
+      controllers.push @collection.last()
+    
+    for controller in controllers
+      view = controller.get 'view'
+      view.firePostRenderEvent()
 
 
   push: (newView, opts) =>
