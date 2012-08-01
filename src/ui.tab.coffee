@@ -3,12 +3,12 @@ class BarItemView extends Backbone.View
   className: 'jmbo-ui-tab-bar-item-view'
 
   events:
-    'click': 'select'
+    'touchstart': 'select'
 
   initialize: ->
     @model.on 'change:selected', @renderSelected
 
-  select: =>
+  select: (e) =>
     if @model.get('selected') is true then return
     for controller in @model.collection.where(selected: true)
       do ->

@@ -50,7 +50,7 @@ describe("ui.stack", function() {
       expect(stackController.pop()).toBe(undefined);
     });
 
-    it("DOM element not removed when cache is set to true on push", function() {
+    it("DOM element not removed when removeFromDom is set to true on push", function() {
       expect(stackController.collection.length).toEqual(0);
       var vc1 = new jmbo.ui.view.ControllerView({view: new ChildView});
       stackController.push(vc1, {animation: false});
@@ -60,7 +60,7 @@ describe("ui.stack", function() {
       expect(vc1.$el.find('p').length).toEqual(1);
 
       var vc2 = new jmbo.ui.view.ControllerView({view: new ChildView});
-      stackController.push(vc2, {cache: true, animation:false});
+      stackController.push(vc2, {removeFromDom: false, animation:false});
       expect(stackController.collection.length).toEqual(2);
       expect(vc1.$el.find('p').length).toEqual(1);
 

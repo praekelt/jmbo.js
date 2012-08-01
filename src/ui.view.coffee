@@ -16,7 +16,6 @@ class Controllers extends Backbone.Collection
 class Config extends Backbone.Model
   defaults:
     TitleView: jmbo.ui.TitleView
-
     view: undefined
     title: 'Untitled'
     icon: undefined
@@ -63,8 +62,9 @@ class ControllerView extends Backbone.View
     # hopefully it's soon enough.
 
     view = @config.get 'view'
-    view.delegateEvents()
-    view.trigger 'render:post'
+    if view?
+      view.delegateEvents()
+      view.trigger 'render:post'
 
 
   animate: (name, direction, callback) =>
