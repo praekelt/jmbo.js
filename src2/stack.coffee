@@ -8,7 +8,22 @@ class StackViewVessels extends Backbone.Collection
 
 
 animate = ($el, animation, direction, callback) ->
-    # pass
+    #console.log $el, animation, direction
+    className = "#{animation}-#{direction}"
+    eventName = "animation-event-#{className}"
+
+    $el.one eventName, ->
+        $el.removeClass className
+        callback?()
+
+
+    if animation is false
+        $el.trigger eventName
+        return
+
+    $el.on 'webkitAnimationEnd animationEnd', ->
+        $el.trigger eventName
+
 
 class StackView extends Backbone.View
     ###
@@ -21,27 +36,26 @@ class StackView extends Backbone.View
 
     initialize: ->
         if not @collection? then @collection = new StackViewVessels
-        @options.pushDefaults = animation: 'slide-right', removeViewFromDOM: true
-        @options.popDefaults  = animation: 'slide-left'
+        @options.pushDefaults = _.extend {animation: 'slide-right', removeViewFromDOM: true}, @options.pushDefaults
+        @options.popDefaults  = _.extend {animation: 'slide-left'}, @options.popDefaults
 
     render: =>
         # grab current view and cached views
         viewVessels = @collection.where _cache: true
+
         if @collection.last() then viewVessels.push @collection.last()
 
-        elstring = ''
+        @$el.html ''
         for viewVessel in viewVessels
-            elstring += viewVessel.get('view').render().el
-        @$el.html elstring
+            @$el.append viewVessel.get('view').render().el
 
         return this
 
     push: (newView, opts) =>
         opts = _.extend @options.pushDefaults, opts
-
         # remove the current view out of the way
         currentViewVessel = @collection.last()
-        if view?
+        if currentViewVessel?
             currentView = currentViewVessel.get 'view'
             animate currentView.$el, opts.animation, 'out', ->
                 # .detach() is the same as .remove() but keeps all the data and 
