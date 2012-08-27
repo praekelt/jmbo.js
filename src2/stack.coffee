@@ -1,8 +1,9 @@
 # these are mostly here for debugging purposes, if you console.log out the
-# collection of the stack I want it to be obvious about what type of thing it 
-# is.
+# collection of the stack I want it to be obvious about what type of object your 
+# dealing with.
 class StackViewVessel extends Backbone.Model
-    # pass
+
+
 class StackViewVessels extends Backbone.Collection
     model: StackViewVessel
 
@@ -36,8 +37,17 @@ class StackView extends Backbone.View
 
     initialize: ->
         if not @collection? then @collection = new StackViewVessels
-        @options.pushDefaults = _.extend {animation: 'slide-right', removeViewFromDOM: true}, @options.pushDefaults
-        @options.popDefaults  = _.extend {animation: 'slide-left'}, @options.popDefaults
+        # defaults
+        @options.pushDefaults = _.extend 
+            animation: 'slide-right'
+            removeViewFromDOM: true
+            ,
+            @options.pushDefaults
+
+        @options.popDefaults  = _.extend 
+            animation: 'slide-left'
+            ,
+            @options.popDefaults
 
     render: =>
         # grab current view and cached views

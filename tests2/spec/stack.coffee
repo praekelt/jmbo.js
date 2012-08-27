@@ -60,11 +60,10 @@ describe "StackView", ->
                 v = sv.get 'view'
                 expect($divs.eq(i).text()).toEqual(v.$el.text())
 
-        it "Executes animation in callback", ->
-            # pass
-
-        it "Executes animation out callback", ->
-            # pass
+        it "Executes animation callback", ->
+            callback_push = jasmine.createSpy 'stack push'
+            stackView.push newView, callback: callback_push
+            expect(callback_push).wasCalled()
 
 
 

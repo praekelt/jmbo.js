@@ -99,8 +99,14 @@
           return expect($divs.eq(i).text()).toEqual(v.$el.text());
         });
       });
-      it("Executes animation in callback", function() {});
-      return it("Executes animation out callback", function() {});
+      return it("Executes animation callback", function() {
+        var callback_push;
+        callback_push = jasmine.createSpy('stack push');
+        stackView.push(newView, {
+          callback: callback_push
+        });
+        return expect(callback_push).wasCalled();
+      });
     });
     describe("Popping views", function() {
       it("Remove a view from the collection", function() {});
