@@ -43,9 +43,10 @@
       $el.trigger(eventName);
       return;
     }
-    return $el.on('webkitAnimationEnd animationEnd', function() {
+    $el.on('webkitAnimationEnd animationEnd', function() {
       return $el.trigger(eventName);
     });
+    return $el.addClass(className);
   };
 
   StackView = (function(_super) {
@@ -100,9 +101,11 @@
       return this;
     };
 
-    StackView.prototype.push = function(newView, opts) {
-      var currentView, currentViewVessel;
-      opts = _.extend(this.options.pushDefaults, opts);
+    StackView.prototype.push = function(newView, options) {
+      var currentView, currentViewVessel, opts;
+      opts = {};
+      _.extend(opts, this.options.pushDefaults, options);
+      console.log(opts, options);
       currentViewVessel = this.collection.last();
       if (currentViewVessel != null) {
         currentView = currentViewVessel.get('view');
@@ -119,17 +122,20 @@
       this.collection.add({
         'view': newView
       });
+      newView.stackView = this;
       this.$el.append(newView.render().el);
       return animate(newView.$el, opts.animation, 'in', function() {
         return typeof opts.callback === "function" ? opts.callback() : void 0;
       });
     };
 
-    StackView.prototype.pop = function(opts) {
-      var currentView, newView, newViewVessel, _ref;
-      opts = _.extend(this.options.popDefaults, opts);
+    StackView.prototype.pop = function(options) {
+      var currentView, newView, newViewVessel, opts, _ref;
+      opts = {};
+      _.extend(opts, this.options.popDefaults, options);
       currentView = (_ref = this.collection.pop()) != null ? _ref.get('view') : void 0;
       animate(currentView.$el, opts.animation, 'out', function() {
+        delete currentView.stackView;
         currentView.$el.remove();
         return typeof opts.callback === "function" ? opts.callback() : void 0;
       });
@@ -137,7 +143,7 @@
       if (newViewVessel != null) {
         newView = newViewVessel.get('view');
         if (!newViewVessel.get('_cache')) {
-          this.$el.append(newView.render());
+          this.$el.append(newView.render().el);
         }
         return animate(newView.$el, opts.animation, 'in');
       }

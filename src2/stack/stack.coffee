@@ -25,6 +25,8 @@ animate = ($el, animation, direction, callback) ->
     $el.on 'webkitAnimationEnd animationEnd', ->
         $el.trigger eventName
 
+    $el.addClass className
+
 
 class StackView extends Backbone.View
     ###
@@ -62,8 +64,12 @@ class StackView extends Backbone.View
 
         return this
 
-    push: (newView, opts) =>
-        opts = _.extend @options.pushDefaults, opts
+    push: (newView, options) =>
+        opts = {}
+        _.extend opts, @options.pushDefaults, options
+
+        console.log opts, options
+
         # remove the current view out of the way
         currentViewVessel = @collection.last()
         if currentViewVessel?
@@ -78,21 +84,26 @@ class StackView extends Backbone.View
 
         # and then add the new view, and move it into the way
         @collection.add 'view': newView
+        newView.stackView = this
         @$el.append newView.render().el
         animate newView.$el, opts.animation, 'in', ->
             # TODO: trigger `rendered` event
             opts.callback?()
 
 
-    pop: (opts) =>
-        opts = _.extend @options.popDefaults, opts
+    pop: (options) =>
+        opts = {}
+        _.extend opts, @options.popDefaults, options
+        
 
         # remove the current view from the collection and the DOM.
         currentView = @collection.pop()?.get 'view'
         animate currentView.$el, opts.animation, 'out', ->
             # remove this view, it's dead to us now.
+            delete currentView.stackView
             currentView.$el.remove()
             opts.callback?()
+
             # TODO: test if this cleans up the memory as well?
 
         # animate in the previous view
@@ -100,7 +111,7 @@ class StackView extends Backbone.View
         if newViewVessel?
             newView = newViewVessel.get 'view'
             if not newViewVessel.get '_cache'
-                @$el.append newView.render()
+                @$el.append newView.render().el
                 # TODO: trigger `rendered` event
 
             animate newView.$el, opts.animation, 'in'

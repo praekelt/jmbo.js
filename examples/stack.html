@@ -1,0 +1,110 @@
+<html>
+<head>
+    <title>Jmbo.js: Stack Example</title>
+    
+    <link rel="stylesheet" type="text/css" href="lib/examples.css">
+    <!-- Jmbo.js dependencies -->
+    <script type="text/javascript" src="lib/jquery-1.8.0.min.js"></script>
+    <script type="text/javascript" src="lib/underscore-min.js"></script>
+    <script type="text/javascript" src="lib/backbone-min.js"></script>
+
+    <!-- Jmbo.js Stack View -->
+    <link rel="stylesheet" type="text/css" href="../src2/stack/stack.css">
+    <script type="text/javascript" src="../src2/stack/stack.js"></script>
+    
+
+    <script type="text/javascript">
+        $(function() {
+
+            var opts = {}
+
+            var SecondView = Backbone.View.extend({
+                events: {
+                    'click a': 'popView'
+                },
+                initialize: function() {
+                    _.bindAll(this, 'render', 'popView');
+                },
+                render: function() {
+                    this.$el.html('I am the second view, <a href="#pop">pop back to first?</a>')
+                    return this;
+                },
+                popView: function() {
+                    console.log('Popping View');
+                    this.stackView.pop(opts);
+                    return false;
+                }
+            });
+
+            
+        
+
+            var FirstView = Backbone.View.extend({
+                events: {
+                    'click a': 'pushView'
+                },
+                initialize: function() {
+                    _.bindAll(this, 'render', 'pushView');
+                },
+                render: function() {
+                    this.$el.html('I am the first view, <a href="#push">Push another view</a>.');
+                    return this;
+                },
+                pushView: function() {
+                    console.log('Pushing View', opts.animation);
+                    this.stackView.push(new SecondView(), opts);
+                    return false;
+                }
+            });
+
+            var stackView = new Jmbo.StackView();
+            stackView.push(new FirstView());
+            $('#viewport').html(stackView.render().el);
+
+
+            $('#animation').on('click', function() {
+                $el = $(this);
+
+                if ($el.text() == 'On') {
+                    $el.text('Off');
+                    opts.animation = false
+                } else {
+                    $el.text('On');
+                    delete opts.animation
+                }
+            });
+
+            $('#removeFromDOM').on('click', function() {
+                $el = $(this);
+
+                if ($el.text() == 'On') {
+                    $el.text('Off')
+                    opts.removeFromDOM = false;
+                } else {
+                    $el.text('On');
+                    opts.removeFromDOM = true;
+                }
+            });
+
+        });
+    </script>
+</head>
+<body>
+    <h1>Stack</h1>
+
+    <p>Use a stack to transition between views. </p>
+
+    Options
+    <ul>
+        <li>Animations: <button type="button" id="animation">On</button></li>
+        <li>RemoveFromDOM: <button type="button" id="removeFromDOM">On</button></li>
+    </ul>
+    
+
+    <div id="viewport">
+    </div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,9 @@
+#viewport {
+    overflow:hidden;
+    border:5px #333 solid;
+    border-radius:5px;
+    width:320px;
+    height:480px;
+    margin:0 auto;
+    padding:5px;
+}
