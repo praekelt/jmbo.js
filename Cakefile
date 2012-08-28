@@ -3,11 +3,7 @@ fs = require 'fs'
 
 
 files = [
-        'src/main'
-        'src/ui'
-        'src/ui.view'
-        'src/ui.stack'
-        'src/ui.tab'
+        'src/stack/stack'
     ]
 
 
