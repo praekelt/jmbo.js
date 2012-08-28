@@ -17,7 +17,7 @@ animate = ($el, animation, direction, callback) ->
         $el.removeClass className
         callback?()
 
-
+    # animation is false, no animation event will occur, trigger event manually
     if animation is false
         $el.trigger eventName
         return
@@ -37,10 +37,12 @@ class StackView extends Backbone.View
 
     initialize: ->
         if not @collection? then @collection = new StackViewVessels
+        @collection.on 'reset', @render
+
         # defaults
         @options.pushDefaults = _.extend 
             animation: 'slide-right'
-            removeViewFromDOM: true
+            removeFromDOM: true
             ,
             @options.pushDefaults
 
@@ -52,10 +54,9 @@ class StackView extends Backbone.View
     render: =>
         # grab current view and cached views
         viewVessels = @collection.where _cache: true
-
         if @collection.last() then viewVessels.push @collection.last()
 
-        @$el.html ''
+        @$el.contents().detach()
         for viewVessel in viewVessels
             @$el.append viewVessel.get('view').render().el
 
@@ -70,8 +71,8 @@ class StackView extends Backbone.View
             animate currentView.$el, opts.animation, 'out', ->
                 # .detach() is the same as .remove() but keeps all the data and 
                 # the events events.
-                if not opts.removeViewFromDOM
-                    currentViewVessel.set '_cache': not opts.removeViewFromDOM
+                if not opts.removeFromDOM
+                    currentViewVessel.set '_cache': not opts.removeFromDOM
                 else
                     currentView.$el.detach()
 
@@ -92,7 +93,7 @@ class StackView extends Backbone.View
             # remove this view, it's dead to us now.
             currentView.$el.remove()
             opts.callback?()
-            # TODO: does this clean up the memory as well?
+            # TODO: test if this cleans up the memory as well?
 
         # animate in the previous view
         newViewVessel = @collection.last()

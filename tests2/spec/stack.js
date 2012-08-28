@@ -33,7 +33,7 @@
         return expect(stackView.options.pushDefaults.animation).toBe(false);
       });
     });
-    describe("Pushing a view", function() {
+    describe("Pushing views", function() {
       var newView;
       newView = void 0;
       beforeEach(function() {
@@ -61,11 +61,11 @@
         stackView.push(newView);
         return expect(stackView.collection.last().get('view')).toBe(newView);
       });
-      it("Render that view on `render()`", function() {
+      it("Render the view on `render()`", function() {
         stackView.push(newView);
         return expect(stackView.render().$el.find('div').eq(0).text()).toEqual(newView.$el.text());
       });
-      it("Not remove the previous view from DOM when `removeViewFromDOM` is false", function() {
+      it("Not remove the previous view from DOM when `removeFromDOM` is false", function() {
         var $divs, AnotherView, anotherView;
         stackView.push(newView);
         AnotherView = (function(_super) {
@@ -87,7 +87,7 @@
         })(Backbone.View);
         anotherView = new AnotherView();
         stackView.push(anotherView, {
-          removeViewFromDOM: false
+          removeFromDOM: false
         });
         expect(stackView.collection.last().get('view')).toBe(anotherView);
         stackView.render();
@@ -102,20 +102,80 @@
       return it("Executes animation callback", function() {
         var callback_push;
         callback_push = jasmine.createSpy('stack push');
-        stackView.push(newView, {
+        stackView.push(new Backbone.View, {
           callback: callback_push
         });
         return expect(callback_push).wasCalled();
       });
     });
     describe("Popping views", function() {
-      it("Remove a view from the collection", function() {});
-      return it("Execute animation callback", function() {});
+      it("Remove a view from the collection", function() {
+        stackView.push(new Backbone.View);
+        stackView.pop();
+        return expect(stackView.collection.length).toEqual(0);
+      });
+      return it("Execute animation callback", function() {
+        var callback_pop;
+        callback_pop = jasmine.createSpy('stack pop');
+        stackView.push(new Backbone.View, {
+          callback: callback_pop
+        });
+        return expect(callback_pop).wasCalled();
+      });
     });
     return describe("Rendering", function() {
-      it("Shouldn't render when the collection is empty", function() {});
-      it("Rerender when collection is reset", function() {});
-      return it("Render the last view in the collection", function() {});
+      it("Should even `render()` when the collection is empty", function() {
+        var $el;
+        expect(stackView.collection.length).toEqual(0);
+        $el = $(stackView.render().el);
+        return expect($el.text()).toEqual('');
+      });
+      return it("Rerender when collection is reset", function() {
+        var TestView1, TestView2, newView1, newView2;
+        TestView1 = (function(_super) {
+
+          __extends(TestView1, _super);
+
+          function TestView1() {
+            this.render = __bind(this.render, this);
+            return TestView1.__super__.constructor.apply(this, arguments);
+          }
+
+          TestView1.prototype.render = function() {
+            this.$el.html('Pew.Pew.Pew.');
+            return this;
+          };
+
+          return TestView1;
+
+        })(Backbone.View);
+        newView1 = new TestView1();
+        stackView.push(newView1);
+        expect(stackView.render().$el.find('div').eq(0).text()).toEqual(newView1.$el.text());
+        TestView2 = (function(_super) {
+
+          __extends(TestView2, _super);
+
+          function TestView2() {
+            this.render = __bind(this.render, this);
+            return TestView2.__super__.constructor.apply(this, arguments);
+          }
+
+          TestView2.prototype.render = function() {
+            this.$el.html('Margle.');
+            return this;
+          };
+
+          return TestView2;
+
+        })(Backbone.View);
+        newView2 = new TestView2();
+        stackView.push(newView2);
+        stackView.collection.reset(new Backbone.Model({
+          view: newView2
+        }));
+        return expect(stackView.$el.find('div').eq(0).text()).toEqual(newView2.$el.text());
+      });
     });
   });
 

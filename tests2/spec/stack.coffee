@@ -4,7 +4,7 @@ describe "StackView", ->
     beforeEach ->
         stackView = new Jmbo.StackView 
             pushDefaults: {animation: false}
-            popDefaults: {animation: false}, 
+            popDefaults : {animation: false}, 
 
 
     describe "Initialization", ->
@@ -20,7 +20,7 @@ describe "StackView", ->
         it "Push/ Pop defaults shouldn't be overwritten", ->
             expect(stackView.options.pushDefaults.animation).toBe(false)
 
-    describe "Pushing a view", ->
+    describe "Pushing views", ->
 
         newView = undefined
         beforeEach ->
@@ -34,11 +34,11 @@ describe "StackView", ->
             stackView.push newView
             expect(stackView.collection.last().get 'view').toBe(newView)
 
-        it "Render that view on `render()`", ->
+        it "Render the view on `render()`", ->
             stackView.push newView
             expect(stackView.render().$el.find('div').eq(0).text()).toEqual(newView.$el.text())
 
-        it "Not remove the previous view from DOM when `removeViewFromDOM` is false", ->
+        it "Not remove the previous view from DOM when `removeFromDOM` is false", ->
             # add existing view
             stackView.push newView
 
@@ -49,7 +49,7 @@ describe "StackView", ->
                     return this
 
             anotherView = new AnotherView()
-            stackView.push anotherView, removeViewFromDOM: false
+            stackView.push anotherView, removeFromDOM: false
             expect(stackView.collection.last().get 'view').toBe(anotherView)
 
             stackView.render()
@@ -62,7 +62,7 @@ describe "StackView", ->
 
         it "Executes animation callback", ->
             callback_push = jasmine.createSpy 'stack push'
-            stackView.push newView, callback: callback_push
+            stackView.push new Backbone.View, callback: callback_push
             expect(callback_push).wasCalled()
 
 
@@ -71,36 +71,42 @@ describe "StackView", ->
     describe "Popping views", ->
 
         it "Remove a view from the collection", ->
-            # pass
+            stackView.push new Backbone.View
+            stackView.pop()
+            expect(stackView.collection.length).toEqual(0)
 
         it "Execute animation callback", ->
-            # pass
+            callback_pop = jasmine.createSpy 'stack pop'
+            stackView.push new Backbone.View, callback: callback_pop
+            expect(callback_pop).wasCalled()
 
 
     describe "Rendering", ->
         # pass
 
-        it "Shouldn't render when the collection is empty", ->
-            # pass
+        it "Should even `render()` when the collection is empty", ->
+            expect(stackView.collection.length).toEqual(0)
+            $el = $ stackView.render().el
+            expect($el.text()).toEqual('')
+
 
         it "Rerender when collection is reset", ->
-            # pass
+            class TestView1 extends Backbone.View
+                render: =>
+                    @$el.html 'Pew.Pew.Pew.'
+                    return this
+            newView1 = new TestView1()
 
-        it "Render the last view in the collection", ->
+            stackView.push newView1
+            expect(stackView.render().$el.find('div').eq(0).text()).toEqual(newView1.$el.text())
 
 
+            class TestView2 extends Backbone.View
+                render: =>
+                    @$el.html 'Margle.'
+                    return this
+            newView2 = new TestView2()
+            stackView.push newView2
 
-
-
-
-
-
-# describe('stack.js', function() {
-
-#     describe('StackView', function() {
-
-#     describe('StackView', function() {
-#         it("each notch in namespace should be assigned or created", function() {
-#         });
-#     });
-# });
+            stackView.collection.reset new Backbone.Model(view: newView2)
+            expect(stackView.$el.find('div').eq(0).text()).toEqual(newView2.$el.text())
