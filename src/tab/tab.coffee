@@ -14,11 +14,11 @@ class TabViewVessels extends Backbone.Collection
 class TabView extends Backbone.View
     # pass
     className: 'jmbo-tab-view'
-
     selectedIndex: 0
 
     initialize: ->
         if not @collection? then @collection = new TabViewVessels
+        @collection.on 'change:selected', @renderSelected
 
     render: =>
         @$el.contents().detach()
@@ -29,18 +29,24 @@ class TabView extends Backbone.View
         @barView = new BarView(collection: @collection)
         @$el.append @barView.render().el
 
-        @renderSelected()
+        
 
         return this
 
 
-    renderSelected: =>
+    renderSelected: (model) =>
+        console.log 'I am cheese'
+        model = @collection.where('selected': true)[0]
         @$context.contents().detach()
-        @$context.append "context"
+        #@$context.append model.get('view').render().el
+
         
 
     selectedIndex: (index=0) =>
-        # margle
+        for model in @collection.where('selected': true)
+            do (model) ->
+                @model.set 'selected': false
+        @collection.at(selectedIndex).set 'selected': true
 
 
     # set
@@ -55,20 +61,39 @@ class BarView extends Backbone.View
         @collection.on 'add reset remove', @render
 
     render: =>
-        console.log 'render'
+        console.log @collection
         @$el.html ''
-        @collection.each (barItem) =>
-            @$el.append new BarItemView(model: barItem).render().el
+        @collection.each (model) =>
+            @$el.append new BarItemView(model: model).render().el
         return this
 
 
 class BarItemView extends Backbone.View
     tagName: 'li'
 
-    render: =>
+    events: ->
+        if 'ontouchstart' in document.documentElement 
+            return 'touchstart': 'select'
+        else
+            return 'click': 'select'
 
-        @$el.html @model.get 
+    initialize: ->
+        @model.on 'change:selected', @renderSelected
+
+    render: =>
+        @$el.html(@model.get('name')).addClass @model.get('icon')
         return this
+
+    renderSelected: =>
+        @$el.toggleClass 'selected'
+
+    select: =>
+        if @model.get('selected') is true then return
+        for model in @model.collection.where(selected: true)
+            do ->
+                model.set selected: false
+        @model.set selected: true
+        
 
 
 

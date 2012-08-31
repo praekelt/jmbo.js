@@ -3,7 +3,8 @@
   var BarItemView, BarView, TabView, TabViewVessel, TabViewVessels, exports,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   TabViewVessel = (function(_super) {
 
@@ -56,8 +57,9 @@
 
     TabView.prototype.initialize = function() {
       if (!(this.collection != null)) {
-        return this.collection = new TabViewVessels;
+        this.collection = new TabViewVessels;
       }
+      return this.collection.on('change:selected', this.renderSelected);
     };
 
     TabView.prototype.render = function() {
@@ -68,19 +70,37 @@
         collection: this.collection
       });
       this.$el.append(this.barView.render().el);
-      this.renderSelected();
       return this;
     };
 
-    TabView.prototype.renderSelected = function() {
-      this.$context.contents().detach();
-      return this.$context.append("context");
+    TabView.prototype.renderSelected = function(model) {
+      console.log('I am cheese');
+      model = this.collection.where({
+        'selected': true
+      })[0];
+      return this.$context.contents().detach();
     };
 
     TabView.prototype.selectedIndex = function(index) {
+      var model, _fn, _i, _len, _ref;
       if (index == null) {
         index = 0;
       }
+      _ref = this.collection.where({
+        'selected': true
+      });
+      _fn = function(model) {
+        return this.model.set({
+          'selected': false
+        });
+      };
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        model = _ref[_i];
+        _fn(model);
+      }
+      return this.collection.at(selectedIndex).set({
+        'selected': true
+      });
     };
 
     return TabView;
@@ -106,11 +126,11 @@
 
     BarView.prototype.render = function() {
       var _this = this;
-      console.log('render');
+      console.log(this.collection);
       this.$el.html('');
-      this.collection.each(function(barItem) {
+      this.collection.each(function(model) {
         return _this.$el.append(new BarItemView({
-          model: barItem
+          model: model
         }).render().el);
       });
       return this;
@@ -125,15 +145,61 @@
     __extends(BarItemView, _super);
 
     function BarItemView() {
+      this.select = __bind(this.select, this);
+
+      this.renderSelected = __bind(this.renderSelected, this);
+
       this.render = __bind(this.render, this);
       return BarItemView.__super__.constructor.apply(this, arguments);
     }
 
     BarItemView.prototype.tagName = 'li';
 
+    BarItemView.prototype.events = function() {
+      if (__indexOf.call(document.documentElement, 'ontouchstart') >= 0) {
+        return {
+          'touchstart': 'select'
+        };
+      } else {
+        return {
+          'click': 'select'
+        };
+      }
+    };
+
+    BarItemView.prototype.initialize = function() {
+      return this.model.on('change:selected', this.renderSelected);
+    };
+
     BarItemView.prototype.render = function() {
-      this.$el.html(this.model.get);
+      this.$el.html(this.model.get('name')).addClass(this.model.get('icon'));
       return this;
+    };
+
+    BarItemView.prototype.renderSelected = function() {
+      return this.$el.toggleClass('selected');
+    };
+
+    BarItemView.prototype.select = function() {
+      var model, _fn, _i, _len, _ref;
+      if (this.model.get('selected') === true) {
+        return;
+      }
+      _ref = this.model.collection.where({
+        selected: true
+      });
+      _fn = function() {
+        return model.set({
+          selected: false
+        });
+      };
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        model = _ref[_i];
+        _fn();
+      }
+      return this.model.set({
+        selected: true
+      });
     };
 
     return BarItemView;
