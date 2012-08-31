@@ -1,6 +1,10 @@
 class TabViewVessel extends Backbone.Model
+    defaults: 
+        icon: ''
+        name: 'Unnamed'
+        view: undefined
 class TabViewVessels extends Backbone.Collection
-    model: TabViewVessels
+    model: TabViewVessel
 
 
 
@@ -14,10 +18,7 @@ class TabView extends Backbone.View
     selectedIndex: 0
 
     initialize: ->
-        # takes a collection, or you create a collection.
-
-        # options 
-            # 
+        if not @collection? then @collection = new TabViewVessels
 
     render: =>
         @$el.contents().detach()
@@ -42,14 +43,22 @@ class TabView extends Backbone.View
         # margle
 
 
+    # set
+    # add
+    # remove
 
 class BarView extends Backbone.View
     tagName: 'ul'
-    className: '.jmbo-bar-view'
+    className: 'jmbo-bar-view'
 
+    initialize: ->
+        @collection.on 'add reset remove', @render
 
     render: =>
-        @$el.html 'bar'
+        console.log 'render'
+        @$el.html ''
+        @collection.each (barItem) =>
+            @$el.append new BarItemView(model: barItem).render().el
         return this
 
 
@@ -57,7 +66,8 @@ class BarItemView extends Backbone.View
     tagName: 'li'
 
     render: =>
-        @$el.html 'saodksaopdksa'
+
+        @$el.html @model.get 
         return this
 
 

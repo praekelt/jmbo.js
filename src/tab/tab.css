@@ -19,9 +19,19 @@
     height:44px;
     margin:0;
     padding:0;
-    list-style:none;
+    list-style-type:none;
 
     color:#fff;
     background:#333;
 }
+
+.jmbo-bar-view li {
+    display:table-cell;
+    text-align:center;
+    vertical-align:bottom;
+    font-size:.8em;
+
+}
+.jmbo-bar-view .selected { background-color:#999; }
+
 

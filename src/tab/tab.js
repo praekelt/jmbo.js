@@ -13,6 +13,12 @@
       return TabViewVessel.__super__.constructor.apply(this, arguments);
     }
 
+    TabViewVessel.prototype.defaults = {
+      icon: '',
+      name: 'Unnamed',
+      view: void 0
+    };
+
     return TabViewVessel;
 
   })(Backbone.Model);
@@ -25,7 +31,7 @@
       return TabViewVessels.__super__.constructor.apply(this, arguments);
     }
 
-    TabViewVessels.prototype.model = TabViewVessels;
+    TabViewVessels.prototype.model = TabViewVessel;
 
     return TabViewVessels;
 
@@ -48,7 +54,11 @@
 
     TabView.prototype.selectedIndex = 0;
 
-    TabView.prototype.initialize = function() {};
+    TabView.prototype.initialize = function() {
+      if (!(this.collection != null)) {
+        return this.collection = new TabViewVessels;
+      }
+    };
 
     TabView.prototype.render = function() {
       this.$el.contents().detach();
@@ -88,10 +98,21 @@
 
     BarView.prototype.tagName = 'ul';
 
-    BarView.prototype.className = '.jmbo-bar-view';
+    BarView.prototype.className = 'jmbo-bar-view';
+
+    BarView.prototype.initialize = function() {
+      return this.collection.on('add reset remove', this.render);
+    };
 
     BarView.prototype.render = function() {
-      this.$el.html('bar');
+      var _this = this;
+      console.log('render');
+      this.$el.html('');
+      this.collection.each(function(barItem) {
+        return _this.$el.append(new BarItemView({
+          model: barItem
+        }).render().el);
+      });
       return this;
     };
 
@@ -111,7 +132,7 @@
     BarItemView.prototype.tagName = 'li';
 
     BarItemView.prototype.render = function() {
-      this.$el.html('saodksaopdksa');
+      this.$el.html(this.model.get);
       return this;
     };
 
