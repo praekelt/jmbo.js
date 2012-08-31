@@ -36,7 +36,6 @@ class StackView extends Backbone.View
 
     initialize: ->
         if not @collection? then @collection = new StackViewVessels
-        @collection.on 'reset', @render
         # defaults
         @options.pushDefaults = _.extend 
             animation: 'slide-right'

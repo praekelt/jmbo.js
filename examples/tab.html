@@ -1,0 +1,40 @@
+<html>
+<head>
+    <title>Jmbo.js: Tab Example</title>
+    
+    <link rel="stylesheet" type="text/css" href="lib/examples.css">
+    <!-- Jmbo.js dependencies -->
+    <script type="text/javascript" src="lib/jquery-1.8.0.min.js"></script>
+    <script type="text/javascript" src="lib/underscore-min.js"></script>
+    <script type="text/javascript" src="lib/backbone-min.js"></script>
+
+    <!-- Jmbo.js Stack View -->
+    <link rel="stylesheet" type="text/css" href="../src/tab/tab.css">
+    <script type="text/javascript" src="../src/tab/tab.js"></script>
+    
+
+    <script type="text/javascript">
+        $(function() {
+
+            
+            var tabView = new Jmbo.TabView()
+
+            
+            $('#viewport').html(tabView.render().el);
+
+
+        });
+    </script>
+</head>
+<body>
+    <h1>Tab</h1>
+
+    <p>Use a tab to switch context between views.</p>
+
+    <div id="viewport">
+    </div>
+
+
+
+</body>
+</html>
