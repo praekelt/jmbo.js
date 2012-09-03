@@ -4,6 +4,7 @@
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __slice = [].slice,
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   TabViewVessel = (function(_super) {
@@ -45,6 +46,12 @@
     __extends(TabView, _super);
 
     function TabView() {
+      this.selectAtIndex = __bind(this.selectAtIndex, this);
+
+      this.removeAtIndex = __bind(this.removeAtIndex, this);
+
+      this.reset = __bind(this.reset, this);
+
       this.add = __bind(this.add, this);
 
       this.renderSelected = __bind(this.renderSelected, this);
@@ -76,8 +83,11 @@
     };
 
     TabView.prototype.renderSelected = function(model) {
-      var _base, _ref;
+      var view, _base, _ref;
       if (!model.get('selected')) {
+        if ((_ref = model.get('view')) != null) {
+          _ref.trigger('tab:blur');
+        }
         return;
       }
       if (typeof (_base = model.get('func')) === "function") {
@@ -86,11 +96,39 @@
       if (model.get('removeFromDOM')) {
         this.$context.contents().detach();
       }
-      return this.$context.append((_ref = model.get('view')) != null ? _ref.render().el : void 0);
+      view = model.get('view');
+      if (view != null) {
+        this.$context.append(view.render().el);
+        return view.trigger('tab:focus');
+      }
     };
 
-    TabView.prototype.add = function(opts) {
-      return this.collection.add(opts);
+    TabView.prototype.add = function(obj) {
+      return this.collection.add(obj);
+    };
+
+    TabView.prototype.reset = function() {
+      var objs;
+      objs = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+      return this.collection.reset(objs);
+    };
+
+    TabView.prototype.removeAtIndex = function(i) {
+      return this.collection.remove(this.collection.at(i));
+    };
+
+    TabView.prototype.selectAtIndex = function(i) {
+      var _ref;
+      if ((_ref = this.collection.where({
+        selected: true
+      })[0]) != null) {
+        _ref.set({
+          selected: false
+        });
+      }
+      return this.collection.at(i).set({
+        'selected': true
+      });
     };
 
     return TabView;

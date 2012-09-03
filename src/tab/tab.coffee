@@ -28,24 +28,35 @@ class TabView extends Backbone.View
         @barView = new BarView(collection: @collection)
         @$el.append @barView.render().el
 
-        
-
         return this
 
 
     renderSelected: (model) =>
-        if not model.get('selected') then return
+        if not model.get('selected') 
+            model.get('view')?.trigger 'tab:blur'
+            return
 
         # does this tab have a function to execute?
         model.get('func')?()
 
-        # we should add an option, clearView?
-        # does it have a view?
         if model.get('removeFromDOM') then @$context.contents().detach()
-        @$context.append model.get('view')?.render().el
+        view = model.get 'view'
+        if view?
+            @$context.append view.render().el
+            view.trigger 'tab:focus'
 
-    add: (opts) =>
-        @collection.add opts
+    add: (obj) =>
+        @collection.add obj
+
+    reset: (objs...) =>
+        @collection.reset objs
+
+    removeAtIndex: (i) => 
+        @collection.remove @collection.at(i)
+
+    selectAtIndex: (i) =>
+        @collection.where(selected: true)[0]?.set selected: false
+        @collection.at(i).set 'selected': true
 
 
 
