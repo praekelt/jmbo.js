@@ -16,9 +16,31 @@
     <script type="text/javascript">
         $(function() {
 
+
+            var ExampleView = Backbone.View.extend({
+                initialize: function() {
+                    _.bindAll(this, 'render');
+
+                },
+                render: function() {
+                    this.$el.html(this.options.text);
+                    return this;
+                }
+            });
+
             
-            window.tabView = new Jmbo.TabView()
+            tabView = new Jmbo.TabView()
             $('#viewport').html(tabView.render().el);
+
+            tabView.add({view: new ExampleView({text: '#1'}), name: '#1', func: function() { console.log('callback 1'); } });
+            tabView.add({view: new ExampleView({text: '#2'}), name: '#2'});
+            tabView.add({view: new ExampleView({text: '#3'}), name: '#3', func: function() { console.log('callback 3'); } });
+            tabView.add({name: '#4', removeFromDOM: false, func: function() { console.log('callback 4'); } });
+            // tabView.add(new ExampleView({text: '#2'}), '#2');
+            // tabView.add(new ExampleView({text: '#3'}), '#3');
+            // tabView.add(new ExampleView({text: '#4'}), '#4');
+
+
 
 
         });

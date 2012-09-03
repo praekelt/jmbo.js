@@ -17,7 +17,9 @@
     TabViewVessel.prototype.defaults = {
       icon: '',
       name: 'Unnamed',
-      view: void 0
+      view: void 0,
+      removeFromDOM: true,
+      func: void 0
     };
 
     return TabViewVessel;
@@ -43,7 +45,7 @@
     __extends(TabView, _super);
 
     function TabView() {
-      this.selectedIndex = __bind(this.selectedIndex, this);
+      this.add = __bind(this.add, this);
 
       this.renderSelected = __bind(this.renderSelected, this);
 
@@ -74,33 +76,21 @@
     };
 
     TabView.prototype.renderSelected = function(model) {
-      console.log('I am cheese');
-      model = this.collection.where({
-        'selected': true
-      })[0];
-      return this.$context.contents().detach();
+      var _base, _ref;
+      if (!model.get('selected')) {
+        return;
+      }
+      if (typeof (_base = model.get('func')) === "function") {
+        _base();
+      }
+      if (model.get('removeFromDOM')) {
+        this.$context.contents().detach();
+      }
+      return this.$context.append((_ref = model.get('view')) != null ? _ref.render().el : void 0);
     };
 
-    TabView.prototype.selectedIndex = function(index) {
-      var model, _fn, _i, _len, _ref;
-      if (index == null) {
-        index = 0;
-      }
-      _ref = this.collection.where({
-        'selected': true
-      });
-      _fn = function(model) {
-        return this.model.set({
-          'selected': false
-        });
-      };
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        model = _ref[_i];
-        _fn(model);
-      }
-      return this.collection.at(selectedIndex).set({
-        'selected': true
-      });
+    TabView.prototype.add = function(opts) {
+      return this.collection.add(opts);
     };
 
     return TabView;
@@ -126,7 +116,6 @@
 
     BarView.prototype.render = function() {
       var _this = this;
-      console.log(this.collection);
       this.$el.html('');
       this.collection.each(function(model) {
         return _this.$el.append(new BarItemView({
@@ -155,20 +144,14 @@
 
     BarItemView.prototype.tagName = 'li';
 
-    BarItemView.prototype.events = function() {
-      if (__indexOf.call(document.documentElement, 'ontouchstart') >= 0) {
-        return {
-          'touchstart': 'select'
-        };
-      } else {
-        return {
-          'click': 'select'
-        };
-      }
-    };
-
     BarItemView.prototype.initialize = function() {
-      return this.model.on('change:selected', this.renderSelected);
+      var tap;
+      this.model.on('change:selected', this.renderSelected);
+      tap = 'click';
+      if (__indexOf.call(document.documentElement, 'ontouchstart') >= 0) {
+        tap = 'touchstart';
+      }
+      return this.$el.on(tap, this.select);
     };
 
     BarItemView.prototype.render = function() {
@@ -181,21 +164,16 @@
     };
 
     BarItemView.prototype.select = function() {
-      var model, _fn, _i, _len, _ref;
+      var _ref;
       if (this.model.get('selected') === true) {
         return;
       }
-      _ref = this.model.collection.where({
+      if ((_ref = this.model.collection.where({
         selected: true
-      });
-      _fn = function() {
-        return model.set({
+      })[0]) != null) {
+        _ref.set({
           selected: false
         });
-      };
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        model = _ref[_i];
-        _fn();
       }
       return this.model.set({
         selected: true

@@ -3,11 +3,10 @@ class TabViewVessel extends Backbone.Model
         icon: ''
         name: 'Unnamed'
         view: undefined
+        removeFromDOM: true
+        func: undefined
 class TabViewVessels extends Backbone.Collection
     model: TabViewVessel
-
-
-
 
 
 
@@ -35,23 +34,20 @@ class TabView extends Backbone.View
 
 
     renderSelected: (model) =>
-        console.log 'I am cheese'
-        model = @collection.where('selected': true)[0]
-        @$context.contents().detach()
-        #@$context.append model.get('view').render().el
+        if not model.get('selected') then return
 
-        
+        # does this tab have a function to execute?
+        model.get('func')?()
 
-    selectedIndex: (index=0) =>
-        for model in @collection.where('selected': true)
-            do (model) ->
-                @model.set 'selected': false
-        @collection.at(selectedIndex).set 'selected': true
+        # we should add an option, clearView?
+        # does it have a view?
+        if model.get('removeFromDOM') then @$context.contents().detach()
+        @$context.append model.get('view')?.render().el
+
+    add: (opts) =>
+        @collection.add opts
 
 
-    # set
-    # add
-    # remove
 
 class BarView extends Backbone.View
     tagName: 'ul'
@@ -61,7 +57,6 @@ class BarView extends Backbone.View
         @collection.on 'add reset remove', @render
 
     render: =>
-        console.log @collection
         @$el.html ''
         @collection.each (model) =>
             @$el.append new BarItemView(model: model).render().el
@@ -71,14 +66,11 @@ class BarView extends Backbone.View
 class BarItemView extends Backbone.View
     tagName: 'li'
 
-    events: ->
-        if 'ontouchstart' in document.documentElement 
-            return 'touchstart': 'select'
-        else
-            return 'click': 'select'
-
     initialize: ->
         @model.on 'change:selected', @renderSelected
+        tap = 'click'
+        if 'ontouchstart' in document.documentElement then tap = 'touchstart'    
+        @$el.on tap, @select
 
     render: =>
         @$el.html(@model.get('name')).addClass @model.get('icon')
@@ -89,9 +81,7 @@ class BarItemView extends Backbone.View
 
     select: =>
         if @model.get('selected') is true then return
-        for model in @model.collection.where(selected: true)
-            do ->
-                model.set selected: false
+        @model.collection.where(selected: true)[0]?.set selected: false
         @model.set selected: true
         
 
