@@ -113,7 +113,7 @@
           }
 
           SecondView.prototype.render = function() {
-            this.$el.html('Pew2. Pew2. Pew2.');
+            this.$el.html('Pew2.Pew2.Pew2.');
             return this;
           };
 
@@ -127,7 +127,8 @@
         });
         $el.find('.jmbo-bar-view li').eq(0).click();
         expect($el.find('.jmbo-tab-view-context').text()).toEqual(testView.$el.text());
-        return $el.find('.jmbo-bar-view li').eq(1).click();
+        $el.find('.jmbo-bar-view li').eq(1).click();
+        return expect($el.find('.jmbo-tab-view-context').text()).toEqual(testView.$el.text() + secondView.$el.text());
       });
       return it("Execute callback when `func` is specified", function() {});
     });

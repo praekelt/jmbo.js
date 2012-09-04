@@ -77,7 +77,7 @@ describe "TabView", ->
 
             class SecondView extends Backbone.View
                 render: =>
-                    @$el.html 'Pew2. Pew2. Pew2.'
+                    @$el.html 'Pew2.Pew2.Pew2.'
                     return this
             secondView = new SecondView()
 
@@ -86,7 +86,7 @@ describe "TabView", ->
             expect($el.find('.jmbo-tab-view-context').text()).toEqual(testView.$el.text())
 
             $el.find('.jmbo-bar-view li').eq(1).click()
-
+            expect($el.find('.jmbo-tab-view-context').text()).toEqual(testView.$el.text() + secondView.$el.text())
             
 
 
