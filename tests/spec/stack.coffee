@@ -9,10 +9,10 @@ describe "StackView", ->
 
     describe "Initialization", ->
         
-        it "Create an empty collection if one isn't provided", ->
+        it "Creates an empty collection if one isn't provided", ->
             expect(stackView.collection).toBeDefined()
 
-        it "Accept a collection as a parameter", ->
+        it "Accepts a collection as a parameter", ->
             collection = new Backbone.Collection
             s = new Jmbo.StackView collection: collection
             expect(s.collection).toBe(collection)

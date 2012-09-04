@@ -18,10 +18,10 @@
       });
     });
     describe("Initialization", function() {
-      it("Create an empty collection if one isn't provided", function() {
+      it("Creates an empty collection if one isn't provided", function() {
         return expect(stackView.collection).toBeDefined();
       });
-      it("Accept a collection as a parameter", function() {
+      it("Accepts a collection as a parameter", function() {
         var collection, s;
         collection = new Backbone.Collection;
         s = new Jmbo.StackView({

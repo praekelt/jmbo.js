@@ -62,8 +62,6 @@
 
     TabView.prototype.className = 'jmbo-tab-view';
 
-    TabView.prototype.selectedIndex = 0;
-
     TabView.prototype.initialize = function() {
       if (!(this.collection != null)) {
         this.collection = new TabViewVessels;

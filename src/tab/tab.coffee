@@ -9,11 +9,8 @@ class TabViewVessels extends Backbone.Collection
     model: TabViewVessel
 
 
-
 class TabView extends Backbone.View
-    # pass
     className: 'jmbo-tab-view'
-    selectedIndex: 0
 
     initialize: ->
         if not @collection? then @collection = new TabViewVessels
@@ -29,7 +26,6 @@ class TabView extends Backbone.View
         @$el.append @barView.render().el
 
         return this
-
 
     renderSelected: (model) =>
         if not model.get('selected') 
@@ -57,7 +53,6 @@ class TabView extends Backbone.View
     selectAtIndex: (i) =>
         @collection.where(selected: true)[0]?.set selected: false
         @collection.at(i).set 'selected': true
-
 
 
 class BarView extends Backbone.View
