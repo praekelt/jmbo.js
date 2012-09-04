@@ -92,6 +92,15 @@ describe "TabView", ->
 
         it "Execute callback when `func` is specified", ->
 
+            callback = jasmine.createSpy 'tab func push'
+            $el = $('<div/>');
+            $el.html tabView.render().el
+            tabView.add view: testView, func: callback
+
+            $el.find('.jmbo-bar-view li').eq(0).click()
+            expect($el.find('.jmbo-tab-view-context').text()).toEqual(testView.$el.text())
+            expect(callback).wasCalled()
+
 
 
 

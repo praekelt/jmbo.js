@@ -130,7 +130,19 @@
         $el.find('.jmbo-bar-view li').eq(1).click();
         return expect($el.find('.jmbo-tab-view-context').text()).toEqual(testView.$el.text() + secondView.$el.text());
       });
-      return it("Execute callback when `func` is specified", function() {});
+      return it("Execute callback when `func` is specified", function() {
+        var $el, callback;
+        callback = jasmine.createSpy('tab func push');
+        $el = $('<div/>');
+        $el.html(tabView.render().el);
+        tabView.add({
+          view: testView,
+          func: callback
+        });
+        $el.find('.jmbo-bar-view li').eq(0).click();
+        expect($el.find('.jmbo-tab-view-context').text()).toEqual(testView.$el.text());
+        return expect(callback).wasCalled();
+      });
     });
   });
 
