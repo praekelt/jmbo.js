@@ -8,9 +8,12 @@ class TitleView extends Backbone.View
         # dropDownMenu; which I guess could be a collection?
 
     render: =>
+        @$el.html @options.name
+        if @options.actionLeft?
+            @$el.append "LEFTY"
 
-        @$el.html @options.title
-
+        if @options.actionRight?
+            @$el.append "RIGHTY"
 
 
 exports = this
