@@ -1,7 +1,15 @@
-Jmbo.js
+=Jmbo.js=
 
-Jmbo.js is a framework built on top of Backbone.js. The intention is to augment
-HTML5 app development, specificically mobile app development, by providing
-straightforward modules which are most commonly used in Android and iPhone apps.
+Jmbo.js is a set of components built on top of Backbone.js. Jmbo.js' 
+intention is to provide simple decoupled components that are most commonly
+found in iOS and Android app development.
 
+==StackView==
+
+A hierachical navigation view which allows you to push and pop Backbone
+Views. Views are transitioned with CSS animations.
+
+==TabView==
+
+Allows you to switch between views.
 

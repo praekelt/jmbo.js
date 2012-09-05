@@ -57,7 +57,7 @@ class TabView extends Backbone.View
 
 class BarView extends Backbone.View
     tagName: 'ul'
-    className: 'jmbo-bar-view'
+    className: 'jmbo-tab-bar-view'
 
     initialize: ->
         @collection.on 'add reset remove', @render
