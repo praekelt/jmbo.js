@@ -5,7 +5,6 @@ class TitleView extends Backbone.View
         # name
         # actionLeft: icon, callback
         # actionRight: icon, callback
-        # dropDownMenu; which I guess could be a collection?
 
     render: =>
         @$el.html @options.name

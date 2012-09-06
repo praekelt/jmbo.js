@@ -78,13 +78,13 @@
       if (!(this.collection != null)) {
         this.collection = new StackViewVessels;
       }
-      this.options.pushDefaults = _.extend({
+      _.defaults(this.options.pushDefaults, {
         animation: 'slide-right',
         removeFromDOM: true
-      }, this.options.pushDefaults);
-      return this.options.popDefaults = _.extend({
+      });
+      return _.defaults(this.options.popDefaults, {
         animation: 'slide-left'
-      }, this.options.popDefaults);
+      });
     };
 
     StackView.prototype.render = function() {
@@ -103,10 +103,9 @@
       return this;
     };
 
-    StackView.prototype.push = function(newView, options) {
-      var currentView, currentViewVessel, opts;
-      opts = {};
-      _.extend(opts, this.options.pushDefaults, options);
+    StackView.prototype.push = function(newView, opts) {
+      var currentView, currentViewVessel;
+      _.defaults(opts, this.options.pushDefaults);
       currentViewVessel = this.collection.last();
       if (currentViewVessel != null) {
         currentView = currentViewVessel.get('view');
@@ -130,10 +129,9 @@
       });
     };
 
-    StackView.prototype.pop = function(options) {
-      var currentView, newView, newViewVessel, opts, _ref;
-      opts = {};
-      _.extend(opts, this.options.popDefaults, options);
+    StackView.prototype.pop = function(opts) {
+      var currentView, newView, newViewVessel, _ref;
+      _.defaults(opts, this.options.popDefaults);
       currentView = (_ref = this.collection.pop()) != null ? _ref.get('view') : void 0;
       animate(currentView.$el, opts.animation, 'out', function() {
         delete currentView.stackView;

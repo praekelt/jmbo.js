@@ -5,6 +5,7 @@ fs = require 'fs'
 files = [
         'src/stack/stack'
         'src/tab/tab'
+        'src/title/title'
     ]
 
 

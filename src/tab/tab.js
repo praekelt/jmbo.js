@@ -70,6 +70,7 @@
     };
 
     TabView.prototype.render = function() {
+      var selectedView;
       this.$el.contents().detach();
       this.$context = $('<div class="jmbo-tab-view-context"></div>');
       this.$el.append(this.$context);
@@ -77,6 +78,12 @@
         collection: this.collection
       });
       this.$el.append(this.barView.render().el);
+      selectedView = this.collection.where({
+        'selected': true
+      })[0];
+      if (selectedView != null) {
+        this.renderSelected(selectedView);
+      }
       return this;
     };
 
@@ -144,7 +151,7 @@
 
     BarView.prototype.tagName = 'ul';
 
-    BarView.prototype.className = 'jmbo-bar-view';
+    BarView.prototype.className = 'jmbo-tab-bar-view';
 
     BarView.prototype.initialize = function() {
       return this.collection.on('add reset remove', this.render);
