@@ -8,23 +8,20 @@ class TitleView extends Backbone.View
         # extraClasses
 
     render: =>
-        console.log @options
         @$el.html @options.name
-        if @options.actionLeft?
 
-            
-            @$el.append "LEFTY"
-
-        if @options.actionRight?
-            @$el.append @renderAction(@options.actionRight)
+        # a titleview can have many actions, styling is done with CSS.
+        @renderAction(action) for action in @options.actions
 
         return this
 
     renderAction: (action) =>
         $action = $('<div/>')
-            .addClass(@options.actionRight.extraClasses)
-            .html(@options.actionRight.name)
-            .on 'click', @options.actionRight.callback
+            .addClass(action.extraClasses)
+            .html(action.name)
+            .on 'click', action.callback
+
+        @$el.append $action
         
 
 

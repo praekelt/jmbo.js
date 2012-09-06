@@ -21,20 +21,20 @@
     TitleView.prototype.initialize = function() {};
 
     TitleView.prototype.render = function() {
-      console.log(this.options);
+      var action, _i, _len, _ref;
       this.$el.html(this.options.name);
-      if (this.options.actionLeft != null) {
-        this.$el.append("LEFTY");
-      }
-      if (this.options.actionRight != null) {
-        this.$el.append(this.renderAction(this.options.actionRight));
+      _ref = this.options.actions;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        action = _ref[_i];
+        this.renderAction(action);
       }
       return this;
     };
 
     TitleView.prototype.renderAction = function(action) {
       var $action;
-      return $action = $('<div/>').addClass(this.options.actionRight.extraClasses).html(this.options.actionRight.name).on('click', this.options.actionRight.callback);
+      $action = $('<div/>').addClass(action.extraClasses).html(action.name).on('click', action.callback);
+      return this.$el.append($action);
     };
 
     return TitleView;
