@@ -24,8 +24,9 @@
         this.$el.append("LEFTY");
       }
       if (this.options.actionRight != null) {
-        return this.$el.append("RIGHTY");
+        this.$el.append("RIGHTY");
       }
+      return this;
     };
 
     return TitleView;

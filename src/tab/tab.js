@@ -70,6 +70,7 @@
     };
 
     TabView.prototype.render = function() {
+      var selectedView;
       this.$el.contents().detach();
       this.$context = $('<div class="jmbo-tab-view-context"></div>');
       this.$el.append(this.$context);
@@ -77,6 +78,12 @@
         collection: this.collection
       });
       this.$el.append(this.barView.render().el);
+      selectedView = this.collection.where({
+        'selected': true
+      })[0];
+      if (selectedView != null) {
+        this.renderSelected(selectedView);
+      }
       return this;
     };
 

@@ -14,6 +14,8 @@ class TitleView extends Backbone.View
         if @options.actionRight?
             @$el.append "RIGHTY"
 
+        return this
+
 
 exports = this
 exports.Jmbo = exports.Jmbo ? {}
