@@ -48,13 +48,13 @@
         var $el, view_name;
         $el = $('<div/>');
         $el.html(tabView.render().el);
-        expect($el.find('.jmbo-bar-view li').length).toEqual(0);
+        expect($el.find('.jmbo-tab-bar-view li').length).toEqual(0);
         view_name = 'Test View';
         tabView.add({
           view: testView,
           name: view_name
         });
-        return expect($el.find('.jmbo-bar-view li').text()).toEqual(view_name);
+        return expect($el.find('.jmbo-tab-bar-view li').text()).toEqual(view_name);
       });
       return it("Updates the DOM when views are removed/ reset", function() {
         var $el;
@@ -63,15 +63,15 @@
         tabView.add({
           view: testView
         });
-        expect($el.find('.jmbo-bar-view li').length).toEqual(1);
+        expect($el.find('.jmbo-tab-bar-view li').length).toEqual(1);
         tabView.reset();
-        expect($el.find('.jmbo-bar-view li').length).toEqual(0);
+        expect($el.find('.jmbo-tab-bar-view li').length).toEqual(0);
         tabView.add({
           view: testView
         });
-        expect($el.find('.jmbo-bar-view li').length).toEqual(1);
+        expect($el.find('.jmbo-tab-bar-view li').length).toEqual(1);
         tabView.removeAtIndex(0);
-        return expect($el.find('.jmbo-bar-view li').length).toEqual(0);
+        return expect($el.find('.jmbo-tab-bar-view li').length).toEqual(0);
       });
     });
     return describe("Tab Bar", function() {
@@ -82,8 +82,8 @@
         tabView.add({
           view: testView
         });
-        expect($el.find('.jmbo-bar-view li').length).toEqual(1);
-        $el.find('.jmbo-bar-view li').eq(0).click();
+        expect($el.find('.jmbo-tab-bar-view li').length).toEqual(1);
+        $el.find('.jmbo-tab-bar-view li').eq(0).click();
         return expect(tabView.collection.at(0).get('selected')).toEqual(true);
       });
       it("Render view in context when element is clicked", function() {
@@ -93,7 +93,7 @@
         tabView.add({
           view: testView
         });
-        $el.find('.jmbo-bar-view li').eq(0).click();
+        $el.find('.jmbo-tab-bar-view li').eq(0).click();
         return expect($el.find('.jmbo-tab-view-context').text()).toEqual(testView.$el.text());
       });
       it("Not remove from context with `removeFromDOM` and clicked", function() {
@@ -125,9 +125,9 @@
           view: secondView,
           removeFromDOM: false
         });
-        $el.find('.jmbo-bar-view li').eq(0).click();
+        $el.find('.jmbo-tab-bar-view li').eq(0).click();
         expect($el.find('.jmbo-tab-view-context').text()).toEqual(testView.$el.text());
-        $el.find('.jmbo-bar-view li').eq(1).click();
+        $el.find('.jmbo-tab-bar-view li').eq(1).click();
         return expect($el.find('.jmbo-tab-view-context').text()).toEqual(testView.$el.text() + secondView.$el.text());
       });
       return it("Execute callback when `func` is specified", function() {
@@ -139,7 +139,7 @@
           view: testView,
           func: callback
         });
-        $el.find('.jmbo-bar-view li').eq(0).click();
+        $el.find('.jmbo-tab-bar-view li').eq(0).click();
         expect($el.find('.jmbo-tab-view-context').text()).toEqual(testView.$el.text());
         return expect(callback).wasCalled();
       });

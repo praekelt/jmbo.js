@@ -25,8 +25,8 @@ class TabView extends Backbone.View
         @barView = new BarView(collection: @collection)
         @$el.append @barView.render().el
 
-        selectedView = @collection.where('selected': true)[0]
-        if selectedView? then @renderSelected(selectedView)
+        # selectedView = @collection.where('selected': true)[0]
+        # if selectedView? then @renderSelected(selectedView)
 
         return this
 

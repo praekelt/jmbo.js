@@ -37,8 +37,16 @@ class StackView extends Backbone.View
     initialize: ->
         if not @collection? then @collection = new StackViewVessels
         # defaults
-        _.defaults @options.pushDefaults, {animation: 'slide-right',removeFromDOM: true}
-        _.defaults @options.popDefaults, {animation: 'slide-left'}
+        @options.pushDefaults = _.extend 
+            animation: 'slide-right'
+            removeFromDOM: true
+            ,
+            @options.pushDefaults
+
+        @options.popDefaults  = _.extend 
+            animation: 'slide-left'
+            ,
+            @options.popDefaults
 
     render: =>
         # render the current view and any views which are meant to be cached.
@@ -51,7 +59,7 @@ class StackView extends Backbone.View
 
         return this
 
-    push: (newView, opts) =>
+    push: (newView, opts={}) =>
         _.defaults opts, @options.pushDefaults
 
         # remove the current view out of the way
@@ -75,7 +83,7 @@ class StackView extends Backbone.View
             opts.callback?()
 
 
-    pop: (opts) =>
+    pop: (opts={}) =>
         _.defaults opts, @options.popDefaults
         
         # remove the current view from the collection and the DOM.

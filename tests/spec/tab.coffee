@@ -27,27 +27,27 @@ describe "TabView", ->
         it "Updates the DOM when views are added.", ->
             $el = $('<div/>');
             $el.html tabView.render().el
-            expect($el.find('.jmbo-bar-view li').length).toEqual(0)
+            expect($el.find('.jmbo-tab-bar-view li').length).toEqual(0)
 
             view_name = 'Test View'
             tabView.add view: testView, name: view_name
-            expect($el.find('.jmbo-bar-view li').text()).toEqual(view_name)
+            expect($el.find('.jmbo-tab-bar-view li').text()).toEqual(view_name)
 
         it "Updates the DOM when views are removed/ reset", ->
             $el = $('<div/>');
             $el.html tabView.render().el
             # add
             tabView.add view: testView
-            expect($el.find('.jmbo-bar-view li').length).toEqual(1)
+            expect($el.find('.jmbo-tab-bar-view li').length).toEqual(1)
             # remove
             tabView.reset()
-            expect($el.find('.jmbo-bar-view li').length).toEqual(0)
+            expect($el.find('.jmbo-tab-bar-view li').length).toEqual(0)
             # add
             tabView.add view: testView
-            expect($el.find('.jmbo-bar-view li').length).toEqual(1)
+            expect($el.find('.jmbo-tab-bar-view li').length).toEqual(1)
             # remove
             tabView.removeAtIndex(0)
-            expect($el.find('.jmbo-bar-view li').length).toEqual(0)
+            expect($el.find('.jmbo-tab-bar-view li').length).toEqual(0)
 
     describe "Tab Bar", ->
 
@@ -57,8 +57,8 @@ describe "TabView", ->
             $el.html tabView.render().el
             # add
             tabView.add view: testView
-            expect($el.find('.jmbo-bar-view li').length).toEqual(1)
-            $el.find('.jmbo-bar-view li').eq(0).click()
+            expect($el.find('.jmbo-tab-bar-view li').length).toEqual(1)
+            $el.find('.jmbo-tab-bar-view li').eq(0).click()
 
             expect(tabView.collection.at(0).get('selected')).toEqual(true)
 
@@ -66,7 +66,7 @@ describe "TabView", ->
             $el = $('<div/>');
             $el.html tabView.render().el
             tabView.add view: testView
-            $el.find('.jmbo-bar-view li').eq(0).click()
+            $el.find('.jmbo-tab-bar-view li').eq(0).click()
             expect($el.find('.jmbo-tab-view-context').text()).toEqual(testView.$el.text())
 
 
@@ -82,10 +82,10 @@ describe "TabView", ->
             secondView = new SecondView()
 
             tabView.add view: secondView, removeFromDOM: false
-            $el.find('.jmbo-bar-view li').eq(0).click()
+            $el.find('.jmbo-tab-bar-view li').eq(0).click()
             expect($el.find('.jmbo-tab-view-context').text()).toEqual(testView.$el.text())
 
-            $el.find('.jmbo-bar-view li').eq(1).click()
+            $el.find('.jmbo-tab-bar-view li').eq(1).click()
             expect($el.find('.jmbo-tab-view-context').text()).toEqual(testView.$el.text() + secondView.$el.text())
             
 
@@ -97,7 +97,7 @@ describe "TabView", ->
             $el.html tabView.render().el
             tabView.add view: testView, func: callback
 
-            $el.find('.jmbo-bar-view li').eq(0).click()
+            $el.find('.jmbo-tab-bar-view li').eq(0).click()
             expect($el.find('.jmbo-tab-view-context').text()).toEqual(testView.$el.text())
             expect(callback).wasCalled()
 

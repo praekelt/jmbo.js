@@ -78,13 +78,13 @@
       if (!(this.collection != null)) {
         this.collection = new StackViewVessels;
       }
-      _.defaults(this.options.pushDefaults, {
+      this.options.pushDefaults = _.extend({
         animation: 'slide-right',
         removeFromDOM: true
-      });
-      return _.defaults(this.options.popDefaults, {
+      }, this.options.pushDefaults);
+      return this.options.popDefaults = _.extend({
         animation: 'slide-left'
-      });
+      }, this.options.popDefaults);
     };
 
     StackView.prototype.render = function() {
@@ -105,6 +105,9 @@
 
     StackView.prototype.push = function(newView, opts) {
       var currentView, currentViewVessel;
+      if (opts == null) {
+        opts = {};
+      }
       _.defaults(opts, this.options.pushDefaults);
       currentViewVessel = this.collection.last();
       if (currentViewVessel != null) {
@@ -131,6 +134,9 @@
 
     StackView.prototype.pop = function(opts) {
       var currentView, newView, newViewVessel, _ref;
+      if (opts == null) {
+        opts = {};
+      }
       _.defaults(opts, this.options.popDefaults);
       currentView = (_ref = this.collection.pop()) != null ? _ref.get('view') : void 0;
       animate(currentView.$el, opts.animation, 'out', function() {
