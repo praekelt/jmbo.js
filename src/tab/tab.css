@@ -1,6 +1,5 @@
 .jmbo-tab-view {
     position:relative;
-    height:100%;
     width:100%;
 }
 
@@ -8,7 +7,7 @@
     width:100%;
 }
 
-.jmbo-bar-view {
+.jmbo-tab-bar-view {
     display:table;
     table-layout:fixed;
     
@@ -25,13 +24,11 @@
     background:#333;
 }
 
-.jmbo-bar-view li {
+.jmbo-tab-bar-view li {
     display:table-cell;
     text-align:center;
     vertical-align:bottom;
     font-size:.8em;
 
 }
-.jmbo-bar-view .selected { background-color:#999; }
-
-
+.jmbo-bar-bar-view .selected { background-color:#999; }
