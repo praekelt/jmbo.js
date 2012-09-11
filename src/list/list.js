@@ -23,7 +23,18 @@
     };
 
     ListView.prototype.render = function() {
-      this.$el.html('<li>Loading...</li>');
+      var _this = this;
+      this.$el.html('');
+      if (this.collection.length === 0) {
+        this.$el.html('<li class="loading">Loading...</li>');
+      } else {
+        this.collection.each(function(item, index) {
+          _this.$el.append(new ListItemView({
+            model: item
+          }).render().el);
+          return console.log(item);
+        });
+      }
       return this;
     };
 
@@ -47,6 +58,7 @@
     ListItemView.prototype.initialize = function() {};
 
     ListItemView.prototype.render = function() {
+      this.$el.html('dsadas');
       return this;
     };
 
