@@ -6,13 +6,27 @@
 
 class ListView extends Backbone.View
     className: 'jmbo-list-view'
-    tagName: 'li'
+    tagName: 'ol'
 
     initialize: ->
-        #pass
+        @collection.on 'reset', @render
 
     render: =>
+        return this
         #pass
 
 
 class ListItemView extends Backbone.View
+    className: 'jmbo-list-item-view'
+    tagName: 'li'
+
+    initialize: ->
+        # you can select a row.
+
+    render: =>
+        return this
+
+
+exports = this
+exports.Jmbo = exports.Jmbo ? {}
+exports.Jmbo.ListView = ListView
