@@ -23,6 +23,7 @@
     };
 
     ListView.prototype.render = function() {
+      this.$el.html('<li>Loading...</li>');
       return this;
     };
 

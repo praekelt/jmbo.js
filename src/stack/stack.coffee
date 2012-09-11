@@ -59,8 +59,8 @@ class StackView extends Backbone.View
 
         return this
 
-    push: (newView, opts={}) =>
-        _.defaults opts, @options.pushDefaults
+    push: (newView, options) =>
+        opts = _.extend @options.pushDefaults, options
 
         # remove the current view out of the way
         currentViewVessel = @collection.last()
@@ -83,8 +83,8 @@ class StackView extends Backbone.View
             opts.callback?()
 
 
-    pop: (opts={}) =>
-        _.defaults opts, @options.popDefaults
+    pop: (options) =>
+        opts = _.extend @options.popDefaults, options
         
         # remove the current view from the collection and the DOM.
         currentView = @collection.pop()?.get 'view'

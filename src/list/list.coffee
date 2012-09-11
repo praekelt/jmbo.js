@@ -12,6 +12,8 @@ class ListView extends Backbone.View
         @collection.on 'reset', @render
 
     render: =>
+        # jmbo-loading-view?
+        @$el.html '<li>Loading...</li>'
         return this
         #pass
 
@@ -24,6 +26,7 @@ class ListItemView extends Backbone.View
         # you can select a row.
 
     render: =>
+
         return this
 
 
