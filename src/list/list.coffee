@@ -4,7 +4,6 @@ class ListView extends Backbone.View
 
     initialize: ->
         @collection.on 'reset', @render
-        
 
     render: =>
         @$el.html ''
@@ -26,12 +25,17 @@ class ListItemView extends Backbone.View
     """
 
     initialize: ->
-        # template is customisable.
-        if @options.template? then template = _.template @options.template
+        if @options.template? then @template = _.template @options.template
+        tap = 'click'
+        if 'ontouchstart' in document.documentElement then tap = 'touchstart'
+        @$el.on tap, @select
 
     render: =>
         @$el.html @template item: @model.toJSON()
         return this
+
+    select: =>
+        console.log @model
 
 
 exports = this
