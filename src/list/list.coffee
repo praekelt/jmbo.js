@@ -13,7 +13,7 @@ class ListView extends Backbone.View
         else
             # loop through rows
             @collection.each (item, index) =>
-                @$el.append new ListItemView(model: item, template: @options.template).render().el
+                @$el.append new ListItemView(model: item, template: @options.itemTemplate).render().el
 
         return this
 
