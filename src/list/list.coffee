@@ -1,15 +1,10 @@
-# so this is the big one...
-
-# a list of things that swops out things and trys to make things fast.
-
-
-
 class ListView extends Backbone.View
     className: 'jmbo-list-view'
     tagName: 'ol'
 
     initialize: ->
         @collection.on 'reset', @render
+        
 
     render: =>
         @$el.html ''
@@ -18,10 +13,7 @@ class ListView extends Backbone.View
         else
             # loop through rows
             @collection.each (item, index) =>
-                @$el.append new ListItemView(model: item).render().el
-
-                console.log item
-
+                @$el.append new ListItemView(model: item, template: @options.template).render().el
 
         return this
 
@@ -29,12 +21,16 @@ class ListView extends Backbone.View
 class ListItemView extends Backbone.View
     className: 'jmbo-list-item-view'
     tagName: 'li'
+    template: _.template """
+        <%= item.title %>
+    """
 
     initialize: ->
-        # you can select a row.
+        # template is customisable.
+        if @options.template? then template = _.template @options.template
 
     render: =>
-        @$el.html 'dsadas'
+        @$el.html @template item: @model.toJSON()
         return this
 
 

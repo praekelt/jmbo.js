@@ -29,10 +29,10 @@
         this.$el.html('<li class="loading">Loading...</li>');
       } else {
         this.collection.each(function(item, index) {
-          _this.$el.append(new ListItemView({
-            model: item
+          return _this.$el.append(new ListItemView({
+            model: item,
+            template: _this.options.template
           }).render().el);
-          return console.log(item);
         });
       }
       return this;
@@ -55,10 +55,19 @@
 
     ListItemView.prototype.tagName = 'li';
 
-    ListItemView.prototype.initialize = function() {};
+    ListItemView.prototype.template = _.template("<%= item.title %>");
+
+    ListItemView.prototype.initialize = function() {
+      var template;
+      if (this.options.template != null) {
+        return template = _.template(this.options.template);
+      }
+    };
 
     ListItemView.prototype.render = function() {
-      this.$el.html('dsadas');
+      this.$el.html(this.template({
+        item: this.model.toJSON()
+      }));
       return this;
     };
 
