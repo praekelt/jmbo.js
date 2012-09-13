@@ -32,7 +32,8 @@
         this.collection.each(function(item, index) {
           return _this.$el.append(new ListItemView({
             model: item,
-            template: _this.options.itemTemplate
+            template: _this.options.itemTemplate,
+            select: _this.options.itemSelect
           }).render().el);
         });
       }
@@ -81,7 +82,8 @@
 
     ListItemView.prototype.select = function() {
       var _base;
-      return typeof (_base = this.options).itemSelect === "function" ? _base.itemSelect() : void 0;
+      console.log('list item selected');
+      return typeof (_base = this.options).select === "function" ? _base.select(this.model) : void 0;
     };
 
     return ListItemView;

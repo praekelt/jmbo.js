@@ -15,6 +15,7 @@ class ListView extends Backbone.View
                 @$el.append new ListItemView(
                     model: item, 
                     template: @options.itemTemplate
+                    select: @options.itemSelect
                 ).render().el
 
         return this
@@ -36,7 +37,8 @@ class ListItemView extends Backbone.View
         return this
 
     select: =>
-        @options.itemSelect?()
+        console.log 'list item selected'
+        @options.select?(@model)
 
 
 exports = this
