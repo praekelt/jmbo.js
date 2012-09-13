@@ -28,7 +28,25 @@ minify = ->
 task 'watch', 'Watch this project for changes and compile to a single source', ->
     console.log 'Watching...'
     f = files.join '.coffee '
-    exec "coffee -w -c -j lib/jmbo.js #{f}", (err, stderr, stdout) ->
+    exec "coffee -w -c -j lib/jmbo.js #{f}"
+
+    
+
+task 'concat-css', 'Joins the seperate CSS files into a single one', ->
+    console.log 'Joining CSS files'
+    concat = []
+    for file, index in files
+        do (file, index) ->
+            if (fs.existsSync "#{file}.css")
+                concat[index] = fs.readFileSync "#{file}.css"
+
+    fs.writeFile 'src/jmbo.css', concat.join('\n\n'), 'utf8', (err) ->
+        console.log 'CSS joined and saved to src/jmbo.css'
+
+
+
+
+
 
 task 'build-seperate', 'Compiles coffee from src/*.coffee to lib/*.js', ->
     build()

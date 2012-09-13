@@ -12,7 +12,10 @@ class ListView extends Backbone.View
         else
             # loop through rows
             @collection.each (item, index) =>
-                @$el.append new ListItemView(model: item, template: @options.itemTemplate).render().el
+                @$el.append new ListItemView(
+                    model: item, 
+                    template: @options.itemTemplate
+                ).render().el
 
         return this
 
@@ -20,9 +23,7 @@ class ListView extends Backbone.View
 class ListItemView extends Backbone.View
     className: 'jmbo-list-item-view'
     tagName: 'li'
-    template: _.template """
-        <%= item.title %>
-    """
+    template: _.template """<%= item.title %>"""
 
     initialize: ->
         if @options.template? then @template = _.template @options.template
@@ -35,7 +36,7 @@ class ListItemView extends Backbone.View
         return this
 
     select: =>
-        console.log @model
+        @options.itemSelect?()
 
 
 exports = this
