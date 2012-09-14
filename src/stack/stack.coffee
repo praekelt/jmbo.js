@@ -60,8 +60,8 @@ class StackView extends Backbone.View
         return this
 
     push: (newView, options) =>
-        opts = _.extend @options.pushDefaults, options
-
+        opts = {}
+        _.extend opts, @options.pushDefaults, options
         # remove the current view out of the way
         currentViewVessel = @collection.last()
         if currentViewVessel?
@@ -84,7 +84,8 @@ class StackView extends Backbone.View
 
 
     pop: (options) =>
-        opts = _.extend @options.popDefaults, options
+        opts = {}
+        _.extend opts, @options.popDefaults, options
         
         # remove the current view from the collection and the DOM.
         currentView = @collection.pop()?.get 'view'

@@ -105,7 +105,8 @@
 
     StackView.prototype.push = function(newView, options) {
       var currentView, currentViewVessel, opts;
-      opts = _.extend(this.options.pushDefaults, options);
+      opts = {};
+      _.extend(opts, this.options.pushDefaults, options);
       currentViewVessel = this.collection.last();
       if (currentViewVessel != null) {
         currentView = currentViewVessel.get('view');
@@ -131,7 +132,8 @@
 
     StackView.prototype.pop = function(options) {
       var currentView, newView, newViewVessel, opts, _ref;
-      opts = _.extend(this.options.popDefaults, options);
+      opts = {};
+      _.extend(opts, this.options.popDefaults, options);
       currentView = (_ref = this.collection.pop()) != null ? _ref.get('view') : void 0;
       animate(currentView.$el, opts.animation, 'out', function() {
         delete currentView.stackView;
