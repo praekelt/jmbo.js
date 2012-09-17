@@ -22,7 +22,7 @@
 
     TitleView.prototype.render = function() {
       var action, _i, _len, _ref;
-      this.$el.html(this.options.name);
+      this.$el.html("<h1>" + this.options.name + "</h1>");
       _ref = this.options.actions;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         action = _ref[_i];

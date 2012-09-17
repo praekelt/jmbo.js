@@ -8,7 +8,7 @@ class TitleView extends Backbone.View
         # extraClasses
 
     render: =>
-        @$el.html @options.name
+        @$el.html "<h1>#{@options.name}</h1>"
 
         # a titleview can have many actions, styling is done with CSS.
         @renderAction(action) for action in @options.actions
