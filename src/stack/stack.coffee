@@ -19,6 +19,7 @@ animate = ($el, animation, direction, callback) ->
 
     $el.on 'webkitAnimationEnd animationEnd', ->
         $el.trigger eventName
+        
     $el.addClass className
 
 

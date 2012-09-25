@@ -4,8 +4,7 @@
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __slice = [].slice,
-    __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+    __slice = [].slice;
 
   TabViewVessel = (function(_super) {
 
@@ -188,13 +187,8 @@
     BarItemView.prototype.tagName = 'li';
 
     BarItemView.prototype.initialize = function() {
-      var tap;
       this.model.on('change:selected', this.renderSelected);
-      tap = 'click';
-      if (__indexOf.call(document.documentElement, 'ontouchstart') >= 0) {
-        tap = 'touchstart';
-      }
-      return this.$el.on(tap, this.select);
+      return this.$el.on('click', this.select);
     };
 
     BarItemView.prototype.render = function() {

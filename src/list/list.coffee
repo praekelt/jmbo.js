@@ -26,18 +26,17 @@ class ListItemView extends Backbone.View
     tagName: 'li'
     template: _.template """<%= item.title %>"""
 
+    events:
+        'click': 'select'
+
     initialize: ->
         if @options.template? then @template = _.template @options.template
-        tap = 'click'
-        if 'ontouchstart' in document.documentElement then tap = 'touchstart'
-        @$el.on tap, @select
 
     render: =>
         @$el.html @template item: @model.toJSON()
         return this
 
     select: =>
-        console.log 'list item selected'
         @options.select?(@model)
 
 

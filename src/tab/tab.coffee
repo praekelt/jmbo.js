@@ -77,9 +77,7 @@ class BarItemView extends Backbone.View
 
     initialize: ->
         @model.on 'change:selected', @renderSelected
-        tap = 'click'
-        if 'ontouchstart' in document.documentElement then tap = 'touchstart'    
-        @$el.on tap, @select
+        @$el.on 'click', @select
 
     render: =>
         @$el.html(@model.get('name')).addClass @model.get('icon')

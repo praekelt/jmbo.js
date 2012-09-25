@@ -3,8 +3,7 @@
   var ListItemView, ListView, exports, _ref,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-    __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   ListView = (function(_super) {
 
@@ -61,16 +60,14 @@
 
     ListItemView.prototype.template = _.template("<%= item.title %>");
 
+    ListItemView.prototype.events = {
+      'click': 'select'
+    };
+
     ListItemView.prototype.initialize = function() {
-      var tap;
       if (this.options.template != null) {
-        this.template = _.template(this.options.template);
+        return this.template = _.template(this.options.template);
       }
-      tap = 'click';
-      if (__indexOf.call(document.documentElement, 'ontouchstart') >= 0) {
-        tap = 'touchstart';
-      }
-      return this.$el.on(tap, this.select);
     };
 
     ListItemView.prototype.render = function() {
@@ -82,7 +79,6 @@
 
     ListItemView.prototype.select = function() {
       var _base;
-      console.log('list item selected');
       return typeof (_base = this.options).select === "function" ? _base.select(this.model) : void 0;
     };
 

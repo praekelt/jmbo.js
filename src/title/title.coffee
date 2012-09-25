@@ -21,7 +21,6 @@ class TitleView extends Backbone.View
             .addClass(action.extraClasses)
             .html(action.name)
             .on 'click', action.callback
-
         @$el.append $action
         
 
