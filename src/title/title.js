@@ -35,7 +35,7 @@
 
     TitleView.prototype.renderAction = function(action) {
       var $action;
-      $action = $('<div/>').addClass(action.extraClasses).html(action.name).on('click', action.callback);
+      $action = $('<div/>').addClass(action.extraClasses).html(action.name).on('touchstart', action.callback);
       return this.$el.append($action);
     };
 

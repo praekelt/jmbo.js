@@ -20,7 +20,7 @@ class TitleView extends Backbone.View
         $action = $('<div/>')
             .addClass(action.extraClasses)
             .html(action.name)
-            .on 'click', action.callback
+            .on 'touchstart', action.callback
         @$el.append $action
         
 
