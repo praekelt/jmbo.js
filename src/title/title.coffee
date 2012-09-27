@@ -17,13 +17,13 @@ class TitleView extends Backbone.View
         return this
 
     renderAction: (action) =>
+        tap = 'click'
+        if typeof Touch == 'object' then tap = 'touchstart'
         $action = $('<div/>')
             .addClass(action.extraClasses)
             .html(action.name)
-            .on 'touchstart', action.callback
+            .on tap, action.callback
         @$el.append $action
-        
-
 
 
 exports = this
