@@ -79,9 +79,10 @@ class StackView extends Backbone.View
         @collection.add 'view': newView
         newView.stackView = this
         @$el.append newView.render().el
+        newView.trigger 'stack:focus'
         animate newView.$el, opts.animation, 'in', ->
-            # TODO: trigger `rendered` event
             opts.callback?()
+            
 
 
     pop: (options) =>
@@ -103,7 +104,7 @@ class StackView extends Backbone.View
             newView = newViewVessel.get 'view'
             if not newViewVessel.get '_cache'
                 @$el.append newView.render().el
-                # TODO: trigger `rendered` event
+                newView.trigger 'stack:focus'
             animate newView.$el, opts.animation, 'in'
 
 

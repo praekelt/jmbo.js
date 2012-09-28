@@ -125,6 +125,7 @@
       });
       newView.stackView = this;
       this.$el.append(newView.render().el);
+      newView.trigger('stack:focus');
       return animate(newView.$el, opts.animation, 'in', function() {
         return typeof opts.callback === "function" ? opts.callback() : void 0;
       });
@@ -145,6 +146,7 @@
         newView = newViewVessel.get('view');
         if (!newViewVessel.get('_cache')) {
           this.$el.append(newView.render().el);
+          newView.trigger('stack:focus');
         }
         return animate(newView.$el, opts.animation, 'in');
       }

@@ -81,13 +81,13 @@ class BarItemView extends Backbone.View
 
     render: =>
         @$el.html(@model.get('name')).addClass @model.get('icon')
+        if @model.get 'selected' then @renderSelected()
         return this
 
     renderSelected: =>
         @$el.toggleClass 'selected'
 
     select: =>
-        if @model.get('selected') is true then return
         @model.collection.where(selected: true)[0]?.set selected: false
         @model.set selected: true
         

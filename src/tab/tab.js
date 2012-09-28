@@ -193,6 +193,9 @@
 
     BarItemView.prototype.render = function() {
       this.$el.html(this.model.get('name')).addClass(this.model.get('icon'));
+      if (this.model.get('selected')) {
+        this.renderSelected();
+      }
       return this;
     };
 
@@ -202,9 +205,6 @@
 
     BarItemView.prototype.select = function() {
       var _ref;
-      if (this.model.get('selected') === true) {
-        return;
-      }
       if ((_ref = this.model.collection.where({
         selected: true
       })[0]) != null) {
